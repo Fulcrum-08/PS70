@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mazen's Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Mazen's Portfolio - Assignments Gallery</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Mazen's Web Portfolio</h1>
+    <h1>Mazen's Assignments Gallery</h1>
     <nav class="nav-buttons">
       <a href="index.html">🏠 Home</a>
       <a href="about.html">👤 About</a>
@@ -16,13 +16,43 @@
   </header>
 
   <main>
-    <section class="card">
-      <h2>Assignments</h2>
-      <ul class="assignment-list">
-        <li><a href="#">Assignment 1</a></li>
-        <li><a href="#">Assignment 2</a></li>
-        <li><a href="#">Assignment 3</a></li>
-      </ul>
+    <section class="assignments-grid">
+
+      <div class="assignment-card">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
+          <!-- Example icon: document -->
+          <rect x="12" y="8" width="40" height="48" rx="4" ry="4" />
+          <line x1="20" y1="20" x2="44" y2="20" />
+          <line x1="20" y1="28" x2="44" y2="28" />
+          <line x1="20" y1="36" x2="44" y2="36" />
+        </svg>
+        <p><strong>01:</strong> Introduction, Lab, Safety, Documentation / HTML<br />Week 1</p>
+      </div>
+
+      <div class="assignment-card">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
+          <!-- Example icon: cutter blade -->
+          <line x1="10" y1="54" x2="54" y2="10" />
+          <circle cx="32" cy="32" r="8" />
+        </svg>
+        <p><strong>02:</strong> 2D design and cutting, Vinyl cutter/Laser cutter<br />Week 1</p>
+      </div>
+
+      <!-- Repeat for each assignment... -->
+
+      <div class="assignment-card">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
+          <!-- Example icon: hand tool -->
+          <circle cx="32" cy="24" r="8" />
+          <line x1="24" y1="32" x2="24" y2="48" />
+          <line x1="40" y1="32" x2="40" y2="48" />
+          <rect x="20" y="48" width="24" height="8" />
+        </svg>
+        <p><strong>03:</strong> Hand tools and fabrication, Mechanical design<br />Week 2</p>
+      </div>
+
+      <!-- Add all 14 assignments similarly -->
+
     </section>
   </main>
 
