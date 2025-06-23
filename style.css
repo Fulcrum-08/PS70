@@ -1,0 +1,107 @@
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f2f5;
+  color: #222;
+  line-height: 1.6;
+  padding-bottom: 60px;
+  transition: all 0.3s ease-in-out;
+}
+
+header {
+  background: linear-gradient(135deg, #1d3557, #457b9d);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background 0.4s;
+}
+
+header:hover {
+  background: linear-gradient(135deg, #1d3557, #a8dadc);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.nav-buttons {
+  margin-top: 10px;
+}
+
+.nav-buttons a {
+  display: inline-block;
+  background: white;
+  color: #1d3557;
+  text-decoration: none;
+  padding: 10px 18px;
+  margin: 0 6px;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.nav-buttons a:hover {
+  background: #f1faee;
+  transform: scale(1.1);
+}
+
+/* Content Cards */
+main {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.assignment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.assignment-list li {
+  margin-bottom: 10px;
+}
+
+.assignment-list a {
+  color: #1d3557;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.assignment-list a:hover {
+  border-color: #457b9d;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ddd;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
