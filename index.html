@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Mazen's Portfolio - Assignments Gallery</title>
+  <title>Mazen's Assignments</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Mazen's Assignments Gallery</h1>
+    <h1>Mazen's Fab Academy Assignments</h1>
     <nav class="nav-buttons">
       <a href="index.html">🏠 Home</a>
       <a href="about.html">👤 About</a>
@@ -17,47 +17,53 @@
 
   <main>
     <section class="assignments-grid">
-
-      <div class="assignment-card">
-        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
-          <!-- Example icon: document -->
-          <rect x="12" y="8" width="40" height="48" rx="4" ry="4" />
-          <line x1="20" y1="20" x2="44" y2="20" />
-          <line x1="20" y1="28" x2="44" y2="28" />
-          <line x1="20" y1="36" x2="44" y2="36" />
+      <a href="assignment01.html" class="assignment-card fade-in">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="12" width="40" height="40" />
+          <path d="M12 32h40" />
+          <path d="M32 12v40" />
         </svg>
-        <p><strong>01:</strong> Introduction, Lab, Safety, Documentation / HTML<br />Week 1</p>
-      </div>
+        <p>01: Introduction, Lab, Safety, Documentation / HTML</p>
+      </a>
 
-      <div class="assignment-card">
-        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
-          <!-- Example icon: cutter blade -->
-          <line x1="10" y1="54" x2="54" y2="10" />
-          <circle cx="32" cy="32" r="8" />
+      <a href="assignment02.html" class="assignment-card fade-in">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="20" />
+          <path d="M12 32h40" />
+          <path d="M32 12v40" />
         </svg>
-        <p><strong>02:</strong> 2D design and cutting, Vinyl cutter/Laser cutter<br />Week 1</p>
-      </div>
+        <p>02: 2D design and cutting, Vinyl cutter/Laser cutter</p>
+      </a>
 
-      <!-- Repeat for each assignment... -->
+      <!-- Add other assignments similarly, changing the icon or text -->
 
-      <div class="assignment-card">
-        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="black" stroke-width="2">
-          <!-- Example icon: hand tool -->
-          <circle cx="32" cy="24" r="8" />
-          <line x1="24" y1="32" x2="24" y2="48" />
-          <line x1="40" y1="32" x2="40" y2="48" />
-          <rect x="20" y="48" width="24" height="8" />
+      <a href="assignment03.html" class="assignment-card fade-in">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 52L32 12l20 40H12z" />
         </svg>
-        <p><strong>03:</strong> Hand tools and fabrication, Mechanical design<br />Week 2</p>
-      </div>
+        <p>03: Hand tools and fabrication, Mechanical design</p>
+      </a>
 
       <!-- Add all 14 assignments similarly -->
-
     </section>
   </main>
 
   <footer>
-    <p>Built for PS70 – Summer 2025</p>
+    <p>© 2025 Mazen Abdul-Knerr</p>
   </footer>
+
+  <script>
+    const faders = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    faders.forEach(fade => observer.observe(fade));
+  </script>
 </body>
 </html>

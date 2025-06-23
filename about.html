@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>About Mazen</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -16,16 +16,32 @@
   </header>
 
   <main>
-    <section class="card about-card">
-      <h2>👋 Hey, I'm Mazen</h2>
+    <section class="about-card fade-in">
+      <h2>👋 Hi, I'm Mazen Abdul-Knerr</h2>
       <p>
-        I am a rising junior at Northampton High School in Northampton Massachusetts USA. For Middle School I attended The Heartsbrook Waldorf School in Hadley Massachusetts which gave me unique experiences in agriculture as well as practical arts, including woodworking, blacksmithing, knitting, etc. In PS70 this summer  I hope to continue those skills, refining them into the foundation of an engineers toolbox.
+        Hi Guys! My name is Mazen Abdul-Knerr, and I'm a rising junior at Northampton High School in Northampton, Massachusetts, USA.<br /><br />
+        For middle school, I attended The Hartsbrook Waldorf School in Hadley, MA, where I gained unique experiences in both agriculture and the practical arts — including woodworking, blacksmithing, and even knitting.<br /><br />
+        These hands-on experiences taught me how to approach design and problem-solving from both an artistic and engineering perspective. In PS70 this summer, I hope to continue growing those skills and refining them into the foundation of an engineer’s toolbox.
       </p>
     </section>
   </main>
 
   <footer>
-    <p>Built for PS70 – Summer 2025</p>
+    <p>© 2025 Mazen Abdul-Knerr</p>
   </footer>
+
+  <script>
+    const faders = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    faders.forEach(fade => observer.observe(fade));
+  </script>
 </body>
 </html>
