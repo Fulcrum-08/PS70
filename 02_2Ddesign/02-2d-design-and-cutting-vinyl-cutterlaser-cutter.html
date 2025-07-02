@@ -160,51 +160,7 @@
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
 
-  <script>
-    const lightbox = document.getElementById("lightbox");
-    const lightboxContent = document.getElementById("lightbox-content");
-
-    // Show image in lightbox
-    document.querySelectorAll("img").forEach((img) => {
-      img.addEventListener("click", () => {
-        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
-        lightbox.style.display = "flex";
-      });
-    });
-
-    // Show model-viewer in lightbox
-    document.querySelectorAll("model-viewer").forEach((viewer) => {
-      viewer.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent closing when clicking inside viewer
-        lightboxContent.innerHTML = `
-          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
-        `;
-        lightbox.style.display = "flex";
-      });
-    });
-
-    // Show text in lightbox
-    document.querySelectorAll(".text-section").forEach((block) => {
-      block.addEventListener("click", () => {
-        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
-        lightbox.style.display = "flex";
-      });
-    });
-
-    // Close lightbox ONLY when clicking outside content
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox || e.target === lightboxContent) {
-        lightbox.style.display = "none";
-        lightboxContent.innerHTML = "";
-      }
-    });
-  </script>
-</body>
-</html>
-
-  </script>
-</body>
-</html>
+  
 
 <script>
   const lightbox = document.getElementById("lightbox");
