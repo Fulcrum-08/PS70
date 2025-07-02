@@ -47,15 +47,18 @@
       font-size: 1.1rem;
     }
 
+    /* Scroll section styles for horizontal scroll */
     .scroll-section {
       display: flex;
-      flex-wrap: nowrap;
+      flex-wrap: nowrap;         /* no wrapping */
+      overflow-x: auto;          /* enable horizontal scroll */
       gap: 20px;
-      overflow-x: auto;
       padding: 10px 0;
-      justify-content: flex-start;
+      scroll-behavior: smooth;
+      justify-content: flex-start; /* default left aligned */
     }
 
+    /* Center content if 1 to 5 items */
     @supports(selector(:has(*))) {
       .scroll-section:has(> *:only-child),
       .scroll-section:has(> *:nth-child(2):last-child),
@@ -66,6 +69,63 @@
       }
     }
 
+    /* Flashcards container inside first assignment */
+    .flashcard {
+      flex: 0 0 auto;            /* don't shrink, fixed width */
+      width: 200px;
+      height: 140px;
+      perspective: 1000px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* Card inner container for flipping */
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    /* Flipped state */
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Front and back faces */
+    .flashcard-front,
+    .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      padding: 10px;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    .flashcard-front img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      font-size: 1rem;
+      color: #222;
+      overflow-y: auto;
+      text-align: center;
+    }
+
+    /* Model viewer styles */
     .model-container {
       display: flex;
       flex-direction: column;
@@ -105,50 +165,6 @@
       border: 1px solid #ccc;
       cursor: pointer;
       flex: 0 0 auto;
-    }
-
-    .flashcard {
-      position: relative;
-      width: 200px;
-      height: 140px;
-      perspective: 1000px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-
-    .flashcard img,
-    .flashcard .card-text {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      backface-visibility: hidden;
-      transition: transform 0.6s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10px;
-    }
-
-    .flashcard img {
-      object-fit: cover;
-    }
-
-    .flashcard .card-text {
-      background: #fff;
-      color: #222;
-      transform: rotateY(180deg);
-      font-weight: bold;
-    }
-
-    .flashcard.flipped img {
-      transform: rotateY(180deg);
-    }
-
-    .flashcard.flipped .card-text {
-      transform: rotateY(0deg);
     }
 
     .text-section {
@@ -202,6 +218,22 @@
       overflow-y: auto;
       max-height: 80vh;
     }
+
+    /* Scrollbar styling for horizontal scroll (optional) */
+    .scroll-section::-webkit-scrollbar {
+      height: 8px;
+    }
+    .scroll-section::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .scroll-section::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+    .scroll-section::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
   </style>
 </head>
 <body>
@@ -224,8 +256,7 @@
           <a class="download-link" href="Wrench v5.f3d" download>Wrench Fusion File</a>
         </div>
       </div>
-
-      <div class="section-title">Renders</div>
+        <div class="section-title">Renders</div>
       <div class="scroll-section">
         <img src="Screw_Driver(2).png" alt="Screwdriver Img 1" />
         <img src="Screw_Driver(3).png" alt="Screwdriver Img 2" />
@@ -234,16 +265,71 @@
       </div>
 
       <div class="section-title">Flashcards</div>
-      <div class="scroll-section" id="flashcard-section">
-        <div class="flashcard" data-text="This is a screwdriver I modeled using extrusion and fillets.">
-          <img src="Screw_Driver(2).png" alt="Screwdriver Render" />
-          <div class="card-text">This is a screwdriver I modeled using extrusion and fillets.</div>
+<div class="scroll-section" id="flashcard-section">
+  <!-- Flashcards will be inserted here by JS -->
+</div>
+
+<script>
+  const flashcardsData = [
+    {
+      img: "Screw_Driver(2).png",
+      alt: "Screwdriver Img 1",
+      text: "This is a screwdriver used to turn screws with a slotted head."
+    },
+    {
+      img: "Screw_Driver(3).png",
+      alt: "Screwdriver Img 2",
+      text: "Another image of the screwdriver showing different angles."
+    },
+    {
+      img: "wrench(2).png",
+      alt: "Wrench Img 1",
+      text: "A wrench used to grip and turn objects such as pipes or nuts."
+    },
+    {
+      img: "wrench(3).png",
+      alt: "Wrench Img 2",
+      text: "Another view of the wrench showing its jaws and handle."
+    },
+     {
+      img: "wrench(3).png",
+      alt: "Wrench Img 2",
+      text: "Another view of the wrench showing its jaws and handle."
+    },
+     {
+      img: "wrench(3).png",
+      alt: "Wrench Img 2",
+      text: "Another view of the wrench showing its jaws and handle."
+    },
+     {
+      img: "wrench(3).png",
+      alt: "Wrench Img 2",
+      text: "Another view of the wrench showing its jaws and handle."
+    }
+  ];
+
+  const container = document.getElementById("flashcard-section");
+
+  flashcardsData.forEach(({img, alt, text}) => {
+    const card = document.createElement("div");
+    card.className = "flashcard";
+    card.dataset.text = text;
+
+    card.innerHTML = `
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <img src="${img}" alt="${alt}" />
         </div>
-        <div class="flashcard" data-text="This wrench was created using the revolve tool and shell commands.">
-          <img src="wrench(2).png" alt="Wrench Render" />
-          <div class="card-text">This wrench was created using the revolve tool and shell commands.</div>
+        <div class="flashcard-back">
+          ${text}
         </div>
       </div>
+    `;
+
+    container.appendChild(card);
+  });
+</script>
+
     </section>
 
     <!-- Assignment 2 -->
@@ -262,7 +348,7 @@
         </div>
         <div class="model-container">
           <model-viewer src="Ice_Cube_Tray.glb" alt="Ice Cube Tray" camera-controls auto-rotate ar></model-viewer>
-          <a class="download-link" href="Ice Cube Tray v2.f3d" download>Ice Tray Fusion File</a>
+          <a class="download-link" href="Ice Cube Tra v2.f3d" download>Ice Tray Fusion File</a>
         </div>
         <div class="model-container">
           <model-viewer src="Loft_Bottle.glb" alt="Loft Bottle" camera-controls auto-rotate ar></model-viewer>
@@ -299,74 +385,79 @@
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
 
-<script>
-  const lightbox = document.getElementById("lightbox");
-  const lightboxContent = document.getElementById("lightbox-content");
+  <script>
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
 
-  // Normal images (outside flashcards) expand on single click
-  document.querySelectorAll(".scroll-section img").forEach((img) => {
-    if (!img.closest(".flashcard")) {
-      img.addEventListener("click", () => {
-        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+    // Normal images (outside flashcards) expand on single click
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      if (!img.closest(".flashcard")) {
+        img.addEventListener("click", () => {
+          lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+          lightbox.style.display = "flex";
+        });
+      }
+    });
+
+    // model-viewers expand on double click
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
         lightbox.style.display = "flex";
       });
-    }
-  });
-
-  // Model-viewer double-click expand
-  document.querySelectorAll("model-viewer").forEach((viewer) => {
-    viewer.addEventListener("dblclick", (e) => {
-      e.stopPropagation();
-      lightboxContent.innerHTML = `
-        <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
-      `;
-      lightbox.style.display = "flex";
     });
-  });
 
-  // Text section click opens text in lightbox
-  document.querySelectorAll(".text-section").forEach((block) => {
-    block.addEventListener("click", () => {
-      lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
-      lightbox.style.display = "flex";
+    // Text explanation blocks expand on click
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
     });
-  });
 
-  // Flashcard click/double-click logic with delay for single/double distinction
-  document.querySelectorAll(".flashcard").forEach((card) => {
-    const img = card.querySelector("img");
-    let clickTimeout = null;
-
-    card.addEventListener("click", (e) => {
-      if (clickTimeout === null) {
-        clickTimeout = setTimeout(() => {
-          card.classList.toggle("flipped");
-          clickTimeout = null;
-        }, 250);
+    // Close lightbox on clicking outside content
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
       }
     });
 
-    img.addEventListener("dblclick", (e) => {
-      e.stopPropagation();
-      if (clickTimeout) {
-        clearTimeout(clickTimeout);
-        clickTimeout = null;
-      }
-      lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
-      lightbox.style.display = "flex";
+    // Flashcards: single click flips, double click expands image
+    const flashcards = document.querySelectorAll(".flashcard");
+
+    flashcards.forEach(card => {
+      let clickTimer = null;
+      card.addEventListener("click", (e) => {
+        // Prevent flipping or expanding if clicking the back side text area scroll bar
+        if (e.target.closest('.lightbox')) return;
+
+        if (clickTimer == null) {
+          clickTimer = setTimeout(() => {
+            // Single click: flip card
+            card.classList.toggle("flipped");
+            clickTimer = null;
+          }, 250); // wait 250ms to see if double click occurs
+        }
+      });
+
+      card.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        if (clickTimer) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+        }
+        // Double click: expand image in lightbox
+        const frontImg = card.querySelector(".flashcard-front img");
+        if (frontImg) {
+          lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
+          lightbox.style.display = "flex";
+        }
+      });
     });
-  });
-
-  // Close lightbox on clicking outside content
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox || e.target === lightboxContent) {
-      lightbox.style.display = "none";
-      lightboxContent.innerHTML = "";
-    }
-  });
-</script>
-
-
-
+  </script>
 </body>
 </html>
