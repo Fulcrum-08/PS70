@@ -7,10 +7,11 @@
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      margin: 20px;
+      margin: 0;
       background-color: white;
       font-family: Arial, sans-serif;
       color: #222;
+      padding: 20px;
     }
 
     h1 {
@@ -27,38 +28,42 @@
     }
 
     .assignment {
-      border: 1px solid #ddd;
-      padding: 20px;
+      background-color: #fff;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
     }
 
     .assignment h2 {
       margin-bottom: 20px;
       border-bottom: 2px solid #ccc;
       padding-bottom: 8px;
+      white-space: nowrap;
     }
 
-    .viewers-row {
+    .scroll-container {
       display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 30px;
+      gap: 30px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 10px;
     }
 
     .viewer-container {
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 300px;
+      cursor: pointer;
     }
 
     model-viewer {
       width: 300px;
       height: 300px;
       border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
       background-color: white;
       margin-bottom: 15px;
     }
@@ -66,9 +71,7 @@
     .images-row {
       display: flex;
       gap: 15px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-wrap: nowrap;
     }
 
     .images-row img {
@@ -89,40 +92,52 @@
       font-size: 0.9rem;
       line-height: 1.4;
       color: #444;
-      padding: 10px 0;
-      max-width: 300px;
       text-align: center;
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 8px;
       min-height: 60px;
+      cursor: pointer;
     }
 
-    /* Lightbox */
+    /* Lightbox for images, models, and text */
     .lightbox {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-      display: flex;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      display: none;
+      padding: 20px;
     }
 
-    .lightbox img {
+    .lightbox-content {
       max-width: 90%;
       max-height: 90%;
+    }
+
+    .lightbox img,
+    .lightbox model-viewer,
+    .lightbox .lightbox-text {
+      max-width: 90vw;
+      max-height: 90vh;
       border-radius: 10px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+      background: white;
+      padding: 10px;
+    }
+
+    .lightbox .lightbox-text {
+      color: #222;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
     }
 
     @media (max-width: 700px) {
-      .viewers-row {
-        flex-direction: column;
-        align-items: center;
-      }
-
       .viewer-container {
         width: 90vw;
       }
@@ -134,12 +149,7 @@
       }
 
       .images-row img {
-        width: 48vw;
-        height: auto;
-      }
-
-      .explanation {
-        max-width: 90vw;
+        width: 45vw;
       }
     }
   </style>
@@ -148,9 +158,13 @@
   <h1>Household Objects</h1>
 
   <div class="assignments">
+
+    <!-- Assignment 1 -->
     <section class="assignment" id="assignment1">
       <h2>Assignment 1</h2>
-      <div class="viewers-row">
+      <div class="scroll-container">
+
+        <!-- Viewer 1 -->
         <div class="viewer-container">
           <model-viewer
             src="screwdriver_3d_modle.glb"
@@ -162,15 +176,18 @@
             shadow-intensity="1"
             exposure="1"
           ></model-viewer>
+
           <div class="images-row">
-            <img src="Screw_Driver(1).png" alt="Screwdriver Image 1" />
+            <img src="images/Screw_Driver(1).png" alt="Screwdriver Image 1" />
             <img src="images/screwdriver2.jpg" alt="Screwdriver Image 2" />
           </div>
+
           <div class="explanation">
-            Explanation of the screwdriver 3D model steps.
+            I used measurements from a real screwdriver and used the revolve tool.
           </div>
         </div>
 
+        <!-- Viewer 2 -->
         <div class="viewer-container">
           <model-viewer
             src="hammer_3d_model.glb"
@@ -182,36 +199,61 @@
             shadow-intensity="1"
             exposure="1"
           ></model-viewer>
+
           <div class="images-row">
             <img src="images/hammer1.jpg" alt="Hammer Image 1" />
             <img src="images/hammer2.jpg" alt="Hammer Image 2" />
           </div>
+
           <div class="explanation">
-            Explanation of the hammer 3D model process.
+            This hammer was built from multiple lofts and some fillets.
           </div>
         </div>
+
       </div>
     </section>
+
   </div>
 
-  <!-- Lightbox -->
+  <!-- Lightbox for image, model, or text -->
   <div class="lightbox" id="lightbox">
-    <img src="" alt="Full image" id="lightbox-img">
+    <div class="lightbox-content" id="lightbox-content"></div>
   </div>
 
   <script>
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
 
-    document.querySelectorAll('.images-row img').forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.style.display = 'flex';
+    // Lightbox logic for images
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+        lightbox.style.display = "flex";
       });
     });
 
-    lightbox.addEventListener('click', () => {
-      lightbox.style.display = 'none';
+    // Lightbox logic for model-viewers
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("click", () => {
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" alt="${viewer.getAttribute("alt")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // Lightbox logic for explanations
+    document.querySelectorAll(".explanation").forEach((textBlock) => {
+      textBlock.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${textBlock.innerHTML}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // Close lightbox on click anywhere
+    lightbox.addEventListener("click", () => {
+      lightbox.style.display = "none";
+      lightboxContent.innerHTML = "";
     });
   </script>
 </body>
