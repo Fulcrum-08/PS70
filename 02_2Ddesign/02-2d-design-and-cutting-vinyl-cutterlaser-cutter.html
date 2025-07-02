@@ -49,10 +49,22 @@
 
     .scroll-section {
       display: flex;
+      flex-wrap: nowrap;
       gap: 20px;
       overflow-x: auto;
-      padding-bottom: 10px;
-      justify-content: center;
+      padding: 10px 0;
+      justify-content: flex-start;
+    }
+
+    /* ✅ Center contents if no scroll is needed (1–5 items) */
+    @supports(selector(:has(*))) {
+      .scroll-section:has(> *:only-child),
+      .scroll-section:has(> *:nth-child(2):last-child),
+      .scroll-section:has(> *:nth-child(3):last-child),
+      .scroll-section:has(> *:nth-child(4):last-child),
+      .scroll-section:has(> *:nth-child(5):last-child) {
+        justify-content: center;
+      }
     }
 
     .model-container {
@@ -166,7 +178,7 @@
         </div>
         <div class="model-container">
           <model-viewer src="Wrench v5.glb" alt="Wrench" camera-controls auto-rotate ar></model-viewer>
-          <a class="download-link" href="Wrench v5.f3d" download> Wrench Fusion File</a>
+          <a class="download-link" href="Wrench v5.f3d" download>Wrench Fusion File</a>
         </div>
       </div>
 
@@ -231,10 +243,8 @@
         To learn Fusion, I followed a few videos of Production Design Online’s YouTube series: Learn Fusion 360 in 30 Days. Through the portion I watched, I learned Fusion techniques including lofting, fillets, tracing images, extruding, and sweeping. Above are some of the objects I modeled. Coming into this week, I knew nothing about Fusion, but thanks to Production Design Online’s videos, I was able to confidently model the two household objects. This is a must-watch series for any beginner!
       </div>
     </section>
-
   </div>
 
-  <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
@@ -243,7 +253,6 @@
     const lightbox = document.getElementById("lightbox");
     const lightboxContent = document.getElementById("lightbox-content");
 
-    // Show image in lightbox (single click)
     document.querySelectorAll("img").forEach((img) => {
       img.addEventListener("click", () => {
         lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
@@ -251,7 +260,6 @@
       });
     });
 
-    // Show model-viewer in lightbox (double-click only)
     document.querySelectorAll("model-viewer").forEach((viewer) => {
       viewer.addEventListener("dblclick", (e) => {
         e.stopPropagation();
@@ -262,7 +270,6 @@
       });
     });
 
-    // Show text in lightbox
     document.querySelectorAll(".text-section").forEach((block) => {
       block.addEventListener("click", () => {
         lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
@@ -270,7 +277,6 @@
       });
     });
 
-    // Close lightbox when clicking outside content
     lightbox.addEventListener("click", (e) => {
       if (e.target === lightbox || e.target === lightboxContent) {
         lightbox.style.display = "none";
