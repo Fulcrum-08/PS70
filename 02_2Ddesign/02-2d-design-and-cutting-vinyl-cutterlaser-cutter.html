@@ -264,71 +264,585 @@
         <img src="wrench(3).png" alt="Wrench Img 2" />
       </div>
 
-      <div class="section-title">Flashcards</div>
+      <div class="section-title">Screwdriver - Process</div>
 <div class="scroll-section" id="flashcard-section">
   <!-- Flashcards will be inserted here by JS -->
 </div>
 
+<div class="section-title">Wrench - Process</div>
+<div class="scroll-section" id="flashcard-section-2">
+  <!-- Cards for bottles & trays (another set of 50 if needed) -->
+</div>
+
 <script>
-  const flashcardsData = [
-    {
-      img: "Screw_Driver(2).png",
-      alt: "Screwdriver Img 1",
-      text: "This is a screwdriver used to turn screws with a slotted head."
-    },
+  const flashcardsData1 = [
     {
       img: "Screw_Driver(3).png",
-      alt: "Screwdriver Img 2",
-      text: "Another image of the screwdriver showing different angles."
+      alt: "Screwdriver Image",
+      text: "This is a screwdriver I found in the lab and decided to model because of its three distinct components: a rubber shield, the handle, and the shaft."
     },
     {
-      img: "wrench(2).png",
-      alt: "Wrench Img 1",
-      text: "A wrench used to grip and turn objects such as pipes or nuts."
+      img: "Screw_Driver_process/screwdriver_001.png",
+      alt: "Screwdriver Image process",
+      text: "I started with a circle the diameter of the rubber handle."
     },
     {
-      img: "wrench(3).png",
-      alt: "Wrench Img 2",
-      text: "Another view of the wrench showing its jaws and handle."
+      img: "Screw_Driver_process/screwdriver_002.png",
+      alt: "Screwdriver Image process",
+      text: "I then extruded the sphere to the height of the rubber handle."
     },
-     {
-      img: "wrench(3).png",
-      alt: "Wrench Img 2",
-      text: "Another view of the wrench showing its jaws and handle."
+    {
+      img: "Screw_Driver_process/screwdriver_003.png",
+      alt: "Screwdriver Image process",
+      text: "For the bevel at the top of the rubber handle, I created a sketch outlining the cross-section of the cut."
     },
-     {
-      img: "wrench(3).png",
-      alt: "Wrench Img 2",
-      text: "Another view of the wrench showing its jaws and handle."
+    {
+      img: "Screw_Driver_process/screwdriver_004.png",
+      alt: "Screwdriver Image process",
+      text: "Here I revolved the sketch from the last step about the center axis of the cylinder, creating a cut."
     },
-     {
-      img: "wrench(3).png",
-      alt: "Wrench Img 2",
-      text: "Another view of the wrench showing its jaws and handle."
+    {
+      img: "Screw_Driver_process/screwdriver_005.png",
+      alt: "Screwdriver Image process",
+      text: "Here I created a sketch to protect that part of the rubber handle from the bevel fillet coming in the next step."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_006.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created a fillet to round the bottom of the rubber handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_007.png",
+      alt: "Screwdriver Image process",
+      text: "Looking at the rubber handle at the top, I created a sketch that copied the gear-like outline."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_008.png",
+      alt: "Screwdriver Image process",
+      text: "Here I extruded into the rubber handle the sketch made in the last step."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_009.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I hollowed out the handle by extruding the circle at the bottom of the rubber handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_010.png",
+      alt: "Screwdriver Image process",
+      text: "Here I created an offset plane from the bottom of the rubber handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_011.png",
+      alt: "Screwdriver Image process",
+      text: "On the offset plane, I created a circle the same size as the center of the rubber handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_012.png",
+      alt: "Screwdriver Image process",
+      text: "Now the circle from the last step is extruded through the handle to be flush with the top of the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_013.png",
+      alt: "Screwdriver Image process",
+      text: "Here I created an outline of the bulge at the top of the screwdriver by using the fit point spline tool as a sketch."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_014.png",
+      alt: "Screwdriver Image process",
+      text: "The sketch from the last step I then revolved around the center axis to create the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_015.png",
+      alt: "Screwdriver Image process",
+      text: "I then created an offset plane."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_016.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created a sketch and projected the outline of the handle onto the sketch. I did this to act as the top of the threaded section."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_017.png",
+      alt: "Screwdriver Image process",
+      text: "I then created another offset plane to act as the bottom of the threaded section."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_018.png",
+      alt: "Screwdriver Image process",
+      text: "Like for the top of the threaded section, I projected the cross-section of the handle onto a sketch."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_019.png",
+      alt: "Screwdriver Image process",
+      text: "Here I went back and created a fillet to the extrusion at the bottom of the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_020.png",
+      alt: "Screwdriver Image process",
+      text: "Now using the projected circles, I created a coil on the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_021.png",
+      alt: "Screwdriver Image process",
+      text: "On the top of the handle, I created a square to act as the outline for the shaft of the screwdriver for later."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_022.png",
+      alt: "Screwdriver Image process",
+      text: "Here I created a new body for the shaft."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_023.png",
+      alt: "Screwdriver Image process",
+      text: "Now I extruded into the handle to create a place for the shaft to come from using the square I sketched in a previous step."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_024.png",
+      alt: "Screwdriver Image process",
+      text: "Here I extruded the top face of the handle as part of the shaft."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_025.png",
+      alt: "Screwdriver Image process",
+      text: "Now I made a cone shape on top of the extrusion from the last step."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_026.png",
+      alt: "Screwdriver Image process",
+      text: "Here I finally extruded the shaft of the screwdriver, starting at the face of the cut I made in a previous step so there was no free space inside the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_027.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I merged the shaft and its base together—not required but keeps things organized."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_028.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created two lines that were touching the top of the screwdriver so I could use them later to make the tip."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_029.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I extruded one of the lines into a face."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_030.png",
+      alt: "Screwdriver Image process",
+      text: "I now sketched the tip's profile from one of the sides by creating two triangles."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_031.png",
+      alt: "Screwdriver Image process",
+      text: "I extruded the other line into a face."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_032.png",
+      alt: "Screwdriver Image process",
+      text: "Here I took the sketch from two steps ago and extruded it into the shaft to create one profile of the tip."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_033.png",
+      alt: "Screwdriver Image process",
+      text: "Like before, I created another sketch on the face of the line extruded in a previous step. On this sketch I made two triangles to create the second side profile."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_034.png",
+      alt: "Screwdriver Image process",
+      text: "Here I went back and created a plane tangent to the rubber handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_035.png",
+      alt: "Screwdriver Image process",
+      text: "On the tangent plane from the last step I created a square."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_036.png",
+      alt: "Screwdriver Image process",
+      text: "Here I extruded that square into the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_037.png",
+      alt: "Screwdriver Image process",
+      text: "I then filleted the square to be more round."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_038.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created a circular pattern of both the extrusion and its fillet."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_039.png",
+      alt: "Screwdriver Image process",
+      text: "Here I went back to the tip and extruded the second side profile into the tip, completing the tip's shape."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_040.png",
+      alt: "Screwdriver Image process",
+      text: "Here I played around with colors and appearances of the screwdriver."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_041.png",
+      alt: "Screwdriver Image process",
+      text: "Again playing with appearances."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_042.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created a sketch on the face of the tip and cut the tip horizontally in half."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_043.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I replicated the last step but on the other side."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_044.png",
+      alt: "Screwdriver Image process",
+      text: "Using the lines from the last two steps, I now split the shaft and the tip to be two different bodies."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_045.png",
+      alt: "Screwdriver Image process",
+      text: "I then merged the bodies back together. This was so both bodies would have different appearances."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_046.png",
+      alt: "Screwdriver Image process",
+      text: "Here I applied a fillet to the shaft."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_047.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I created an offset plane."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_048.png",
+      alt: "Screwdriver Image process",
+      text: "Using the offset plane from the last step, I created a sketch of a square."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_049.png",
+      alt: "Screwdriver Image process",
+      text: ""
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_050.png",
+      alt: "Screwdriver Image process",
+      text: "I then extruded the square from the last step into the handle."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_051.png",
+      alt: "Screwdriver Image process",
+      text: "Here I filleted the bottom right edge of the extrusion."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_052.png",
+      alt: "Screwdriver Image process",
+      text: "Here I filleted the bottom left edge of the extrusion."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_053.png",
+      alt: "Screwdriver Image process",
+      text: "In this step I filleted the edge of the extrusion."
+    },
+    {
+      img: "Screw_Driver_process/screwdriver_053.png",
+      alt: "Screwdriver Image process",
+      text: "For the last step I created a circular pattern around the handle of the extrusion and fillets."
     }
   ];
 
-  const container = document.getElementById("flashcard-section");
 
-  flashcardsData.forEach(({img, alt, text}) => {
+  const flashcardsData2 = [
+
+  {
+      img: "wrench(2).png",
+      alt: "Wrench Image process",
+      text: "I would like to thank my brother for giving me the measurments and Aviv Makes Robots for some helpful techniques"
+  },
+  {
+      img: "wrench_process/wrench_001.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_002.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_003.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_004.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_005.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_006.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_007.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_008.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_009.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_010.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_011.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_012.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_013.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_014.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_015.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_016.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_017.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_018.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_019.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_020.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_021.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_022.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_023.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_024.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_025.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_026.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_027.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_028.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_029.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_030.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_031.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_032.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_033.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_034.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_035.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_036.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_037.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_038.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_039.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_040.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_041.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_042.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_043.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_044.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_045.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_046.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_047.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_048.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_049.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_050.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_051.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  {
+      img: "wrench_process/wrench_052.png",
+      alt: "Wrench Image process",
+      text: ""
+  },
+  
+];
+function renderFlashcards(data, containerId) {
+  const container = document.getElementById(containerId);
+  data.forEach(({ img, alt, text }) => {
     const card = document.createElement("div");
     card.className = "flashcard";
     card.dataset.text = text;
-
     card.innerHTML = `
       <div class="flashcard-inner">
-        <div class="flashcard-front">
-          <img src="${img}" alt="${alt}" />
-        </div>
-        <div class="flashcard-back">
-          ${text}
-        </div>
-      </div>
-    `;
-
+        <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+        <div class="flashcard-back">${text}</div>
+      </div>`;
     container.appendChild(card);
   });
+}
+
+// Render both sets into their respective containers
+renderFlashcards(flashcardsData1, "flashcard-section");
+renderFlashcards(flashcardsData2, "flashcard-section-2");
 </script>
+
 
     </section>
 
