@@ -2,64 +2,247 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>3D Model Viewer - Screwdriver</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Household Objects - 3D Model Viewer Assignments</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
   <style>
-    body { margin: 0; }
-    #viewer {
-      width: 600px;
-      height: 400px;
-      margin: 50px auto;
-      border: 1px solid #ccc;
+    body {
+      margin: 20px;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .assignments {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .assignment {
+      border: 1px solid #ddd;
+      padding: 20px;
       border-radius: 10px;
-      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .assignment h2 {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+    }
+    .viewers-row {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .viewer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 300px;
+    }
+    model-viewer {
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      background-color: white;
+      margin-bottom: 15px;
+    }
+    .images-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .images-row img {
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .explanation {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #444;
+      padding: 10px 0;
+      max-width: 300px;
+      text-align: center;
+      min-height: 60px;
+    }
+    @media (max-width: 700px) {
+      .viewers-row {
+        flex-direction: column;
+        align-items: center;
+      }
+      .viewer-container {
+        width: 90vw;
+      }
+      model-viewer {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+      }
+      .images-row img {
+        width: 48vw;
+        height: auto;
+      }
+      .explanation {
+        max-width: 90vw;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="viewer"></div>
+  <h1>Household Objects</h1>
 
-  <!-- Load Three.js and required modules -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+  <div class="assignments">
 
-  <script>
-    const container = document.getElementById('viewer');
-    const scene = new THREE.Scene();
+    <!-- Assignment 1 -->
+    <section class="assignment" id="assignment1">
+      <h2>Assignment 1</h2>
+      <div class="viewers-row">
+        <div class="viewer-container">
+          <model-viewer
+            src="screwdriver_3d_modle.glb"
+            alt="Screwdriver 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/screwdriver.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/screwdriver1.jpg" alt="Screwdriver Image 1" />
+            <img src="images/screwdriver2.jpg" alt="Screwdriver Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation of the first screwdriver 3D model steps.
+          </div>
+        </div>
 
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(2, 2, 4);
+        <div class="viewer-container">
+          <model-viewer
+            src="hammer_3d_model.glb"
+            alt="Hammer 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/hammer.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/hammer1.jpg" alt="Hammer Image 1" />
+            <img src="images/hammer2.jpg" alt="Hammer Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation of the hammer 3D model creation process.
+          </div>
+        </div>
+      </div>
+    </section>
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+    <!-- Assignment 2 -->
+    <section class="assignment" id="assignment2">
+      <h2>Assignment 2</h2>
+      <div class="viewers-row">
+        <div class="viewer-container">
+          <model-viewer
+            src="wrench_3d_model.glb"
+            alt="Wrench 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/wrench.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/wrench1.jpg" alt="Wrench Image 1" />
+            <img src="images/wrench2.jpg" alt="Wrench Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation for the wrench 3D model and the steps involved.
+          </div>
+        </div>
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
+        <div class="viewer-container">
+          <model-viewer
+            src="pliers_3d_model.glb"
+            alt="Pliers 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/pliers.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/pliers1.jpg" alt="Pliers Image 1" />
+            <img src="images/pliers2.jpg" alt="Pliers Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation for the pliers 3D model creation process.
+          </div>
+        </div>
+      </div>
+    </section>
 
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
-    scene.add(light);
+    <!-- Assignment 3 -->
+    <section class="assignment" id="assignment3">
+      <h2>Assignment 3</h2>
+      <div class="viewers-row">
+        <div class="viewer-container">
+          <model-viewer
+            src="drill_3d_model.glb"
+            alt="Drill 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/drill.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/drill1.jpg" alt="Drill Image 1" />
+            <img src="images/drill2.jpg" alt="Drill Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation of the drill 3D model steps.
+          </div>
+        </div>
 
-    const loader = new THREE.GLTFLoader();
-    loader.load('screwdriver_3d_modle.glb', function (gltf) {
-      scene.add(gltf.scene);
-    }, undefined, function (error) {
-      console.error('Error loading model:', error);
-    });
+        <div class="viewer-container">
+          <model-viewer
+            src="saw_3d_model.glb"
+            alt="Saw 3D Model"
+            camera-controls
+            auto-rotate
+            ar
+            ios-src="models/saw.usdz"
+            shadow-intensity="1"
+            exposure="1"
+          ></model-viewer>
+          <div class="images-row">
+            <img src="images/saw1.jpg" alt="Saw Image 1" />
+            <img src="images/saw2.jpg" alt="Saw Image 2" />
+          </div>
+          <div class="explanation">
+            Explanation of the saw 3D model creation process.
+          </div>
+        </div>
+      </div>
+    </section>
 
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    });
-  </script>
+  </div>
 </body>
 </html>
