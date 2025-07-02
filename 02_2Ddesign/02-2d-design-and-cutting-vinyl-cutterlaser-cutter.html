@@ -2,24 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>02: 2D design and cutting, Vinyl cutter/Laser cutter</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>3D Model Viewer with &lt;model-viewer&gt;</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
+    body, html {
+      margin: 0; 
+      height: 100%;
+      background-color: #eee;
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
     }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
+    model-viewer {
+      width: 600px;
+      height: 600px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
-  <h1>02: 2D design and cutting, Vinyl cutter/Laser cutter</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+
+  <model-viewer 
+    src="screwdriver_3d_modle.glb" 
+    alt="3D Model" 
+    camera-controls 
+    auto-rotate 
+    exposure="1"
+    shadow-intensity="1"
+    ar
+  >
+  </model-viewer>
+
 </body>
 </html>
