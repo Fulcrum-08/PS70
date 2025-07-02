@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Household Objects - 3D Model Viewer Assignments</title>
+  <title>Household Objects - Assignments</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
@@ -20,43 +20,37 @@
     }
 
     .assignments {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 60px;
-      max-width: 1200px;
-      margin: 0 auto;
     }
 
     .assignment {
       background-color: #fff;
       border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      overflow-x: auto;
     }
 
     .assignment h2 {
-      margin-bottom: 20px;
       border-bottom: 2px solid #ccc;
       padding-bottom: 8px;
-      white-space: nowrap;
+      margin-bottom: 20px;
     }
 
-    .scroll-container {
+    .section-title {
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .scroll-section {
       display: flex;
-      gap: 30px;
-      flex-wrap: nowrap;
+      gap: 20px;
       overflow-x: auto;
       padding-bottom: 10px;
-    }
-
-    .viewer-container {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 300px;
-      cursor: pointer;
     }
 
     model-viewer {
@@ -65,42 +59,30 @@
       border-radius: 10px;
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
       background-color: white;
-      margin-bottom: 15px;
+      cursor: pointer;
+      flex: 0 0 auto;
     }
 
-    .images-row {
-      display: flex;
-      gap: 15px;
-      flex-wrap: nowrap;
-    }
-
-    .images-row img {
-      width: 140px;
-      height: 100px;
+    .scroll-section img {
+      width: 200px;
+      height: 140px;
       object-fit: cover;
       border-radius: 6px;
       border: 1px solid #ccc;
       cursor: pointer;
-      transition: transform 0.2s;
+      flex: 0 0 auto;
     }
 
-    .images-row img:hover {
-      transform: scale(1.05);
-    }
-
-    .explanation {
-      font-size: 0.9rem;
-      line-height: 1.4;
-      color: #444;
-      text-align: center;
-      background-color: #f7f7f7;
-      padding: 10px;
+    .text-section {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 15px;
       border-radius: 8px;
-      min-height: 60px;
+      max-height: 150px;
+      overflow-y: auto;
       cursor: pointer;
     }
 
-    /* Lightbox for images, models, and text */
     .lightbox {
       position: fixed;
       top: 0;
@@ -120,37 +102,23 @@
       max-height: 90%;
     }
 
-    .lightbox img,
-    .lightbox model-viewer,
-    .lightbox .lightbox-text {
+    .lightbox-content img,
+    .lightbox-content model-viewer,
+    .lightbox-content .lightbox-text {
       max-width: 90vw;
       max-height: 90vh;
-      border-radius: 10px;
       background: white;
       padding: 10px;
+      border-radius: 10px;
+      color: #222;
     }
 
-    .lightbox .lightbox-text {
-      color: #222;
+    .lightbox-text {
       font-size: 1.2rem;
       line-height: 1.6;
       text-align: center;
-    }
-
-    @media (max-width: 700px) {
-      .viewer-container {
-        width: 90vw;
-      }
-
-      model-viewer {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1 / 1;
-      }
-
-      .images-row img {
-        width: 45vw;
-      }
+      overflow-y: auto;
+      max-height: 80vh;
     }
   </style>
 </head>
@@ -160,62 +128,33 @@
   <div class="assignments">
 
     <!-- Assignment 1 -->
-    <section class="assignment" id="assignment1">
+    <section class="assignment">
       <h2>Assignment 1</h2>
-      <div class="scroll-container">
 
-        <!-- Viewer 1 -->
-        <div class="viewer-container">
-          <model-viewer
-            src="screwdriver_3d_modle.glb"
-            alt="Screwdriver 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/screwdriver.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
+      <div class="section-title">3D Models</div>
+      <div class="scroll-section">
+        <model-viewer src="screwdriver_3d_modle.glb" alt="Screwdriver" camera-controls auto-rotate ar></model-viewer>
+        <model-viewer src="hammer_3d_model.glb" alt="Hammer" camera-controls auto-rotate ar></model-viewer>
+      </div>
 
-          <div class="images-row">
-            <img src="images/Screw_Driver(1).png" alt="Screwdriver Image 1" />
-            <img src="images/screwdriver2.jpg" alt="Screwdriver Image 2" />
-          </div>
+      <div class="section-title">Images</div>
+      <div class="scroll-section">
+        <img src="images/Screw_Driver(1).png" alt="Screwdriver Img 1" />
+        <img src="images/screwdriver2.jpg" alt="Screwdriver Img 2" />
+        <img src="images/hammer1.jpg" alt="Hammer Img 1" />
+      </div>
 
-          <div class="explanation">
-            I used measurements from a real screwdriver and used the revolve tool.
-          </div>
-        </div>
-
-        <!-- Viewer 2 -->
-        <div class="viewer-container">
-          <model-viewer
-            src="hammer_3d_model.glb"
-            alt="Hammer 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/hammer.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
-
-          <div class="images-row">
-            <img src="images/hammer1.jpg" alt="Hammer Image 1" />
-            <img src="images/hammer2.jpg" alt="Hammer Image 2" />
-          </div>
-
-          <div class="explanation">
-            This hammer was built from multiple lofts and some fillets.
-          </div>
-        </div>
-
+      <div class="section-title">Text Explanation</div>
+      <div class="text-section">
+        I designed the screwdriver by revolving a sketch based on measurements. The hammer was made with lofts and fillets.
       </div>
     </section>
 
+    <!-- You can duplicate this whole section for Assignment 2, Assignment 3, etc. -->
+
   </div>
 
-  <!-- Lightbox for image, model, or text -->
+  <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
@@ -224,33 +163,33 @@
     const lightbox = document.getElementById("lightbox");
     const lightboxContent = document.getElementById("lightbox-content");
 
-    // Lightbox logic for images
-    document.querySelectorAll("img").forEach((img) => {
-      img.addEventListener("click", () => {
-        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
-        lightbox.style.display = "flex";
-      });
-    });
-
-    // Lightbox logic for model-viewers
+    // Handle click for model-viewer
     document.querySelectorAll("model-viewer").forEach((viewer) => {
       viewer.addEventListener("click", () => {
         lightboxContent.innerHTML = `
-          <model-viewer src="${viewer.getAttribute("src")}" alt="${viewer.getAttribute("alt")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
         `;
         lightbox.style.display = "flex";
       });
     });
 
-    // Lightbox logic for explanations
-    document.querySelectorAll(".explanation").forEach((textBlock) => {
-      textBlock.addEventListener("click", () => {
-        lightboxContent.innerHTML = `<div class="lightbox-text">${textBlock.innerHTML}</div>`;
+    // Handle click for images
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      img.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
         lightbox.style.display = "flex";
       });
     });
 
-    // Close lightbox on click anywhere
+    // Handle click for text
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // Close on lightbox click
     lightbox.addEventListener("click", () => {
       lightbox.style.display = "none";
       lightboxContent.innerHTML = "";
