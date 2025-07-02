@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Household Objects - 3D Model Viewer Assignments</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
   <style>
     body {
       margin: 20px;
@@ -13,10 +12,12 @@
       font-family: Arial, sans-serif;
       color: #222;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 40px;
     }
+
     .assignments {
       display: flex;
       flex-direction: column;
@@ -24,17 +25,20 @@
       max-width: 1200px;
       margin: 0 auto;
     }
+
     .assignment {
       border: 1px solid #ddd;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
+
     .assignment h2 {
       margin-bottom: 20px;
       border-bottom: 2px solid #ccc;
       padding-bottom: 8px;
     }
+
     .viewers-row {
       display: flex;
       gap: 40px;
@@ -42,12 +46,14 @@
       justify-content: center;
       margin-bottom: 30px;
     }
+
     .viewer-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 300px;
     }
+
     model-viewer {
       width: 300px;
       height: 300px;
@@ -56,18 +62,29 @@
       background-color: white;
       margin-bottom: 15px;
     }
+
     .images-row {
       display: flex;
       gap: 15px;
       margin-bottom: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
+
     .images-row img {
       width: 140px;
       height: 100px;
       object-fit: cover;
       border-radius: 6px;
       border: 1px solid #ccc;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
+
+    .images-row img:hover {
+      transform: scale(1.05);
+    }
+
     .explanation {
       font-size: 0.9rem;
       line-height: 1.4;
@@ -77,23 +94,50 @@
       text-align: center;
       min-height: 60px;
     }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+
     @media (max-width: 700px) {
       .viewers-row {
         flex-direction: column;
         align-items: center;
       }
+
       .viewer-container {
         width: 90vw;
       }
+
       model-viewer {
         width: 100%;
         height: auto;
         aspect-ratio: 1 / 1;
       }
+
       .images-row img {
         width: 48vw;
         height: auto;
       }
+
       .explanation {
         max-width: 90vw;
       }
@@ -104,8 +148,6 @@
   <h1>Household Objects</h1>
 
   <div class="assignments">
-
-    <!-- Assignment 1 -->
     <section class="assignment" id="assignment1">
       <h2>Assignment 1</h2>
       <div class="viewers-row">
@@ -121,11 +163,11 @@
             exposure="1"
           ></model-viewer>
           <div class="images-row">
-            <img src="Screw_Driver(1).png" alt="Screwdriver Image 1" />
+            <img src="images/Screw_Driver(1).png" alt="Screwdriver Image 1" />
             <img src="images/screwdriver2.jpg" alt="Screwdriver Image 2" />
           </div>
           <div class="explanation">
-            Explanation of the first screwdriver 3D model steps.
+            Explanation of the screwdriver 3D model steps.
           </div>
         </div>
 
@@ -145,104 +187,32 @@
             <img src="images/hammer2.jpg" alt="Hammer Image 2" />
           </div>
           <div class="explanation">
-            Explanation of the hammer 3D model creation process.
+            Explanation of the hammer 3D model process.
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Assignment 2 -->
-    <section class="assignment" id="assignment2">
-      <h2>Assignment 2</h2>
-      <div class="viewers-row">
-        <div class="viewer-container">
-          <model-viewer
-            src="wrench_3d_model.glb"
-            alt="Wrench 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/wrench.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
-          <div class="images-row">
-            <img src="images/wrench1.jpg" alt="Wrench Image 1" />
-            <img src="images/wrench2.jpg" alt="Wrench Image 2" />
-          </div>
-          <div class="explanation">
-            Explanation for the wrench 3D model and the steps involved.
-          </div>
-        </div>
-
-        <div class="viewer-container">
-          <model-viewer
-            src="pliers_3d_model.glb"
-            alt="Pliers 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/pliers.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
-          <div class="images-row">
-            <img src="images/pliers1.jpg" alt="Pliers Image 1" />
-            <img src="images/pliers2.jpg" alt="Pliers Image 2" />
-          </div>
-          <div class="explanation">
-            Explanation for the pliers 3D model creation process.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Assignment 3 -->
-    <section class="assignment" id="assignment3">
-      <h2>Assignment 3</h2>
-      <div class="viewers-row">
-        <div class="viewer-container">
-          <model-viewer
-            src="drill_3d_model.glb"
-            alt="Drill 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/drill.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
-          <div class="images-row">
-            <img src="images/drill1.jpg" alt="Drill Image 1" />
-            <img src="images/drill2.jpg" alt="Drill Image 2" />
-          </div>
-          <div class="explanation">
-            Explanation of the drill 3D model steps.
-          </div>
-        </div>
-
-        <div class="viewer-container">
-          <model-viewer
-            src="saw_3d_model.glb"
-            alt="Saw 3D Model"
-            camera-controls
-            auto-rotate
-            ar
-            ios-src="models/saw.usdz"
-            shadow-intensity="1"
-            exposure="1"
-          ></model-viewer>
-          <div class="images-row">
-            <img src="images/saw1.jpg" alt="Saw Image 1" />
-            <img src="images/saw2.jpg" alt="Saw Image 2" />
-          </div>
-          <div class="explanation">
-            Explanation of the saw 3D model creation process.
-          </div>
-        </div>
-      </div>
-    </section>
-
   </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Full image" id="lightbox-img">
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.images-row img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
