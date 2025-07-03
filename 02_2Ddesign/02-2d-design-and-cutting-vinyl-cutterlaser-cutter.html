@@ -6,234 +6,270 @@
   <title>Household Objects - Assignments</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      background-color: white;
-      font-family: Arial, sans-serif;
-      color: #222;
-      padding: 20px;
-    }
+body {
+  margin: 0;
+  background-color: white;
+  font-family: Arial, sans-serif;
+  color: #222;
+  padding: 20px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
 
-    .assignments {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 60px;
-    }
+.assignments {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
 
-    .assignment {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 40px;
-    }
+.assignment {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 40px;
+}
 
-    .assignment h2 {
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
-    }
+.assignment h2 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
 
-    .section-title {
-      font-weight: bold;
-      margin: 20px 0 10px;
-      font-size: 1.1rem;
-    }
+.section-title {
+  font-weight: bold;
+  margin: 20px 0 10px;
+  font-size: 1.1rem;
+}
 
-    /* Scroll section styles for horizontal scroll */
-    .scroll-section {
-      display: flex;
-      flex-wrap: nowrap;         /* no wrapping */
-      overflow-x: auto;          /* enable horizontal scroll */
-      gap: 20px;
-      padding: 10px 0;
-      scroll-behavior: smooth;
-      justify-content: flex-start; /* default left aligned */
-    }
+/* Scroll section styles for horizontal scroll */
+.scroll-section {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  justify-content: flex-start;
+}
 
-    /* Center content if 1 to 5 items */
-    @supports(selector(:has(*))) {
-      .scroll-section:has(> *:only-child),
-      .scroll-section:has(> *:nth-child(2):last-child),
-      .scroll-section:has(> *:nth-child(3):last-child),
-      .scroll-section:has(> *:nth-child(4):last-child),
-      .scroll-section:has(> *:nth-child(5):last-child) {
-        justify-content: center;
-      }
-    }
+/* Center content if 1 to 5 items */
+@supports(selector(:has(*))) {
+  .scroll-section:has(> *:only-child),
+  .scroll-section:has(> *:nth-child(2):last-child),
+  .scroll-section:has(> *:nth-child(3):last-child),
+  .scroll-section:has(> *:nth-child(4):last-child),
+  .scroll-section:has(> *:nth-child(5):last-child) {
+    justify-content: center;
+  }
+}
 
-    /* Flashcards container inside first assignment */
-    .flashcard {
-      flex: 0 0 auto;            /* don't shrink, fixed width */
-      width: 200px;
-      height: 140px;
-      perspective: 1000px;
-      cursor: pointer;
-      position: relative;
-    }
+/* Flashcards */
+.flashcard {
+  flex: 0 0 auto;
+  width: 200px;
+  height: 140px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative;
+}
 
-    /* Card inner container for flipping */
-    .flashcard-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
 
-    /* Flipped state */
-    .flashcard.flipped .flashcard-inner {
-      transform: rotateY(180deg);
-    }
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
 
-    /* Front and back faces */
-    .flashcard-front,
-    .flashcard-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      padding: 10px;
-      box-sizing: border-box;
-      user-select: none;
-    }
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
+  user-select: none;
+  overflow: hidden;
+}
 
-    .flashcard-front img {
-      max-width: 100%;
-      max-height: 100%;
-      border-radius: 6px;
-    }
+.flashcard-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .flashcard-back {
-      transform: rotateY(180deg);
-      font-size: 1rem;
-      color: #222;
-      overflow-y: auto;
-      text-align: center;
-    }
+.flashcard-front img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+}
 
-    /* Model viewer styles */
-    .model-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 0 0 auto;
-    }
+.flashcard-back {
+  transform: rotateY(180deg);
+  font-size: 1rem;
+  color: #222;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  text-align: center;
+  line-height: 1.4;
+}
 
-    model-viewer {
-      width: 300px;
-      height: 300px;
-      border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      background-color: white;
-      cursor: pointer;
-    }
+/* Model viewer styles */
+.model-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
 
-    .download-link {
-      margin-top: 8px;
-      text-decoration: none;
-      color: #0056b3;
-      font-weight: bold;
-      font-size: 0.9rem;
-      border-bottom: 2px solid transparent;
-      transition: border-bottom 0.3s;
-      text-align: center;
-    }
+model-viewer {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  cursor: pointer;
+}
 
-    .download-link:hover {
-      border-bottom: 2px solid #0056b3;
-    }
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+}
 
-    .scroll-section img {
-      width: 200px;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
 
-    .text-section {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 8px;
-      max-height: 150px;
-      overflow-y: auto;
-      cursor: pointer;
-      text-align: center;
-    }
+.scroll-section img {
+  width: 200px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
 
-    .lightbox {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
+.text-section {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  cursor: pointer;
+  text-align: center;
+}
 
-    .lightbox-content {
-      max-width: 90%;
-      max-height: 90%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
 
-    .lightbox-content img,
-    .lightbox-content model-viewer,
-    .lightbox-content .lightbox-text {
-      max-width: 90vw;
-      max-height: 90vh;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      color: #222;
-    }
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .lightbox-text {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      text-align: center;
-      overflow-y: auto;
-      max-height: 80vh;
-    }
+.lightbox-content img,
+.lightbox-content model-viewer,
+.lightbox-content .lightbox-text {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  color: #222;
+}
 
-    /* Scrollbar styling for horizontal scroll (optional) */
-    .scroll-section::-webkit-scrollbar {
-      height: 8px;
-    }
-    .scroll-section::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    .scroll-section::-webkit-scrollbar-thumb {
-      background: #888;
-      border-radius: 10px;
-    }
-    .scroll-section::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
+.lightbox-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Scrollbar styling for horizontal scroll (optional) */
+.scroll-section::-webkit-scrollbar {
+  height: 8px;
+}
+.scroll-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.scroll-section img.main-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.main-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto; /* keeps container width from shrinking */
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
+
+
   </style>
 </head>
 <body>
@@ -554,255 +590,257 @@
   ];
 
 
-  const flashcardsData2 = [
-  {
-    img: "wrench(2).png",
-    alt: "Wrench Image process",
-    text: "I would like to thank my brother for giving me the measurements of the wrench and Aviv Makes Robots for some helpful techniques."
-  },
-  {
-    img: "wrench_process/wrench_001.png",
-    alt: "Wrench Image process",
-    text: "I started by making an outline of a wrench to the measurement specifications."
-  },
-  {
-    img: "wrench_process/wrench_002.png",
-    alt: "Wrench Image process",
-    text: "In this step, I extruded the sketch into a 3D body."
-  },
-  {
-    img: "wrench_process/wrench_003.png",
-    alt: "Wrench Image process",
-    text: "Here I created a tangent line to the tip of the wrench and perpendicular to the purple projected edge."
-  },
-  {
-    img: "wrench_process/wrench_004.png",
-    alt: "Wrench Image process",
-    text: "Here I extruded the line from the last step into a face."
-  },
-  {
-    img: "wrench_process/wrench_005.png",
-    alt: "Wrench Image process",
-    text: "I created a sketch of the front profile of the wrench on the extruded face from the last step."
-  },
-  {
-    img: "wrench_process/wrench_006.png",
-    alt: "Wrench Image process",
-    text: "In this step, I extruded the sketch from the last step into the shape."
-  },
-  {
-    img: "wrench_process/wrench_007.png",
-    alt: "Wrench Image process",
-    text: "Here I cut a circle into the end of the wrench based on the original sketch."
-  },
-  {
-    img: "wrench_process/wrench_008.png",
-    alt: "Wrench Image process",
-    text: "Using the face of the side of the wrench, I created a rectangular sketch."
-  },
-  {
-    img: "wrench_process/wrench_009.png",
-    alt: "Wrench Image process",
-    text: "In this step, I extruded the sketch from the last step into the wrench."
-  },
-  {
-    img: "wrench_process/wrench_010.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the corner edges of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_011.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the sides of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_012.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the top edge of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_013.png",
-    alt: "Wrench Image process",
-    text: "I mirrored the extrusion to the other side."
-  },
-  {
-    img: "wrench_process/wrench_014.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the corner edges of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_015.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the sides of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_016.png",
-    alt: "Wrench Image process",
-    text: "I added a fillet to the top edge of the extruded shape."
-  },
-  {
-    img: "wrench_process/wrench_017.png",
-    alt: "Wrench Image process",
-    text: "Here I added a fillet to the edge of the hole at the end of the wrench on both sides."
-  },
-  {
-    img: "wrench_process/wrench_018.png",
-    alt: "Wrench Image process",
-    text: "Using the face (golden), I sketched a circle and a square."
-  },
-  {
-    img: "wrench_process/wrench_019.png",
-    alt: "Wrench Image process",
-    text: "In this step, I extruded the sketch from the last step through the wrench."
-  },
-  {
-    img: "wrench_process/wrench_020.png",
-    alt: "Wrench Image process",
-    text: "On the XY plane, I sketched the other side of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_021.png",
-    alt: "Wrench Image process",
-    text: "Here I created a new component for the second side of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_022.png",
-    alt: "Wrench Image process",
-    text: "In this step, I symmetrically extruded the second side of the wrench to the face (highlighted in blue) of the wrench body."
-  },
-  {
-    img: "wrench_process/wrench_023.png",
-    alt: "Wrench Image process",
-    text: "I again sketched the circle and rectangle, but this time it's for the thread that attaches to the second side of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_024.png",
-    alt: "Wrench Image process",
-    text: "I extruded the sketch from the last step."
-  },
-  {
-    img: "wrench_process/wrench_025.png",
-    alt: "Wrench Image process",
-    text: "Here I created a sketch of the circular part of the circle-rectangle cross-section."
-  },
-  {
-    img: "wrench_process/wrench_026.png",
-    alt: "Wrench Image process",
-    text: "Here I extruded the sketch from the last steps."
-  },
-  {
-    img: "wrench_process/wrench_027.png",
-    alt: "Wrench Image process",
-    text: "In this step, I created an offset plane from the base of the second side of the wrench (highlighted in blue)."
-  },
-  {
-    img: "wrench_process/wrench_028.png",
-    alt: "Wrench Image process",
-    text: "Here I created a rectangular sketch at an angle. This will be for the thread."
-  },
-  {
-    img: "wrench_process/wrench_029.png",
-    alt: "Wrench Image process",
-    text: "I extruded the sketch from the last step into the cylinder."
-  },
-  {
-    img: "wrench_process/wrench_030.png",
-    alt: "Wrench Image process",
-    text: "I created a rectangular pattern of the extrusion."
-  },
-  {
-    img: "wrench_process/wrench_031.png",
-    alt: "Wrench Image process",
-    text: "Here I created a rectangular sketch on the side of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_032.png",
-    alt: "Wrench Image process",
-    text: "I cut through the wrench, making sure to only cut the body of the wrench and not the second side of the tongues."
-  },
-  {
-    img: "wrench_process/wrench_033.png",
-    alt: "Wrench Image process",
-    text: "Here I created a rectangular sketch inside the hole but touching the side of the previous sketch."
-  },
-  {
-    img: "wrench_process/wrench_034.png",
-    alt: "Wrench Image process",
-    text: "In this step, I revolved the sketch from the last step around its bottom side."
-  },
-  {
-    img: "wrench_process/wrench_039.png",
-    alt: "Wrench Image process",
-    text: "In this step, I created a sketch where the revolved cylinder and edge of the wrench meet, projecting the edge of the cylinder onto the sketch."
-  },
-  {
-    img: "wrench_process/wrench_040.png",
-    alt: "Wrench Image process",
-    text: "Using the sketch from the last step, I created a coil that wrapped around the cylinder."
-  },
-  {
-    img: "wrench_process/wrench_041.png",
-    alt: "Wrench Image process",
-    text: "In this step, I applied a chamfer to one of the ends of the coil."
-  },
-  {
-    img: "wrench_process/wrench_042.png",
-    alt: "Wrench Image process",
-    text: "In this step, I applied a chamfer to the other end of the coil."
-  },
-  {
-    img: "wrench_process/wrench_043.png",
-    alt: "Wrench Image process",
-    text: "Here I applied a fillet along the handle and lower half of the head of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_044.png",
-    alt: "Wrench Image process",
-    text: "Here I applied a fillet along the other edges of the part of the head that is part of the handle."
-  },
-  {
-    img: "wrench_process/wrench_045.png",
-    alt: "Wrench Image process",
-    text: "Here I applied another fillet along the edge connecting the side of the head to the face of the gearbox."
-  },
-  {
-    img: "wrench_process/wrench_046.png",
-    alt: "Wrench Image process",
-    text: "I replicated the last step on the other side."
-  },
-  {
-    img: "wrench_process/wrench_047.png",
-    alt: "Wrench Image process",
-    text: "Here I applied a fillet to the edge of the head where the second half of the head slides. (Note: the second part of the head has been hidden in the picture.)"
-  },
-  {
-    img: "wrench_process/wrench_048.png",
-    alt: "Wrench Image process",
-    text: "Another fillet to the edge pointing outward (where the blue arrow is)."
-  },
-  {
-    img: "wrench_process/wrench_049.png",
-    alt: "Wrench Image process",
-    text: "A fillet to the edge pointing toward the camera (edge with blue arrow)."
-  },
-  {
-    img: "wrench_process/wrench_050.png",
-    alt: "Wrench Image process",
-    text: "Here I applied a fillet to the inside and surrounding edges of the topmost part of the tongue."
-  },
-  {
-    img: "wrench_process/wrench_051.png",
-    alt: "Wrench Image process",
-    text: "Here, with the last fillet, I applied it to the remaining outside edges of the wrench."
-  },
-  {
-    img: "wrench_process/wrench_052.png",
-    alt: "Wrench Image process",
-    text: "Lastly, I deleted the guide face."
-  },
-];
+ const flashcardsData2 = [
 
-function renderFlashcards(data, containerId) {
+  {
+      img: "wrench(2).png",
+      alt: "Wrench Image process",
+      text: "I would like to thank my brother for giving me the measurments of the wrench and Aviv Makes Robots for some helpful techniques"
+  },
+  {
+      img: "wrench_process/wrench_001.png",
+      alt: "Wrench Image process",
+      text: "I stated by making a outline of a wrench to the measurments specification"
+  },
+  {
+      img: "wrench_process/wrench_002.png",
+      alt: "Wrench Image process",
+      text: "In this step i extruded the sketech into a 3d body"
+  },
+  {
+      img: "wrench_process/wrench_003.png",
+      alt: "Wrench Image process",
+      text: "Here I created a tangent line to the tip of the wrench and perpindicular to the purple projected edge."
+  },
+  {
+      img: "wrench_process/wrench_004.png",
+      alt: "Wrench Image process",
+      text: "Here i extruded the line from the last step into a face "
+  },
+  {
+      img: "wrench_process/wrench_005.png",
+      alt: "Wrench Image process",
+      text: "I created a sketch of the fromt profile of the wrench on the extruded face from last step"
+  },
+  {
+      img: "wrench_process/wrench_006.png",
+      alt: "Wrench Image process",
+      text: "In this step I extruded the sketech from last step into the shape"
+  },
+  {
+      img: "wrench_process/wrench_007.png",
+      alt: "Wrench Image process",
+      text: "Here i cut a circle into the end of the wrench based on the oringal sketch "
+  },
+  {
+      img: "wrench_process/wrench_008.png",
+      alt: "Wrench Image process",
+      text: "Using the face of the side of the wrench i created a rectangular sketch "
+  },
+  {
+      img: "wrench_process/wrench_009.png",
+      alt: "Wrench Image process",
+      text: "In this step i extruded the sketch of last step into the wrench"
+  },
+  {
+      img: "wrench_process/wrench_010.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the connor edges of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_011.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the  sides of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_012.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the top edge of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_013.png",
+      alt: "Wrench Image process",
+      text: "I mirrored the extrusion to the other side "
+  },
+  {
+      img: "wrench_process/wrench_014.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the connor edges of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_015.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the  sides of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_016.png",
+      alt: "Wrench Image process",
+      text: "I added a fillet to the top edge of the extruded shape"
+  },
+  {
+      img: "wrench_process/wrench_017.png",
+      alt: "Wrench Image process",
+      text: "Here i added a fillet to the edge of the hole at the end of the wrench on both sides"
+  },
+  {
+      img: "wrench_process/wrench_018.png",
+      alt: "Wrench Image process",
+      text: "using the face (golden) I skteched a circle and a square "
+  },
+  {
+      img: "wrench_process/wrench_019.png",
+      alt: "Wrench Image process",
+      text: "I this step i extruded the sktech from the last step through the wrench"
+  },
+  {
+      img: "wrench_process/wrench_020.png",
+      alt: "Wrench Image process",
+      text: "On the XY plan i sketched the other side of the wrench "
+  },
+  {
+      img: "wrench_process/wrench_021.png",
+      alt: "Wrench Image process",
+      text: "Here i created a new componet for the second side of the wrench"
+  },
+  {
+      img: "wrench_process/wrench_022.png",
+      alt: "Wrench Image process",
+      text: "In this step i symetricly extruded the second side of the wrech to the face(highlighted in blue) of the wrench body"
+  },
+  {
+      img: "wrench_process/wrench_023.png",
+      alt: "Wrench Image process",
+      text: "I again sketched the teh cicle and retagle but this time its for the thread that attaches to the second side of the wrench"
+  },
+  {
+      img: "wrench_process/wrench_024.png",
+      alt: "Wrench Image process",
+      text: "I extruded the sketech from last step"
+  },
+  {
+      img: "wrench_process/wrench_025.png",
+      alt: "Wrench Image process",
+      text: "here i cerated a sketch of the circle part of the cirle-rectangle crosssection "
+  },
+  {
+      img: "wrench_process/wrench_026.png",
+      alt: "Wrench Image process",
+      text: "Here I extruded the sketech from the last steps"
+  },
+  {
+      img: "wrench_process/wrench_027.png",
+      alt: "Wrench Image process",
+      text: "In this step i created an offset plan from the base of the second side of the wrench (highlighted in blue)"
+  },
+  {
+      img: "wrench_process/wrench_028.png",
+      alt: "Wrench Image process",
+      text: "He i created a rectangular sketch at an angle. This will be for the thread."
+  },
+  {
+      img: "wrench_process/wrench_029.png",
+      alt: "Wrench Image process",
+      text: "I extruded the sketch from last step into the cylinder"
+  },
+  {
+      img: "wrench_process/wrench_030.png",
+      alt: "Wrench Image process",
+      text: "I created a rectangular pattern of the extrution"
+  },
+  {
+      img: "wrench_process/wrench_031.png",
+      alt: "Wrench Image process",
+      text: "here i created a rectangular sketch on the side of teh wrench"
+  },
+  {
+      img: "wrench_process/wrench_032.png",
+      alt: "Wrench Image process",
+      text: "I cut the through the wrench making sure to only cut the body of the wrench and not the second side of the tongues"
+  },
+  {
+      img: "wrench_process/wrench_033.png",
+      alt: "Wrench Image process",
+      text: "here i created a rectangular sktech insdei the hole but touching the side of the previous sketch"
+  },
+  {
+      img: "wrench_process/wrench_034.png",
+      alt: "Wrench Image process",
+      text: "In this step i revolved the sketech from last step around its bottom side"
+  },
+  
+  {
+      img: "wrench_process/wrench_039.png",
+      alt: "Wrench Image process",
+      text: "In this step i created a sketch where the revoled cylinder and edge of the wrench meet, rpjecting teh edge fo the cylinder onto the sktech "
+  },
+  {
+      img: "wrench_process/wrench_040.png",
+      alt: "Wrench Image process",
+      text: "using the sktech from the last step i created a coil taht wrapped around teh cylinder"
+  },
+  {
+      img: "wrench_process/wrench_041.png",
+      alt: "Wrench Image process",
+      text: "In this step I applied a chamfer to one of the ends of the coil"
+  },
+  {
+      img: "wrench_process/wrench_042.png",
+      alt: "Wrench Image process",
+      text: "In this step i applied a chamfer to the other end of the coil"
+  },
+  {
+      img: "wrench_process/wrench_043.png",
+      alt: "Wrench Image process",
+      text: "here i applied a fillet along the handle and lower half of the head of the wrench"
+  },
+  {
+      img: "wrench_process/wrench_044.png",
+      alt: "Wrench Image process",
+      text: "Here i applied a fillet along the other edges of the part of the head that is a part of the handle"
+  },
+  {
+      img: "wrench_process/wrench_045.png",
+      alt: "Wrench Image process",
+      text: "Here I applied another fillet along the edge connecting the side of teh head to the face of teh gear box"
+  },
+  {
+      img: "wrench_process/wrench_046.png",
+      alt: "Wrench Image process",
+      text: "I replicated the last step on the other side"
+  },
+  {
+      img: "wrench_process/wrench_047.png",
+      alt: "Wrench Image process",
+      text: "here i applied a fillet to the edge of the head where the second half of the head slides(Note: the second part of teh head has been hidden in the picure)"
+  },
+  {
+      img: "wrench_process/wrench_048.png",
+      alt: "Wrench Image process",
+      text: "Another fillet to the edge pointing outwards(where the blue arrow is)"
+  },
+  {
+      img: "wrench_process/wrench_049.png",
+      alt: "Wrench Image process",
+      text: "a fillet to the edge pointing towards the camera(edge with blue arrow)"
+  },
+  {
+      img: "wrench_process/wrench_050.png",
+      alt: "Wrench Image process",
+      text: "Here i applied a fillet to the inside and souronding edges of the top most part of the tong"
+  },
+  {
+      img: "wrench_process/wrench_051.png",
+      alt: "Wrench Image process",
+      text: "here with the last fillet i applied it to teh remaing outside edges og the wrench"
+  },
+  {
+      img: "wrench_process/wrench_052.png",
+      alt: "Wrench Image process",
+      text: "Lastly i ddidlted the guide face "
+  }
+  
+];
+ function renderFlashcards(data, containerId) {
   const container = document.getElementById(containerId);
   data.forEach(({ img, alt, text }) => {
     const card = document.createElement("div");
@@ -817,9 +855,12 @@ function renderFlashcards(data, containerId) {
   });
 }
 
-// Render both sets into their respective containers
+// Call the function twice
 renderFlashcards(flashcardsData1, "flashcard-section");
 renderFlashcards(flashcardsData2, "flashcard-section-2");
+
+
+
 </script>
 
 
@@ -872,6 +913,86 @@ renderFlashcards(flashcardsData2, "flashcard-section-2");
         To learn Fusion, I followed a few videos of Production Design Online’s YouTube series: Learn Fusion 360 in 30 Days. Through the portion I watched, I learned Fusion techniques including lofting, fillets, tracing images, extruding, and sweeping. Above are some of the objects I modeled. Coming into this week, I knew nothing about Fusion, but thanks to Production Design Online’s videos, I was able to confidently model the two household objects. This is a must-watch series for any beginner!
       </div>
     </section>
+    <!-- Assignment 3 -->
+<section class="assignment">
+  <h2>Cardbord Box</h2>
+
+  <!-- Top shape/image preview -->
+  <div class="section-title">Fusion Sketches</div>
+
+  <div class="scroll-section">
+  <div class="main-image-container">
+    <img class="main-image" src="Box_Sketch.png" alt="Box Sketch" />
+    <a class="download-link" href="Box.f3d" download>Box Fusion File</a>
+  </div>
+  <div class="main-image-container">
+    <img class="main-image" src="Box_Top_Sketch.png" alt="Box Top Sketch" />
+    <a class="download-link" href="Box_Top.f3d" download>Box Top Fusion File</a>
+  </div>
+</div>
+
+  <!-- Supporting renders/gallery -->
+  <div class="section-title">Final Product</div>
+  <div class="scroll-section">
+    <img src="Box_Image(1).png" alt="Final Box Img 1" />
+    <img src="Box_Image(2).png" alt="Final Box Img 2" />
+    <img src="Box_Image(3).png" alt="Final Box Img 3" />
+  </div>
+
+  <!-- Flashcards -->
+  <div class="section-title">Design Process</div>
+  <div class="scroll-section" id="flashcard-section-3">
+    <!-- Cards will be injected by JavaScript -->
+  </div>
+  <div class="text-section">
+        To learn Fusion, I followed a few videos of Production Design Online’s YouTube series: Learn Fusion 360 in 30 Days. Through the portion I watched, I learned Fusion techniques including lofting, fillets, tracing images, extruding, and sweeping. Above are some of the objects I modeled. Coming into this week, I knew nothing about Fusion, but thanks to Production Design Online’s videos, I was able to confidently model the two household objects. This is a must-watch series for any beginner!
+      </div>
+
+</div>
+
+
+<script>
+  const flashcardsData3 = [
+  {
+  img: "Boring_Box.png",
+  alt: "Design Process Image",
+  text: "This was the basic box we went over in class. Very generic but a good starting point."
+},
+{
+  img: "Box_Image(4).png",
+  alt: "Design Process Image",
+  text: "This box was my first cut! In this design I had already created the vision of the final design seen in the final product. However, in this iteration I created the fingers that would attach to the top in such a way the lid of my box wouldn't have the support from the edges of the box."
+},
+{
+  img: "Box_Image(5).png",
+  alt: "Design Process Image",
+  text: "Same iteration as the last box, but just the back side."
+},
+{
+  img: "Box_Image(7).png",
+  alt: "Design Process Image",
+  text: "In this iteration I fixed the lid resting problem of the last one, but in my scoring, I scored right up to the edge of my panel instead of offset backwards by the thickness of the cardboard."
+},
+{
+  img: "Box_Image(6).png",
+  alt: "Design Process Image",
+  text: "In this iteration of my box, both the issues in the last two iterations were fixed. However, when I went to assemble the box, the finger on the front lip was too small for the corresponding divot, leading to the need for one final design."
+},
+{
+  img: "Box_Image(1).png",
+  alt: "Design Process Image",
+  text: "IT ALL WORKED — This is the Final Product!"
+}
+
+
+]
+ 
+
+renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
+
+
+</section>
+
   </div>
 
   <div class="lightbox" id="lightbox">
