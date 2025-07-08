@@ -3,383 +3,404 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kentic Sculpture - Assignments</title>
+  <title>Kinetic Sculpture - Assignments</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-body {
-  margin: 0;
-  background-color: white;
-  font-family: Arial, sans-serif;
-  color: #222;
-  padding: 20px;
-}
+    body {
+      margin: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #222;
+      padding: 20px;
+    }
 
-h1 {
-  text-align: center;
-  margin-bottom: 40px;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-.assignments {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-}
+    .assignments {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
 
-.assignment {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 40px;
-}
+    .assignment {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 40px;
+    }
 
-.assignment h2 {
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 8px;
-  margin-bottom: 20px;
-}
+    .assignment h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
 
-.section-title {
-  font-weight: bold;
-  margin: 20px 0 10px;
-  font-size: 1.1rem;
-}
+    .section-title {
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+    }
 
-/* Scroll section styles for horizontal scroll */
-.scroll-section {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 20px;
-  padding: 10px 0;
-  scroll-behavior: smooth;
-  justify-content: flex-start;
-}
+    .scroll-section {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 10px 0;
+      scroll-behavior: smooth;
+      justify-content: flex-start;
+    }
 
-/* Center content if 1 to 5 items */
-@supports(selector(:has(*))) {
-  .scroll-section:has(> *:only-child),
-  .scroll-section:has(> *:nth-child(2):last-child),
-  .scroll-section:has(> *:nth-child(3):last-child),
-  .scroll-section:has(> *:nth-child(4):last-child),
-  .scroll-section:has(> *:nth-child(5):last-child) {
-    justify-content: center;
-  }
-}
+    @supports(selector(:has(*))) {
+      .scroll-section:has(> *:only-child),
+      .scroll-section:has(> *:nth-child(2):last-child),
+      .scroll-section:has(> *:nth-child(3):last-child),
+      .scroll-section:has(> *:nth-child(4):last-child),
+      .scroll-section:has(> *:nth-child(5):last-child) {
+        justify-content: center;
+      }
+    }
 
-/* Flashcards */
-.flashcard {
-  flex: 0 0 auto;
-  width: 200px;
-  height: 140px;
-  perspective: 1000px;
-  cursor: pointer;
-  position: relative;
-}
+    .flashcard {
+      flex: 0 0 auto;
+      width: 200px;
+      height: 140px;
+      perspective: 1000px;
+      cursor: pointer;
+      position: relative;
+    }
 
-.flashcard-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
 
-.flashcard.flipped .flashcard-inner {
-  transform: rotateY(180deg);
-}
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
 
-.flashcard-front,
-.flashcard-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background: white;
-  padding: 10px;
-  box-sizing: border-box;
-  user-select: none;
-  overflow: hidden;
-}
+    .flashcard-front,
+    .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: white;
+      padding: 10px;
+      box-sizing: border-box;
+      user-select: none;
+      overflow: hidden;
+    }
 
-.flashcard-front {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .flashcard-front {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.flashcard-front img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 6px;
-}
+    .flashcard-front img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+    }
 
-.flashcard-back {
-  transform: rotateY(180deg);
-  font-size: 1rem;
-  color: #222;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: block;
-  text-align: center;
-  line-height: 1.4;
-}
+    .flashcard-back {
+      transform: rotateY(180deg);
+      font-size: 1rem;
+      color: #222;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: block;
+      text-align: center;
+      line-height: 1.4;
+    }
 
-/* Model viewer styles */
-.model-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 0 0 auto;
-}
+    .model-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
 
-model-viewer {
-  width: 300px;
-  height: 300px;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  cursor: pointer;
-}
+    model-viewer {
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      cursor: pointer;
+    }
 
-.download-link {
-  margin-top: 8px;
-  text-decoration: none;
-  color: #0056b3;
-  font-weight: bold;
-  font-size: 0.9rem;
-  border-bottom: 2px solid transparent;
-  transition: border-bottom 0.3s;
-  text-align: center;
-}
+    .download-link {
+      margin: 0 auto 20px;
+      text-decoration: none;
+      color: #0056b3;
+      font-weight: bold;
+      font-size: 1rem;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s;
+      text-align: center;
+      display: block;
+      width: fit-content;
+      cursor: pointer;
+    }
 
-.download-link:hover {
-  border-bottom: 2px solid #0056b3;
-}
+    .download-link:hover {
+      border-bottom: 2px solid #0056b3;
+    }
 
-.scroll-section img {
-  width: 200px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  flex: 0 0 auto;
-}
+    .main-image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
 
-.text-section {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
-  max-height: 150px;
-  overflow-y: auto;
-  cursor: pointer;
-  text-align: center;
-}
+    .main-video {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
 
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-}
+    .video-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      text-align: center;
+    }
 
-.lightbox-content {
-  max-width: 90%;
-  max-height: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .scroll-section img {
+      width: 200px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
 
-.lightbox-content img,
-.lightbox-content model-viewer,
-.lightbox-content .lightbox-text {
-  max-width: 90vw;
-  max-height: 90vh;
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  color: #222;
-}
+    .text-section {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      cursor: pointer;
+      text-align: center;
+    }
 
-.lightbox-text {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  text-align: center;
-  overflow-y: auto;
-  max-height: 80vh;
-}
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
 
-/* Scrollbar styling for horizontal scroll (optional) */
-.scroll-section::-webkit-scrollbar {
-  height: 8px;
-}
-.scroll-section::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-.scroll-section::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-.scroll-section::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.scroll-section img.main-image {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-.main-image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 0 0 auto; /* keeps container width from shrinking */
-}
+    .lightbox-content img,
+    .lightbox-content model-viewer,
+    .lightbox-content .lightbox-text {
+      max-width: 90vw;
+      max-height: 90vh;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      color: #222;
+    }
 
-.download-link {
-  margin-top: 8px;
-  text-decoration: none;
-  color: #0056b3;
-  font-weight: bold;
-  font-size: 0.9rem;
-  border-bottom: 2px solid transparent;
-  transition: border-bottom 0.3s;
-  text-align: center;
-  cursor: pointer;
-}
+    .lightbox-text {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
 
-.download-link:hover {
-  border-bottom: 2px solid #0056b3;
-}
-.main-video {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
+    .scroll-section::-webkit-scrollbar {
+      height: 8px;
+    }
 
+    .scroll-section::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
 
+    .scroll-section::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+
+    .scroll-section::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
   </style>
 </head>
 <body>
   <h1>Assignments</h1>
-
   <div class="assignments">
-
     <!-- Assignment 3 -->
-<section class="assignment">
-  <h2>Cardbord Box</h2>
+    <section class="assignment">
+      <h2>Kinetic Sculpture</h2>
 
-  <!-- Top shape/image preview -->
-  <div class="section-title">Fusion Sketches</div>
+      <!-- Unified download button -->
+      <a class="download-link" href="Sculpure.f3d" download>Download Sculpture File</a>
 
-  <div class="scroll-section">
-  <div class="main-image-container">
-  <video class="main-video" controls>
-    <source src="IMG_0578.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <a class="download-link" href="Box.f3d" download>Box Fusion File</a>
+      <!-- Videos -->
+      <div class="section-title">Videos</div>
+      <div class="scroll-section">
+        <div class="main-image-container">
+          <div class="video-title">Scotch Yoke Side View #1</div>
+          <video class="main-video" controls>
+            <source src="IMG_0578.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="main-image-container">
+          <div class="video-title">Scotch Yoke Side View #2</div>
+          <video class="main-video" controls>
+            <source src="IMG_0579.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="main-image-container">
+          <div class="video-title">Scotch Yoke Top View</div>
+          <video class="main-video" controls>
+            <source src="IMG_0580.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="main-image-container">
+          <div class="video-title">In Motion- With Motor</div>
+          <video class="main-video" controls>
+            <source src="IMG_0595.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <!-- Final Product -->
+      <div class="section-title">Final Product</div>
+      <div class="scroll-section">
+        <img src="final(1).png" alt="Final product Img 1" />
+        <img src="final(2).png" alt="Final product Img 2" />
+        <img src="final(3).png" alt="Final product Img 3" />
+        <img src="final(4).png" alt="Final product Img 4" />
+      </div>
+
+      <!-- Flashcards -->
+      <div class="section-title">Design Process</div>
+      <div class="scroll-section" id="flashcard-section-3"></div>
+<div class="section-title">Explanation</div>
+  <p>My inspiration for this project came from a piece of art I saw a long time ago here in Boston. In that piece, two people were playing basketball, but the interesting part was how it was displayed, on a screen made entirely of flipping black and white tiles. For this project, I didn’t have the time or patience to do something so repetitive, so instead I decided to create a wave using oscillating nails.</p>
+
+  <p>To do this, I built a box (see images) and ran a metal dowel through it. That dowel was connected to two scotch yoke mechanisms, one on each side. This was my first real challenge, most of the sources I found didn’t show the scotch yoke with a metal dowel running straight through it. I fixed this by cutting into the yokes so they could not only move along the pin attached to the rotating disk, but also slide back and forth around the central metal dowel itself.</p>
+
+  <p>At the top of the box, I cut two slits, one on either side, so the top arms of each yoke could move freely. Those two yokes were connected by another metal dowel, and around that I added a third, hollow metal dowel that could spin freely. Above that, I made what I thought was a pretty clever contraption: two horizontal boards held together by a bolt and separated by spacers (see pictures). I threaded nails between the two boards. When the machine turns on, the rotating motion gets converted into an oscillating motion across the top of the box, causing the nails to wave back and forth.</p>
+
+  <p>The biggest issue I ran into was torque. The motor I used fit well, stayed in place, and could turn the dowel when nothing was attached. But once I added the top structure with the nails, the load became too much, the motor didn’t have enough torque to actually move the dowel and drive the whole mechanism (see video). With more time and a shorter laser cutter line, the solution would’ve been to create a gearbox to connect the motor to the sculpture and increase the torque. I didn’t have either at the time, but I still plan on doing this in the next few days to get everything working properly. Once that’s done, I think the machine will perform just how I imagined.</p>
 </div>
-<div class="main-image-container">
-  <video class="main-video" controls>
-    <source src="IMG_0578.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <a class="download-link" href="Box_Top.f3d" download>Box Top Fusion File</a>
-</div>
-</div>
 
-  <!-- Supporting renders/gallery -->
-  <div class="section-title">Final Product</div>
-  <div class="scroll-section">
-    <img src="final(1).png" alt="Final product Img 1" />
-    <img src="final(2).png" alt="Final product Img 2" />
-    <img src="final(3).png" alt="Final product Img 3" />
-    <img src="final(4).png" alt="Final prodcut Img 4" />
-  </div>
-
-  <!-- Flashcards -->
-  <div class="section-title">Design Process</div>
-  <div class="scroll-section" id="flashcard-section-3">
-    <!-- Cards will be injected by JavaScript -->
-  </div>
-</div>
-
-
-<script>
-  const flashcardsData3 = [
-  {
-  img: "design(4).png",
-  alt: "Design Process Image",
-  text: "This was the basic box we went over in class. Very generic but a good starting point."
-},
-{
-  img: "design(1).png",
-  alt: "Design Process Image",
-  text: "This box was my first cut! In this design I had already created the vision of the final design seen in the final product. However, in this iteration I created the fingers that would attach to the top in such a way the lid of my box wouldn't have the support from the edges of the box."
-},
-{
-  img: "design(2).png",
-  alt: "Design Process Image",
-  text: "Same iteration as the last box, but just the back side."
-},
-{
-  img: "design(3).png",
-  alt: "Design Process Image",
-  text: "In this iteration I fixed the lid resting problem of the last one, but in my scoring, I scored right up to the edge of my panel instead of offset backwards by the thickness of the cardboard."
-}
-]
- 
-function renderFlashcards(data, containerId) {
-  const container = document.getElementById(containerId);
-  data.forEach(({ img, alt, text }) => {
-    const card = document.createElement("div");
-    card.className = "flashcard";
-    card.dataset.text = text;
-    card.innerHTML = `
-      <div class="flashcard-inner">
-        <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
-        <div class="flashcard-back">${text}</div>
-      </div>`;
-    container.appendChild(card);
-  });
-}
-
-renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
-
-
-</section>
-
+    </section>
   </div>
 
   <div class="lightbox" id="lightbox">
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
 
+
   <script>
+    const flashcardsData3 = [
+      {
+        img: "design(5).png",
+        alt: "Design Process Image",
+        text: "I started by CADing everything in Fusion and grouped the parts to fit on the wood."
+      },
+      {
+        img: "design(4).png",
+        alt: "Design Process Image",
+        text: "Before going straight to the wood, I first printed selected parts and everything worked!"
+      },
+      {
+        img: "design(1).png",
+        alt: "Design Process Image",
+        text: "Here I put together the mechanism that turns the rotational motion into linear motion."
+      },
+      {
+        img: "design(2).png",
+        alt: "Design Process Image",
+        text: "Same thing as the last picture, but from a different angle."
+      },
+      {
+        img: "design(3).png",
+        alt: "Design Process Image",
+        text: "Same thing as the last picture, but from a different angle."
+      },
+      {
+        img: "final(1).png",
+        alt: "Design Process Image",
+        text: "Here I put together the top. This was a moment of truth for this design—I hadn’t cut these parts in cardboard first, but there was no problem and it all fit together."
+      },
+      {
+        img: "final(2).png",
+        alt: "Design Process Image",
+        text: "Top again, from the top view."
+      },
+      {
+        img: "final(3).png",
+        alt: "Design Process Image",
+        text: "This is the pin that actually pushes up the nails."
+      },
+      {
+        img: "final(4).png",
+        alt: "Design Process Image",
+        text: "In this step I secured the motor with nails (see explanation for more detail)."
+      }
+    ];
+
+    function renderFlashcards(data, containerId) {
+      const container = document.getElementById(containerId);
+      data.forEach(({ img, alt, text }) => {
+        const card = document.createElement("div");
+        card.className = "flashcard";
+        card.dataset.text = text;
+        card.innerHTML = `
+          <div class="flashcard-inner">
+            <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+            <div class="flashcard-back">${text}</div>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    renderFlashcards(flashcardsData3, "flashcard-section-3");
+
     const lightbox = document.getElementById("lightbox");
     const lightboxContent = document.getElementById("lightbox-content");
 
-    // Normal images (outside flashcards) expand on single click
     document.querySelectorAll(".scroll-section img").forEach((img) => {
       if (!img.closest(".flashcard")) {
         img.addEventListener("click", () => {
@@ -389,7 +410,6 @@ renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
       }
     });
 
-    // model-viewers expand on double click
     document.querySelectorAll("model-viewer").forEach((viewer) => {
       viewer.addEventListener("dblclick", (e) => {
         e.stopPropagation();
@@ -400,7 +420,6 @@ renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
       });
     });
 
-    // Text explanation blocks expand on click
     document.querySelectorAll(".text-section").forEach((block) => {
       block.addEventListener("click", () => {
         lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
@@ -408,7 +427,6 @@ renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
       });
     });
 
-    // Close lightbox on clicking outside content
     lightbox.addEventListener("click", (e) => {
       if (e.target === lightbox || e.target === lightboxContent) {
         lightbox.style.display = "none";
@@ -416,31 +434,24 @@ renderFlashcards(flashcardsData3, "flashcard-section-3");</script>
       }
     });
 
-    // Flashcards: single click flips, double click expands image
     const flashcards = document.querySelectorAll(".flashcard");
-
     flashcards.forEach(card => {
       let clickTimer = null;
       card.addEventListener("click", (e) => {
-        // Prevent flipping or expanding if clicking the back side text area scroll bar
         if (e.target.closest('.lightbox')) return;
-
         if (clickTimer == null) {
           clickTimer = setTimeout(() => {
-            // Single click: flip card
             card.classList.toggle("flipped");
             clickTimer = null;
-          }, 250); // wait 250ms to see if double click occurs
+          }, 250);
         }
       });
-
       card.addEventListener("dblclick", (e) => {
         e.stopPropagation();
         if (clickTimer) {
           clearTimeout(clickTimer);
           clickTimer = null;
         }
-        // Double click: expand image in lightbox
         const frontImg = card.querySelector(".flashcard-front img");
         if (frontImg) {
           lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
