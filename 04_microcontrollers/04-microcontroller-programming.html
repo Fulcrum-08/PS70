@@ -2,24 +2,719 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>04: Microcontroller Programming</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Microcontroller Programming - Assignments</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
+      margin: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #222;
+      padding: 20px;
     }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .assignments {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+
+    .assignment {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .assignment h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .scroll-section {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 10px 0;
+      scroll-behavior: smooth;
+      justify-content: flex-start;
+    }
+
+    @supports(selector(:has(*))) {
+      .scroll-section:has(> *:only-child),
+      .scroll-section:has(> *:nth-child(2):last-child),
+      .scroll-section:has(> *:nth-child(3):last-child),
+      .scroll-section:has(> *:nth-child(4):last-child),
+      .scroll-section:has(> *:nth-child(5):last-child) {
+        justify-content: center;
+      }
+    }
+
+    .flashcard {
+      flex: 0 0 auto;
+      width: 200px;
+      height: 140px;
+      perspective: 1000px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-front,
+    .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: white;
+      padding: 10px;
+      box-sizing: border-box;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .flashcard-front {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flashcard-front img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      font-size: 1rem;
+      color: #222;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: block;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .model-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    model-viewer {
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .download-link {
+      margin: 0 auto 20px;
+      text-decoration: none;
+      color: #0056b3;
+      font-weight: bold;
+      font-size: 1rem;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s;
+      text-align: center;
+      display: block;
+      width: fit-content;
+      cursor: pointer;
+    }
+
+    .download-link:hover {
+      border-bottom: 2px solid #0056b3;
+    }
+
+    .main-image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .main-video {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .scroll-section img {
+      width: 200px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .text-section {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content img,
+    .lightbox-content model-viewer,
+    .lightbox-content .lightbox-text {
+      max-width: 90vw;
+      max-height: 90vh;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      color: #222;
+    }
+
+    .lightbox-text {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    .scroll-section::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .scroll-section::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .scroll-section::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+
+    .scroll-section::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .code-section {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: "Courier New", Courier, monospace;
+      overflow-x: auto;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .code-section pre {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
-  <h1>04: Microcontroller Programming</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+  <h1>Assignments</h1>
+  <div class="assignments">
+    <section class="assignment">
+      <h2>Reaction Game</h2>
+       <a class="download-link" href="Reaction_Game_Casing v1.f3d" download>Download Casing File</a>
+
+      <!-- Videos -->
+      <div class="section-title">Videos</div>
+      <div class="scroll-section">
+        <div class="main-image-container">
+          <div class="video-title">Candid View of Reaction Game </div>
+          <iframe class="main-video" src="https://www.youtube.com/embed/hvVuGf3E_Y4" title="Scotch Yoke Side View #2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="main-image-container">
+          <div class="video-title">Reaction Game - Final</div>
+          <iframe class="main-video" src="https://www.youtube.com/embed/hvVuGf3E_Y4" title="Scotch Yoke Top View" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <!-- Flashcards -->
+      <div class="section-title">Images</div>
+      <div class="scroll-section" id="flashcard-section-3"></div>
+
+      <!-- Explanation -->
+      <div class="section-title">Explanation</div>
+      <p>Comming into circuits, and microcontrollers I had no ideas what I was doing. Originally, I was going to create a loading bar from LEDs and a potentiometer. The idea was that the potentiometer's value would be divided by the number of LEDs, and as the value increased, each LED would slowly brighten before the next one turned on, giving a smooth loading effect. As I worked on it, I realized that to some extent this exact project had already been done (shoutout to PK), and I wanted to make it more my own.</p>
+      <p>My first thought was to 3D print a lens to go over the LEDs. The idea there was that it might spread out or diffract the light a bit and make the animation look smoother overall. It was a decent improvement visually, but still didn’t feel like an original idea (this is the casing). </p>
+      <p>While working on the project, I remembered a reaction game I had made in a CompSci class the year before using Java and realized the concept could work well here too. While Java differs from Arduino and C++ in syntax, the overall structure was mostly the same, which gave me a solid starting point. I decided that by adding an OLED screen and a button, I could turn the project into a reaction-based game. The goal was to stop the LEDs at the exact moment when they were all off. The system would then record your reaction time and save your high score. If you beat the high score, the display would show a small graphic to celebrate the new record.</p>
+      <p>Getting the OLED to actually work with the microcontroller took some effort. I struggled with the display and syntax at first, but having the baseline Java code really helped. With some support from online forums and AI tools, I was able to figure out the rest of the syntax and get everything running smoothly.</p>
+
+      <!-- (Explanation paragraphs truncated for brevity; keep yours as is) -->
+
+      <!-- Arduino Code -->
+      <div class="section-title">Arduino Code</div>
+      <section class="code-section">
+        <pre><code class="language-cpp">
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+
+
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+const int NUM_LEDS = 7;
+const int ledPins[NUM_LEDS] = {33, 32, 25, 26, 27, 14, 12};
+const int buttonPin = 15;
+
+const int freq = 5000;
+const int resolution = 8;
+
+class SmoothLED {
+  int pin;
+  int channel;
+public:
+  SmoothLED(int p, int ch) {
+    pin = p;
+    channel = ch;
+    ledcAttach(pin, freq, resolution);
+  }
+  void setBrightness(int brightness) {
+    brightness = constrain(brightness, 0, 255);
+    ledcWrite(pin, brightness);
+  }
+};
+
+SmoothLED* leds[NUM_LEDS];
+
+bool isFrozen = false;
+bool isPaused = false;
+bool pauseSkipped = false;
+bool restartAfterPause = false;
+bool doStartDelay = false;
+
+unsigned long pauseUntil = 0;
+unsigned long delayUntil = 0;
+unsigned long highScoreShowDelayUntil = 0;
+bool waitingToShowHighScore = false;
+
+unsigned long lastUpdate = 0;
+const unsigned long interval = 100;
+int currentStep = 0;
+
+unsigned long startTime = 0;
+unsigned long elapsedTime = 0;
+unsigned long bestTime = 1000;
+
+unsigned long lastButtonChange = 0;
+const unsigned long debounceDelay = 50;
+bool lastButtonState = HIGH;
+bool buttonState = HIGH;
+
+bool initialsDone = false;
+bool waitingForStartScreen = false;
+bool loadingStarted = false;
+bool startupToggleActive = true;
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+  pinMode(buttonPin, INPUT_PULLUP);
+
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = new SmoothLED(ledPins[i], i);
+    leds[i]->setBrightness(0);
+  }
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true);
+  }
+
+  display.clearDisplay();
+  display.display();
+
+  showInitialsAnimation();
+  showPressToStart();
+  initialsDone = true;
+  waitingForStartScreen = true;
+}
+
+void loop() {
+  unsigned long now = millis();
+  bool reading = digitalRead(buttonPin);
+
+  if (reading != lastButtonState) lastButtonChange = now;
+
+  if ((now - lastButtonChange) > debounceDelay) {
+    if (reading != buttonState) {
+      buttonState = reading;
+      if (buttonState == LOW) {
+        if (waitingForStartScreen && startupToggleActive) {
+          loadingStarted = !loadingStarted;
+          if (loadingStarted) {
+            currentStep = 0;
+            for (int i = 0; i < NUM_LEDS; i++) leds[i]->setBrightness(0);
+            startTime = millis();
+            waitingForStartScreen = false;
+            display.clearDisplay();
+            display.display();
+          } else {
+            isFrozen = true;
+            elapsedTime = now - startTime;
+            showProgress(currentStep, NUM_LEDS, elapsedTime);
+          }
+        } else {
+          if (isPaused) pauseSkipped = true;
+          else if (!isFrozen) {
+            isFrozen = true;
+            elapsedTime = now - startTime;
+            highScoreShowDelayUntil = now + 50;
+            waitingToShowHighScore = true;
+            isPaused = true;
+            restartAfterPause = true;
+          }
+        }
+      }
+    }
+  }
+  lastButtonState = reading;
+
+  if (waitingForStartScreen && !loadingStarted) return;
+  if (startupToggleActive && !loadingStarted) {
+    for (int i = 0; i < NUM_LEDS; i++) leds[i]->setBrightness((i < currentStep) ? 255 : 0);
+    return;
+  }
+  if (loadingStarted && startupToggleActive) {
+    startupToggleActive = false;
+    isFrozen = false;
+    isPaused = false;
+    pauseSkipped = false;
+    restartAfterPause = false;
+    doStartDelay = false;
+  }
+
+  if (waitingToShowHighScore && now >= highScoreShowDelayUntil) {
+    waitingToShowHighScore = false;
+    bool isHighScore = elapsedTime < bestTime;
+    if (isHighScore) {
+      bestTime = elapsedTime;
+      showHighScore(bestTime);
+      pauseUntil = now + 3000;
+    } else {
+      showProgress(currentStep, NUM_LEDS, elapsedTime);
+      pauseUntil = now + 2000;
+    }
+  } else if (waitingToShowHighScore) return;
+
+  if (isPaused && !waitingToShowHighScore) {
+    if (pauseSkipped || now >= pauseUntil) {
+      isPaused = false;
+      isFrozen = false;
+      pauseSkipped = false;
+      if (restartAfterPause) {
+        restartAfterPause = false;
+        for (int i = 0; i < NUM_LEDS; i++) leds[i]->setBrightness(0);
+        currentStep = 0;
+        doStartDelay = true;
+        delayUntil = millis() + 250;
+      }
+    } else return;
+  }
+
+  if (doStartDelay && now >= delayUntil) {
+    doStartDelay = false;
+    startTime = millis();
+  } else if (doStartDelay) return;
+
+  if (!isFrozen && !doStartDelay) {
+    if (now - lastUpdate >= interval) {
+      lastUpdate = now;
+      currentStep++;
+      if (currentStep > NUM_LEDS) {
+        currentStep = 0;
+        startTime = millis();
+      }
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (i < currentStep) leds[i]->setBrightness(255);
+        else if (i == currentStep) {
+          int partialBrightness = map(now % interval, 0, interval - 1, 0, 255);
+          leds[i]->setBrightness(partialBrightness);
+        } else leds[i]->setBrightness(0);
+      }
+    }
+    showProgress(currentStep, NUM_LEDS, now - startTime);
+  } else if (isFrozen) {
+    for (int i = 0; i < NUM_LEDS; i++) leds[i]->setBrightness((i < currentStep) ? 255 : 0);
+  }
+}
+
+void showProgress(int step, int maxSteps, unsigned long timeToShow) {
+  display.clearDisplay();
+  int barX = 2, barY = 2, barWidthMax = 40, barHeight = 4;
+  int barWidth = map(step, 0, maxSteps, 0, barWidthMax);
+  display.drawRect(barX, barY, barWidthMax, barHeight, SSD1306_WHITE);
+  display.fillRect(barX, barY, barWidth, barHeight, SSD1306_WHITE);
+  float timeInSec = timeToShow / 1000.0;
+  char buffer[10];
+  dtostrf(timeInSec, 6, 3, buffer);
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(buffer, 0, 0, &x1, &y1, &w, &h);
+  int textX = (SCREEN_WIDTH - w) / 2;
+  int textY = (SCREEN_HEIGHT - h) / 2 + 5;
+  display.setCursor(textX, textY);
+  display.print(buffer);
+  display.print("s");
+  float bestSec = bestTime / 1000.0;
+  char hsValue[10];
+  dtostrf(bestSec, 5, 3, hsValue);
+  char hsText[18];
+  snprintf(hsText, sizeof(hsText), "HS: %ss", hsValue);
+  display.setTextSize(1);
+  display.setCursor(SCREEN_WIDTH - 60, 0);
+  display.print(hsText);
+  display.display();
+}
+
+void showHighScore(unsigned long scoreMs) {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  const char* title = "NEW HIGH SCORE!";
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(title, 0, 0, &x1, &y1, &w, &h);
+  int textX = (SCREEN_WIDTH - w) / 2;
+  display.setCursor(textX, 4);
+  display.print(title);
+  for (int i = 0; i < 30; i++) display.drawPixel(random(0, SCREEN_WIDTH), random(15, SCREEN_HEIGHT), SSD1306_WHITE);
+  float timeInSec = scoreMs / 1000.0;
+  char buffer[10];
+  dtostrf(timeInSec, 6, 3, buffer);
+  display.setTextSize(2);
+  display.getTextBounds(buffer, 0, 0, &x1, &y1, &w, &h);
+  int scoreX = (SCREEN_WIDTH - w) / 2;
+  int scoreY = (SCREEN_HEIGHT - h) / 2 + 8;
+  display.setCursor(scoreX, scoreY);
+  display.print(buffer);
+  display.print("s");
+  display.display();
+}
+
+void showInitialsAnimation() {
+  display.clearDisplay();
+  display.setTextSize(5);
+  display.setTextColor(SSD1306_WHITE);
+  int letterSpacing = 42;
+  int baseY = 20;
+  for (int i = 0; i < NUM_LEDS; i++) leds[i]->setBrightness(0);
+  display.setCursor(5, baseY); display.print("M"); display.display(); delay(700);
+  display.clearDisplay(); display.setCursor(5 + letterSpacing, baseY); display.print("A"); display.display(); delay(700);
+  display.clearDisplay(); display.setCursor(5 + 2 * letterSpacing, baseY); display.print("K"); display.display(); delay(700);
+  display.clearDisplay(); display.setCursor(5, baseY); display.print("M");
+  display.setCursor(5 + letterSpacing, baseY); display.print("A");
+  display.setCursor(5 + 2 * letterSpacing, baseY); display.print("K");
+  display.display(); delay(1000);
+  display.clearDisplay(); display.display();
+}
+
+void showPressToStart() {
+  display.clearDisplay();
+
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  const char* press = "PRESS";
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(press, 0, 0, &x1, &y1, &w, &h);
+  int x = (SCREEN_WIDTH - w) / 2;
+  int y = 8;
+  display.setCursor(x, y);
+  display.print(press);
+
+  display.setTextSize(1);
+  const char* to = "TO";
+  display.getTextBounds(to, 0, 0, &x1, &y1, &w, &h);
+  x = (SCREEN_WIDTH - w) / 2;
+  y += h + 6;
+  display.setCursor(x, y);
+  display.print(to);
+
+  display.setTextSize(2);
+  const char* start = "START";
+  display.getTextBounds(start, 0, 0, &x1, &y1, &w, &h);
+  x = (SCREEN_WIDTH - w) / 2;
+  y += h + 6;
+  display.setCursor(x, y);
+  display.print(start);
+
+  display.display();
+}
+
+        </code></pre>
+      </section>
+    </section>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content" id="lightbox-content"></div>
+  </div>
+
+  <script>
+    const flashcardsData3 = [
+      { img: "IMG_0603.png", alt: "Design Image", text: "I started by CADing everything in Fusion and grouped the parts to fit on the wood." },
+      { img: "IMG_0604.png", alt: "Design Image", text: "Before going straight to the wood, I first printed selected parts and everything worked!" },
+      { img: "IMG_0605.png", alt: "Design Image", text: "Here I put together the mechanism that turns the rotational motion into linear motion." },
+      { img: "IMG_0606.png", alt: "Design Image", text: "Same thing as the last picture, but from a different angle." },
+      { img: "IMG_0608.png", alt: "Design Image", text: "Same thing as the last picture, but from a different angle." }]
+
+
+    function renderFlashcards(data, containerId) {
+      const container = document.getElementById(containerId);
+      data.forEach(({ img, alt, text }) => {
+        const card = document.createElement("div");
+        card.className = "flashcard";
+        card.dataset.text = text;
+        card.innerHTML = `
+          <div class="flashcard-inner">
+            <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+            <div class="flashcard-back">${text}</div>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    renderFlashcards(flashcardsData3, "flashcard-section-3");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
+
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      if (!img.closest(".flashcard")) {
+        img.addEventListener("click", () => {
+          lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+          lightbox.style.display = "flex";
+        });
+      }
+    });
+
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
+      }
+    });
+
+    const flashcards = document.querySelectorAll(".flashcard");
+    flashcards.forEach(card => {
+      let clickTimer = null;
+      card.addEventListener("click", (e) => {
+        if (e.target.closest('.lightbox')) return;
+        if (clickTimer == null) {
+          clickTimer = setTimeout(() => {
+            card.classList.toggle("flipped");
+            clickTimer = null;
+          }, 250);
+        }
+      });
+      card.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        if (clickTimer) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+        }
+        const frontImg = card.querySelector(".flashcard-front img");
+        if (frontImg) {
+          lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
+          lightbox.style.display = "flex";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
