@@ -306,24 +306,25 @@ model-viewer {
 
 
     <!-- Assignment 2 -->
-    <section class="assignment">
-      <h2>3D objects</h2>
+    <div class="section-title">3D Models</div>
+<div class="scroll-section">
+  <div class="model-container">
+    <a class="download-link" href="./Flag.gcode" download>Download GCODE</a>
+    <model-viewer src="Flag.glb" alt="Flag" camera-controls auto-rotate ar></model-viewer>
+    <a class="download-link" href="Flag.f3d" download>Flag Fusion File</a>
+  </div>
+  <div class="model-container">
+    <a class="download-link" target = "_blank" href="./Panel.gcode" download>Download GCODE</a>
+    <model-viewer src="Panel.glb" alt="Panels" camera-controls auto-rotate ar></model-viewer>
+    <a class="download-link" href="Panel.f3d" download>"Straw" Panels Fusion File</a>
+  </div>
+  <div class="model-container">
+    <a class="download-link" target = "_blank" href="./Weave.gcode" download>Download GCODE</a>
+    <model-viewer src="Weave.glb" alt="Straw" camera-controls auto-rotate ar></model-viewer>
+    <a class="download-link" href="Weave.f3d" download>"Straw" Fusion File</a>
+  </div>
+</div>
 
-      <div class="section-title">3D Models</div>
-      <div class="scroll-section">
-        <div class="model-container">
-          <model-viewer src="Flag.glb" alt="Flag" camera-controls auto-rotate ar></model-viewer>
-          <a class="download-link" href="Flag.f3d" download>Flag Fusion File</a>
-        </div>
-        <div class="model-container">
-          <model-viewer src="Panel.glb" alt='Panels' camera-controls auto-rotate ar></model-viewer>
-          <a class="download-link" href="Panel.f3d" download>"Straw" Panels Fusion File</a>
-        </div>
-        <div class="model-container">
-          <model-viewer src="Weave.glb" alt='"Straw"' camera-controls auto-rotate ar></model-viewer>
-          <a class="download-link" href="Weave.f3d" download>"Straw" Fusion File</a>
-        </div>
-      </div>
 
       <!-- Flashcards -->
   <div class="section-title">Design Process</div>
