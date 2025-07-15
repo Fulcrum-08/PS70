@@ -2,24 +2,499 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>05: 3D design, 3D scanning and printing</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Prints - Assignments</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
-    }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
-    }
+body {
+  margin: 0;
+  background-color: white;
+  font-family: Arial, sans-serif;
+  color: #222;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.assignments {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.assignment {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.assignment h2 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin: 20px 0 10px;
+  font-size: 1.1rem;
+}
+
+/* Scroll section styles for horizontal scroll */
+.scroll-section {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  justify-content: flex-start;
+}
+
+/* Center content if 1 to 5 items */
+@supports(selector(:has(*))) {
+  .scroll-section:has(> *:only-child),
+  .scroll-section:has(> *:nth-child(2):last-child),
+  .scroll-section:has(> *:nth-child(3):last-child),
+  .scroll-section:has(> *:nth-child(4):last-child),
+  .scroll-section:has(> *:nth-child(5):last-child) {
+    justify-content: center;
+  }
+}
+
+/* Flashcards */
+.flashcard {
+  flex: 0 0 auto;
+  width: 200px;
+  height: 140px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
+  user-select: none;
+  overflow: hidden;
+}
+
+.flashcard-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcard-front img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  font-size: 1rem;
+  color: #222;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Model viewer styles */
+.model-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+model-viewer {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  cursor: pointer;
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+}
+
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
+
+.scroll-section img {
+  width: 200px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.text-section {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  cursor: pointer;
+  text-align: center;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img,
+.lightbox-content model-viewer,
+.lightbox-content .lightbox-text {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  color: #222;
+}
+
+.lightbox-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Scrollbar styling for horizontal scroll (optional) */
+.scroll-section::-webkit-scrollbar {
+  height: 8px;
+}
+.scroll-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.scroll-section img.main-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.main-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto; /* keeps container width from shrinking */
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
+
+
   </style>
 </head>
 <body>
-  <h1>05: 3D design, 3D scanning and printing</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+  <h1>Assignments</h1>
+
+  <div class="assignments">
+
+    <!-- Assignment 1 -->
+    <!-- Assignment 1 -->
+<section class="assignment">
+  <h2>3D Scans</h2>
+
+  <div class="section-title">Scans</div>
+  <div class="scroll-section" style="display: flex; align-items: center; gap: 20px;">
+
+    <div class="model-container" style="display: flex; flex-direction: column; align-items: center;">
+      <model-viewer src="Head_scane.glb" alt="My Head" camera-controls auto-rotate ar style="width: 300px; height: 300px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);"></model-viewer>
+      <a class="download-link" href="Head_Scan.blend" download>Head Scan (click to download)</a>
+    </div>
+
+    <div class="model-container" style="display: flex; flex-direction: column; align-items: center;">
+      <img src="self.png" alt="Self Picture" style="width: 300px; height: 300px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); object-fit: cover;" />
+    </div>
+
+  </div>
+
+  <div class="section-title">Scanning Experience</div>
+
+  <div class="text-section">
+    To be honest, when I first saw the 3D scanner, I thought it was going to be a lot easier. When I was scanning my head, the program kept losing the orientation and then “finding” it in the wrong spot, creating a wonky scan. Additionally, when merging different scans, the merge feature half worked, but similar to the scanning process, would mix up where the different scans fit. It especially, as you can see by the scans themselves, had a hard time with my dark hair. All this led to a multitude of hours in Blender, learning the application's features and diving into a heavy post-scan cleanup to finally reach the final result. Pretty cool though!
+  </div>
+
+</section>
+
+
+    <!-- Assignment 2 -->
+    <section class="assignment">
+      <h2>3D objects</h2>
+
+      <div class="section-title">3D Models</div>
+      <div class="scroll-section">
+        <div class="model-container">
+          <model-viewer src="Flag.glb" alt="Flag" camera-controls auto-rotate ar></model-viewer>
+          <a class="download-link" href="Flag.f3d" download>Flag Fusion File</a>
+        </div>
+        <div class="model-container">
+          <model-viewer src="Panel.glb" alt='Panels' camera-controls auto-rotate ar></model-viewer>
+          <a class="download-link" href="Panel.f3d" download>"Straw" Panels Fusion File</a>
+        </div>
+        <div class="model-container">
+          <model-viewer src="Weave.glb" alt='"Straw"' camera-controls auto-rotate ar></model-viewer>
+          <a class="download-link" href="Weave.f3d" download>"Straw" Fusion File</a>
+        </div>
+      </div>
+
+      <!-- Flashcards -->
+  <div class="section-title">Design Process</div>
+  <div class="scroll-section" id="flashcard-section-3">
+    <!-- Cards will be injected by JavaScript -->
+  </div>
+
+    <div class="section-title">Text Explanation</div>
+      <div class="text-section">
+      Looking at some of the example 3D prints, I was captivated by the unconventional techniques such as  using linkages to create chainmail or even cloth to create folds. For this project I experimented with two different ideas of using 3d printing in an unusual way. The first was from Walking through Providence, Rhode Island, looking for inspiration,the idea of a flag came to me; to  create a flag where the staff would be made solely from the rigid PLA. However, the flag itself could bend by inserting a cloth halfway through the print in the horizontal direction. The next idea was from talking to my mom who is involved in sustainable housing; using straw to create panels. I decided to create a kind of play on that. Panels of woven straw ( really just PLA strips) that could connect to each other via embedded magnets(see pictures).Lastly I printed the first prototype for my final Project; a side of the housing for the LiDAR sensor more to come on that!
+      </div>
+      </div>
+    </section>
+
+
+
+
+<script>
+  window.onload = () => {
+    const flashcardsData3 = [
+  {
+    img: "IMG_0614.png",
+    alt: "Design Process Image",
+    text: "This is when I paused the flag halfway through and added the cloth."
+  },
+  {
+    img: "IMG_0615.png",
+    alt: "Design Process Image",
+    text: "The flag just as it came off the printer."
+  },
+  {
+    img: "IMG_0616.png",
+    alt: "Design Process Image",
+    text: "Another picture of the flag; as you can see, I engraved my name into it."
+  },
+  {
+    img: "IMG_0617.png",
+    alt: "Design Process Image",
+    text: "Yet another picture of the flag."
+  },
+  {
+    img: "IMG_0618.png",
+    alt: "Design Process Image",
+    text: "This is a side view of the LiDAR sensor casing (half of it)."
+  },
+  {
+    img: "IMG_0619.png",
+    alt: "Design Process Image",
+    text: "Inside view of the LiDAR casing."
+  },
+  {
+    img: "IMG_0621.png",
+    alt: "Design Process Image",
+    text: "A picture of the flag cut from the supports and cloth."
+  },
+  {
+    img: "IMG_0620.png",
+    alt: "Design Process Image",
+    text: "This is a picture of the flag standing up once it was out of its casing."
+  },
+  {
+    img: "IMG_0622.png",
+    alt: "Design Process Image",
+    text: 'Here is a picture where I am in the process of weaving a "Straw" panel.'
+  },
+  {
+    img: "IMG_0624.png",
+    alt: "Design Process Image",
+    text: 'A front view of the "Straw" panel.'
+  },
+  {
+    img: "IMG_0625.png",
+    alt: "Design Process Image",
+    text: 'A corner perspective of the "Straw" panel.'
+  },
+  {
+    img: "IMG_0626.png",
+    alt: "Design Process Image",
+    text: "The Straw panel laying down."
+  }
+];
+
+
+    function renderFlashcards(data, containerId) {
+      const container = document.getElementById(containerId);
+      data.forEach(({ img, alt, text }) => {
+        const card = document.createElement("div");
+        card.className = "flashcard";
+        card.dataset.text = text;
+        card.innerHTML = `
+          <div class="flashcard-inner">
+            <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+            <div class="flashcard-back">${text}</div>
+          </div>`;
+        container.appendChild(card);
+      });
+
+      const flashcards = document.querySelectorAll(".flashcard");
+
+      flashcards.forEach(card => {
+        let clickTimer = null;
+        card.addEventListener("click", (e) => {
+          if (e.target.closest('.lightbox')) return;
+
+          if (clickTimer == null) {
+            clickTimer = setTimeout(() => {
+              card.classList.toggle("flipped");
+              clickTimer = null;
+            }, 250);
+          }
+        });
+
+        card.addEventListener("dblclick", (e) => {
+          e.stopPropagation();
+          if (clickTimer) {
+            clearTimeout(clickTimer);
+            clickTimer = null;
+          }
+          const frontImg = card.querySelector(".flashcard-front img");
+          if (frontImg) {
+            lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
+            lightbox.style.display = "flex";
+          }
+        });
+      });
+    }
+
+    renderFlashcards(flashcardsData3, "flashcard-section-3");
+
+    // Your lightbox code continues here...
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
+
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      if (!img.closest(".flashcard")) {
+        img.addEventListener("click", () => {
+          lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+          lightbox.style.display = "flex";
+        });
+      }
+    });
+
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
+      }
+    });
+  };
+</script>
+<!-- Lightbox for expanded view -->
+<div id="lightbox" class="lightbox">
+  <div id="lightbox-content" class="lightbox-content"></div>
+</div>
+
 </body>
 </html>

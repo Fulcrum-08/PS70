@@ -207,3 +207,100 @@ footer {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+/* Container positioning */
+.materials-timeline-container {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;          /* space between the two columns on narrow screens */
+  align-items: flex-start;
+}
+
+/* ------- Materials list ------- */
+.materials-list h3,
+.timeline h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.15rem;
+}
+
+.materials-list ul {
+  list-style-position: inside; /* bullets & text flush left */
+  margin: 0;
+  padding: 0;
+}
+
+.materials-list li {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 2px 0;              /* tighter spacing */
+}
+
+/* ------- Vertical timeline ------- */
+.timeline {
+  position: relative;
+  padding-left: 34px;          /* space for dots & line */
+  border-left: 2px solid #c0c0c0;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 36px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Animated dot */
+.timeline-item .dot {
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  background: #0056b3;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(0,86,179,0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Floating / haptic‑style effect on hover */
+.timeline-item:hover .dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 12px 4px rgba(0,86,179,0.35);
+}
+
+.timeline-content {
+  animation: float 6s ease-in-out infinite;
+}
+
+.timeline-content h4 {
+  margin: 0 0 4px 0;
+  color: #0056b3;
+  font-size: 1rem;
+}
+
+.timeline-content p {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.4;
+  max-width: 320px;  /* keeps boxes tidy on wide screens */
+}
+
+/* Keyframes for gentle floating motion */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Optional: stagger the float phase for variety */
+.timeline-item:nth-child(even) .timeline-content { animation-delay: 1.5s; }
+.timeline-item:nth-child(odd)  .timeline-content { animation-delay: 0s; }
+
+/* Responsive side‑by‑side layout on wide screens */
+@media (min-width: 700px) {
+  .materials-timeline-container {
+    flex-direction: row;       /* materials column left, timeline right */
+    gap: 72px;
+  }
+}
