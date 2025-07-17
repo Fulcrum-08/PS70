@@ -2,24 +2,682 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>06: Sensors. Electronic input devices</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Microcontroller Programming - Assignments</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
+      margin: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #222;
+      padding: 20px;
     }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .assignments {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+
+    .assignment {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .assignment h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .scroll-section {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 10px 0;
+      scroll-behavior: smooth;
+      justify-content: flex-start;
+    }
+
+    @supports(selector(:has(*))) {
+      .scroll-section:has(> *:only-child),
+      .scroll-section:has(> *:nth-child(2):last-child),
+      .scroll-section:has(> *:nth-child(3):last-child),
+      .scroll-section:has(> *:nth-child(4):last-child),
+      .scroll-section:has(> *:nth-child(5):last-child) {
+        justify-content: center;
+      }
+    }
+
+    .flashcard {
+      flex: 0 0 auto;
+      width: 200px;
+      height: 140px;
+      perspective: 1000px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-front,
+    .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: white;
+      padding: 10px;
+      box-sizing: border-box;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .flashcard-front {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flashcard-front img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      font-size: 1rem;
+      color: #222;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: block;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .model-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    model-viewer {
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .download-link {
+      margin: 0 auto 20px;
+      text-decoration: none;
+      color: #0056b3;
+      font-weight: bold;
+      font-size: 1rem;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s;
+      text-align: center;
+      display: block;
+      width: fit-content;
+      cursor: pointer;
+    }
+
+    .download-link:hover {
+      border-bottom: 2px solid #0056b3;
+    }
+
+    .main-image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .main-video {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .scroll-section img {
+      width: 200px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .text-section {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content img,
+    .lightbox-content model-viewer,
+    .lightbox-content .lightbox-text {
+      max-width: 90vw;
+      max-height: 90vh;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      color: #222;
+    }
+
+    .lightbox-text {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    .scroll-section::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .scroll-section::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .scroll-section::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+
+    .scroll-section::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .code-section {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: "Courier New", Courier, monospace;
+      overflow-x: auto;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .code-section pre {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
-  <h1>06: Sensors. Electronic input devices</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+  <h1>Assignments</h1>
+  <div class="assignments">
+    <section class="assignment">
+      <h2>3D Touch Sensor</h2>
+
+      <!-- Videos -->
+      <div class="section-title">Videos</div>
+      <div class="scroll-section">
+        <div class="main-image-container">
+          <div class="video-title">Project in Action </div>
+          <iframe class="main-video" src="https://www.youtube.com/embed/ruaEvxO5wuU" title="Scotch Yoke Side View #2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+      </div>
+
+      <!-- Flashcards -->
+      <div class="section-title">Images</div>
+      <div class="scroll-section" id="flashcard-section-3"></div>
+
+      <!-- Explanation -->
+      <div class="section-title">Explanation</div>
+      <p>
+For this project, I built a semi-3D trackpad by weaving copper wires to form 18 small capacitive sensing areas. While the spacing between the wires made it less responsive than a typical trackpad, it still worked surprisingly well. When a finger touched one of the intersections, the code accurately recognized the input and mapped it to the GUI (see video for demonstration).
+One of the biggest challenges I faced was figuring out how to graph this boolean "pressed or not pressed" system. I ended up trying to find a figure for responsiveness. To do this I took the average of 10 baseline readings for each capacitor, then compared those to the average of 10 readings while the capacitor was being touched. By calculating the difference between these two averages, I could determine the responsiveness . As you can notice from the chart the capacitor values seem to oscillate as the row resets, occurring for both the baseline and  touched values. This I believe is from the fact the current gets dissipated as the moves away from the source 
+Over all this method gave me a reliable sense of how responsive each sensor was. It turns out that, despite the low density of sensing points, the device responded quite well
+
+
+</p>
+    
+
+      <!-- (Explanation paragraphs truncated for brevity; keep yours as is) -->
+
+      <!-- Arduino Code -->
+      <div class="section-title">Arduino Code</div>
+      <section class="code-section">
+        <pre><code class="language-cpp">
+const uint8_t ROW_PINS[] = {14, 12, 27};                       // 3 latitude lines
+const uint8_t COL_PINS[] = {13, 2, 4, 15, 26, 25, 33, 32};     // 8 longitudinal lines{32, 33, 25, 26, 15, 4, 2, 13}
+
+
+const uint8_t NUM_ROWS = sizeof(ROW_PINS) / sizeof(ROW_PINS[0]);
+const uint8_t NUM_COLS = sizeof(COL_PINS) / sizeof(COL_PINS[0]);
+
+
+const int N_SAMPLES = 60;
+const int HIGH_US = 80;
+const int LOW_US = 20;
+const unsigned long SCAN_PERIOD_MS = 2000;
+unsigned long lastScan = 0;
+
+
+long lastValues[3][8];  // Store previous readings
+
+
+/* measure one row/col cell */
+long measureCell(uint8_t txPin, uint8_t rxPin) {
+  long sum = 0;
+  for (int i = 0; i < N_SAMPLES; ++i) {
+    digitalWrite(txPin, HIGH);
+    int hi = analogRead(rxPin);
+    delayMicroseconds(HIGH_US);
+
+
+    digitalWrite(txPin, LOW);
+    int lo = analogRead(rxPin);
+    sum += (hi - lo);
+
+
+    delayMicroseconds(LOW_US);
+  }
+  return sum;
+}
+
+
+void setup() {
+  Serial.begin(115200);
+
+
+  for (uint8_t r = 0; r < NUM_ROWS; ++r) {
+    pinMode(ROW_PINS[r], OUTPUT);
+    digitalWrite(ROW_PINS[r], LOW);
+  }
+
+
+  for (uint8_t c = 0; c < NUM_COLS; ++c) {
+    pinMode(COL_PINS[c], INPUT);
+  }
+
+
+  // Initialize lastValues
+  for (uint8_t r = 0; r < NUM_ROWS; ++r)
+    for (uint8_t c = 0; c < NUM_COLS; ++c)
+      lastValues[r][c] = 0;
+}
+
+
+void loop() {
+  if (millis() - lastScan < SCAN_PERIOD_MS) return;
+  lastScan = millis();
+
+
+  long currentValues[3][8];
+  long maxVal = -1;
+  uint8_t maxRow = 0, maxCol = 0;
+  long maxJump = -1;
+  uint8_t jumpRow = 0, jumpCol = 0;
+
+
+  // Measure all cells and find max jump
+  for (uint8_t r = 0; r < NUM_ROWS; ++r) {
+    for (uint8_t c = 0; c < NUM_COLS; ++c) {
+      long val = measureCell(ROW_PINS[r], COL_PINS[c]);
+      currentValues[r][c] = val;
+
+
+      if (val > maxVal) {
+        maxVal = val;
+        maxRow = r;
+        maxCol = c;
+      }
+
+
+      long delta = abs(val - lastValues[r][c]);
+      if (delta > maxJump) {
+        maxJump = delta;
+        jumpRow = r;
+        jumpCol = c;
+      }
+
+
+      lastValues[r][c] = val;
+    }
+  }
+
+
+  // Send max jump row and col to serial in format R#C#
+  Serial.print("R");
+  Serial.print(jumpRow);
+  Serial.print("C");
+  Serial.println(jumpCol);
+
+
+  delay(10); // slight delay
+}
+
+
+        </code></pre>
+      </section>
+
+      <div class="section-title">Python Code</div>
+      <section class="code-section">
+        <pre><code class="language-cpp">
+import pygame
+from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import math
+import serial
+import threading
+
+
+# Replace 'COM3' with your Arduino's COM port
+ser = serial.Serial('COM6', 115200, timeout=0.1)
+
+
+# Latitude and longitude mappings to Arduino matrix rows and columns
+LATITUDES = [-30, 0, 30]                 # 3 rows
+LONGITUDES = [i * 45 for i in range(8)]  # 8 columns, every 45 degrees
+
+
+highlight_lat_lon = (0, 0)  # default dot position
+
+
+def spherical_to_cartesian(lat_deg, lon_deg):
+   lat = math.radians(lat_deg)
+   lon = math.radians(lon_deg)
+   x = math.cos(lat) * math.cos(lon)
+   y = math.sin(lat)
+   z = math.cos(lat) * math.sin(lon)
+   return x, y, z
+
+
+def draw_globe():
+   quad = gluNewQuadric()
+   glColor3f(0.4, 0.6, 1.0)
+   gluSphere(quad, 1, 50, 50)
+
+
+   # Bold longitude lines (every 45 degrees)
+   for i in range(0, 360, 45):
+       lon = math.radians(i)
+       glLineWidth(2.5)
+       glColor3f(0, 0, 0)
+       glBegin(GL_LINE_STRIP)
+       for theta in range(-90, 91, 2):
+           lat = math.radians(theta)
+           x = math.cos(lat) * math.cos(lon)
+           y = math.sin(lat)
+           z = math.cos(lat) * math.sin(lon)
+           glVertex3f(x, y, z)
+       glEnd()
+
+
+   # Bold latitude lines at -30, 0, 30 degrees
+   for lat_deg in LATITUDES:
+       lat = math.radians(lat_deg)
+       glLineWidth(2.5)
+       glColor3f(0, 0, 0)
+       glBegin(GL_LINE_LOOP)
+       for i in range(0, 361, 5):
+           lon = math.radians(i)
+           x = math.cos(lat) * math.cos(lon)
+           y = math.sin(lat)
+           z = math.cos(lat) * math.sin(lon)
+           glVertex3f(x, y, z)
+       glEnd()
+
+
+   # Draw red dot at Arduino-specified position
+   dot_x, dot_y, dot_z = spherical_to_cartesian(*highlight_lat_lon)
+   glColor3f(1.0, 0.0, 0.0)
+   glPointSize(20.0)
+   glBegin(GL_POINTS)
+   glVertex3f(dot_x, dot_y, dot_z)
+   glEnd()
+
+
+def serial_reader():
+   global highlight_lat_lon
+   while True:
+       try:
+           line = ser.readline().decode(errors='ignore').strip()
+           # Expect line like: R0C3
+           if line.startswith('R') and 'C' in line:
+               parts = line.split('C')
+               # Defensive check before int conversion
+               row_str = parts[0][1:]
+               col_str = parts[1]
+
+
+               if row_str.isdigit() and col_str.isdigit():
+                   row = int(row_str)
+                   col = int(col_str)
+                   if 0 <= row < len(LATITUDES) and 0 <= col < len(LONGITUDES):
+                       highlight_lat_lon = (LATITUDES[row], LONGITUDES[col])
+       except Exception as e:
+           print("Serial read error:", e)
+
+
+# Start serial reading in a background thread
+threading.Thread(target=serial_reader, daemon=True).start()
+
+
+# Pygame + OpenGL initialization
+pygame.init()
+display = (800, 600)
+pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+
+
+gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
+glTranslatef(0.0, 0.0, -5)
+glEnable(GL_DEPTH_TEST)
+
+
+mouse_down = False
+last_pos = (0, 0)
+x_rot = y_rot = 0
+
+
+# Main loop
+while True:
+   for event in pygame.event.get():
+       if event.type == pygame.QUIT:
+           pygame.quit()
+           quit()
+       elif event.type == MOUSEBUTTONDOWN:
+           mouse_down = True
+           last_pos = event.pos
+       elif event.type == MOUSEBUTTONUP:
+           mouse_down = False
+       elif event.type == MOUSEMOTION and mouse_down:
+           dx, dy = event.pos[0] - last_pos[0], event.pos[1] - last_pos[1]
+           x_rot += dy
+           y_rot += dx
+           last_pos = event.pos
+
+
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+   glPushMatrix()
+   glRotatef(x_rot, 1, 0, 0)
+   glRotatef(y_rot, 0, 1, 0)
+   draw_globe()
+   glPopMatrix()
+
+
+   pygame.display.flip()
+   pygame.time.wait(10)
+
+
+        </code></pre>
+      </section>
+    </section>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content" id="lightbox-content"></div>
+  </div>
+
+  <script>
+   const flashcardsData3 = [
+  { img: "IMG_0631.png", alt: "Design Image", text: "This is a top-down view of my project without its casing." },
+  { img: "IMG_0632.png", alt: "Design Image", text: "Again, a picture of the wiring without the casing." },
+  { img: "IMG_0634.png", alt: "Design Image", text: "Here is a picture of the connection to the ESP32 Dev Module microcontroller." },
+  { img: "Chart.png", alt: "Design Image", text: "A picture of the 0.96-inch OLED Module 128x64 I used." }
+];
+
+
+
+    function renderFlashcards(data, containerId) {
+      const container = document.getElementById(containerId);
+      data.forEach(({ img, alt, text }) => {
+        const card = document.createElement("div");
+        card.className = "flashcard";
+        card.dataset.text = text;
+        card.innerHTML = `
+          <div class="flashcard-inner">
+            <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+            <div class="flashcard-back">${text}</div>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    renderFlashcards(flashcardsData3, "flashcard-section-3");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
+
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      if (!img.closest(".flashcard")) {
+        img.addEventListener("click", () => {
+          lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+          lightbox.style.display = "flex";
+        });
+      }
+    });
+
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
+      }
+    });
+
+    const flashcards = document.querySelectorAll(".flashcard");
+    flashcards.forEach(card => {
+      let clickTimer = null;
+      card.addEventListener("click", (e) => {
+        if (e.target.closest('.lightbox')) return;
+        if (clickTimer == null) {
+          clickTimer = setTimeout(() => {
+            card.classList.toggle("flipped");
+            clickTimer = null;
+          }, 250);
+        }
+      });
+      card.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        if (clickTimer) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+        }
+        const frontImg = card.querySelector(".flashcard-front img");
+        if (frontImg) {
+          lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
+          lightbox.style.display = "flex";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
