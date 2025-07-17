@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Microcontroller Programming - Assignments</title>
+  <title>Input Devices - Assignments</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
@@ -304,7 +304,7 @@
       <!-- Explanation -->
       <div class="section-title">Explanation</div>
       <p>
-For this project, I built a semi-3D trackpad by weaving copper wires to form 18 small capacitive sensing areas. While the spacing between the wires made it less responsive than a typical trackpad, it still worked surprisingly well. When a finger touched one of the intersections, the code accurately recognized the input and mapped it to the GUI (see video for demonstration).
+For this project, I built a semi-3D trackpad by weaving copper wires to form 18 small capacitive sensing areas. I used the solder iron to make the conection between the copper strips and teh wires stronger, and then used the tap to keep everything in place and shield from electracution While the spacing between the wires made it less responsive than a typical trackpad, it still worked surprisingly well. When a finger touched one of the intersections, the code accurately recognized the input and mapped it to the GUI (see video for demonstration).
 One of the biggest challenges I faced was figuring out how to graph this boolean "pressed or not pressed" system. I ended up trying to find a figure for responsiveness. To do this I took the average of 10 baseline readings for each capacitor, then compared those to the average of 10 readings while the capacitor was being touched. By calculating the difference between these two averages, I could determine the responsiveness . As you can notice from the chart the capacitor values seem to oscillate as the row resets, occurring for both the baseline and  touched values. This I believe is from the fact the current gets dissipated as the moves away from the source 
 Over all this method gave me a reliable sense of how responsive each sensor was. It turns out that, despite the low density of sensing points, the device responded quite well
 
@@ -584,18 +584,130 @@ while True:
         </code></pre>
       </section>
     </section>
+
   </div>
 
   <div class="lightbox" id="lightbox">
     <div class="lightbox-content" id="lightbox-content"></div>
   </div>
 
+ <h1>Assignments</h1>
+  <div class="assignments">
+    <section class="assignment">
+      <h2>3D Touch Sensor</h2>
+
+      <!-- Videos -->
+      <div class="section-title">Videos</div>
+      <div class="scroll-section">
+        <div class="main-image-container">
+          <div class="video-title">Project in Action </div>
+          <iframe class="main-video" src="https://www.youtube.com/embed/F0KW0BkcczM" title="Proximity Sensor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+      </div>
+
+   
+
+      <!-- Explanation -->
+      <div class="section-title">Explanation</div>
+      <p>
+        For this sensor, I initially thought I had a LiDAR module, but I later realized it was only a proximity sensor. I began by calibrating the proximity readings to actual distance values (see chart for reference). I displayed the live proximity data on an OLED screen during this process.
+
+        In the chart, I graphed distance (in cm) as a function of the sensor's proximity value. The proximity readings ranged from a maximum of 255 (when the object was closest to the sensor) to a minimum of 0 (when it was farthest). These values corresponded to a maximum measured distance of 21.6 cm and a minimum accurate distance of about 4.29 cm.
+</p>
+    <div class="section-title">Final Product</div>
+      <div class="scroll-section">
+        <img src="IMG_0641.png" alt="Final product Img 1" />
+        <img src="Chart(2).png" alt="Final product Img 2" />
+      
+      </div>
+
+       <div class="section-title">Arduino Calibration Code</div>
+      <section class="code-section">
+        <pre><code class="language-cpp">
+
+          #include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <Adafruit_APDS9960.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+Adafruit_APDS9960 apds;
+
+void setup() {
+  Wire.begin(21, 22);  // ESP32 default I2C pins
+  Serial.begin(115200);
+  delay(1000); // Wait for serial
+
+  // Initialize OLED
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("OLED not found");
+    while (true);
+  }
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println("OLED Ready");
+  display.display();
+  delay(1000);
+
+  // Initialize APDS9960
+  if (!apds.begin()) {
+    Serial.println("APDS9960 not found");
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println("APDS9960 Error");
+    display.display();
+    while (true);
+  }
+  apds.enableProximity(true);
+
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println("APDS9960 Ready");
+  display.display();
+  delay(1000);
+}
+
+void loop() {
+  // Read proximity
+  uint8_t proximity = apds.readProximity();
+  Serial.print("Proximity: ");
+  Serial.println(proximity);
+
+  // Show on OLED
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.setTextSize(2);
+  display.print("Prox: ");
+  display.println(proximity);
+  display.display();
+
+  delay(300);
+}
+
+          </code></pre>
+      </section>
+    </section>
+    
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content" id="lightbox-content"></div>
+  </div>
+
+
+
   <script>
-   const flashcardsData3 = [
-  { img: "IMG_0631.png", alt: "Design Image", text: "This is a top-down view of my project without its casing." },
-  { img: "IMG_0632.png", alt: "Design Image", text: "Again, a picture of the wiring without the casing." },
-  { img: "IMG_0634.png", alt: "Design Image", text: "Here is a picture of the connection to the ESP32 Dev Module microcontroller." },
-  { img: "Chart.png", alt: "Design Image", text: "A picture of the 0.96-inch OLED Module 128x64 I used." }
+const flashcardsData3 = [
+  { img: "IMG_0631.png", alt: "Design Image", text: "This was me making the capacitive touch sensor in 2D first." },
+  { img: "IMG_0632.png", alt: "Design Image", text: "The copper wire on the plastic bump before solder." },
+  { img: "IMG_0634.png", alt: "Design Image", text: "The final design, all hooked up." },
+  { img: "Chart.png", alt: "Design Image", text: "My chart describing responsiveness." }
 ];
 
 
