@@ -294,11 +294,11 @@
       <div class="scroll-section">
         <div class="main-image-container">
           <div class="video-title">Project in Action </div>
-          <iframe class="main-video" src="https://www.youtube.com/embed/F0KW0BkcczM" title="Scotch Yoke Side View #2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe class="main-video" src="https://www.youtube.com/embed/nfR5yahfIvk" title="Mapped LiDAR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div class="main-image-container">
           <div class="video-title">Example Render</div>
-          <iframe class="main-video" src="https://www.youtube.com/embed/U39D1tOJOt4" title="Scotch Yoke Top View" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe class="main-video" src="https://www.youtube.com/embed/qtxytNcPv2Y" title="LiDAR in Action " frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
        <div class="model-container" style="display: flex; flex-direction: column; align-items: center;">
       <a class="download-link" href="Final.f3d" download>Download Modle</a>
@@ -325,18 +325,138 @@
       <div class="section-title">Arduino Code</div>
       <section class="code-section">
         <pre><code class="language-cpp">
-// Your Arduino code here
+const int stepPin = 4;
+const int dirPin = 2;
+
+int thetaStep = 0;
+const int stepsPerRevolution = 200; // Adjust to your motor's specs
+const float thetaMaxDeg = 45.0;
+const float degPerStep = thetaMaxDeg / stepsPerRevolution;
+
+void setup() {
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  Serial.begin(115200);
+  digitalWrite(dirPin, LOW); // Adjust direction as needed
+}
+
+void loop() {
+  // Step angle in degrees
+  float theta = thetaStep * degPerStep;
+
+  // Simulated distance (replace with actual sensor reading later)
+  float r = 100.0 + 10.0 * sin(thetaStep * 0.1);
+
+  // Print angle and distance
+  Serial.print("theta: ");
+  Serial.print(theta);
+  Serial.print(" r: ");
+  Serial.println(r);
+
+  // Wait before stepping
+  delay(200); // time to stabilize or read sensor
+
+  // Perform one step
+  digitalWrite(stepPin, HIGH);
+  delay(2); // pulse duration
+  digitalWrite(stepPin, LOW);
+  delay(2);
+
+  // Wait after stepping
+  delay(300); // additional delay between steps
+
+  // Increment angle step
+  thetaStep++;
+  if (thetaStep >= stepsPerRevolution) {
+    thetaStep = 0;
+    delay(1000); // pause at end of sweep
+  }
+}
+
         </code></pre>
       </section>
 
       <div class="section-title">Python Code</div>
       <section class="code-section">
         <pre><code class="language-python">
-// Your Python code here
+import pygame
+import serial
+import math
+import sys
+
+# === Serial Setup ===
+SERIAL_PORT = 'COM6'  # Change to your actual port
+BAUD_RATE = 115200
+try:
+    ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+except serial.SerialException as e:
+    print(f"Error opening serial port: {e}")
+    sys.exit(1)
+
+# === Pygame Setup ===
+WIDTH, HEIGHT = 800, 600
+CENTER = (WIDTH // 2, HEIGHT // 2)
+SCALE_X = 3   # Horizontal zoom
+SCALE_Y = 3   # Vertical zoom
+
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Live Euclidean Plot")
+clock = pygame.time.Clock()
+
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+running = True
+points = []
+
+frame_counter = 0
+frames_per_point = 50  # Add point every 50 frames to slow plotting
+
+while running:
+    screen.fill(BLACK)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Only read and plot every 'frames_per_point' frames to slow down
+    if frame_counter % frames_per_point == 0:
+        if ser.in_waiting:
+            try:
+                line = ser.readline().decode('utf-8').strip()
+                # Expect format: "theta: XX r: YY"
+                if line.startswith("theta:"):
+                    parts = line.replace("theta:", "").replace("r:", "").split()
+                    theta = float(parts[0])
+                    r = float(parts[1])
+
+                    theta_rad = math.radians(theta)
+                    x = r * math.cos(theta_rad)
+                    y = r * math.sin(theta_rad)
+
+                    screen_x = int(CENTER[0] + x * SCALE_X)
+                    screen_y = int(CENTER[1] - y * SCALE_Y)
+
+                    points.append((screen_x, screen_y))
+
+            except Exception:
+                pass  # ignore bad lines/errors
+
+    frame_counter += 1
+
+    for pt in points:
+        pygame.draw.circle(screen, RED, pt, 4)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+ser.close()
+pygame.quit()
+sys.exit()
         </code></pre>
       </section>
-    </section> <!-- ✅ Now it properly ends after code -->
-
+    </section> 
     
   </div>
 
@@ -350,7 +470,8 @@
 const flashcardsData3 = [
   { img: "Box.png", alt: "Design Image", text: "This is the sketch for the wooden box I lazer cut (see above to download)" },
   { img: "IMG_0655.png", alt: "Design Image", text: "This was me playing around trying to get two stepper motros connected " },
-  { img: "IMG_0654.png", alt: "Design Image", text: "My Lidar scanner i had a hard time with as, the wiring it came with didnt fit with our ESP32 microncrollers so I had to cut the Lidar sesor wires and solder on diffent wires so i could plug it in- Here is the final reslut of that" }
+  { img: "IMG_0654.png", alt: "Design Image", text: "My Lidar scanner i had a hard time with as, the wiring it came with didnt fit with our ESP32 microncrollers so I had to cut the Lidar sesor wires and solder on diffent wires so i could plug it in- Here is the final reslut of that" },
+  {img: "Box.png", alt: "Design Image", text: "This is the sketch for the wooden box I lazer cut (see above to download)" }
 ];
 
 
