@@ -325,53 +325,89 @@
       <div class="section-title">Arduino Code</div>
       <section class="code-section">
         <pre><code class="language-cpp">
-const int stepPin = 4;
-const int dirPin = 2;
+#include <HardwareSerial.h>
 
-int thetaStep = 0;
-const int stepsPerRevolution = 200; // Adjust to your motor's specs
-const float thetaMaxDeg = 45.0;
-const float degPerStep = thetaMaxDeg / stepsPerRevolution;
+// TF-Luna UART
+HardwareSerial tfSerial(2);  // UART2 on pins 16 (RX) and 17 (TX)
+
+// Stepper Motor 1
+const int stepPin1 = 13;
+const int dirPin1 = 12;
+
+// Stepper Motor 2
+const int stepPin2 = 14;
+const int dirPin2 = 27;
+
+// Step counters
+long steps1 = 0;
+long steps2 = 0;
+
+// Degrees per step (e.g. 1.8° per step for 200-step motors)
+const float degreesPerStep = 1.8;
 
 void setup() {
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
+  // Serial for debugging
   Serial.begin(115200);
-  digitalWrite(dirPin, LOW); // Adjust direction as needed
+  Serial.println("System Start");
+
+  // LiDAR setup
+  tfSerial.begin(115200, SERIAL_8N1, 16, 17);  // RX=16, TX=17
+
+  // Motor 1
+  pinMode(stepPin1, OUTPUT);
+  pinMode(dirPin1, OUTPUT);
+  digitalWrite(dirPin1, LOW); // Set initial direction
+
+  // Motor 2
+  pinMode(stepPin2, OUTPUT);
+  pinMode(dirPin2, OUTPUT);
+  digitalWrite(dirPin2, LOW); // Set initial direction
 }
 
 void loop() {
-  // Step angle in degrees
-  float theta = thetaStep * degPerStep;
+  // === Step each motor once ===
+  stepMotor(stepPin1);
+  steps1++;
 
-  // Simulated distance (replace with actual sensor reading later)
-  float r = 100.0 + 10.0 * sin(thetaStep * 0.1);
+  stepMotor(stepPin2);
+  steps2++;
 
-  // Print angle and distance
-  Serial.print("theta: ");
-  Serial.print(theta);
-  Serial.print(" r: ");
-  Serial.println(r);
+  // === Compute angles ===
+  float angle1 = fmod(steps1 * degreesPerStep, 360.0);
+  float angle2 = fmod(steps2 * degreesPerStep, 360.0);
 
-  // Wait before stepping
-  delay(200); // time to stabilize or read sensor
+  // === Check for LiDAR data ===
+  if (tfSerial.available() >= 9) {
+    if (tfSerial.read() == 0x59 && tfSerial.read() == 0x59) {
+      uint8_t buffer[7];
+      for (int i = 0; i < 7; i++) {
+        buffer[i] = tfSerial.read();
+      }
 
-  // Perform one step
-  digitalWrite(stepPin, HIGH);
-  delay(2); // pulse duration
-  digitalWrite(stepPin, LOW);
-  delay(2);
+      int distance = buffer[0] + (buffer[1] << 8);
 
-  // Wait after stepping
-  delay(300); // additional delay between steps
-
-  // Increment angle step
-  thetaStep++;
-  if (thetaStep >= stepsPerRevolution) {
-    thetaStep = 0;
-    delay(1000); // pause at end of sweep
+      // === Print data ===
+      Serial.print("Distance: ");
+      Serial.print(distance);
+      Serial.print(" cm | Motor1: ");
+      Serial.print(angle1);
+      Serial.print("° | Motor2: ");
+      Serial.print(angle2);
+      Serial.println("°");
+    }
   }
+
+  // === Delay between steps ===
+  delay(50); // Adjust for speed
 }
+
+void stepMotor(int pin) {
+  digitalWrite(pin, LOW);
+  delayMicroseconds(500);
+  digitalWrite(pin, HIGH);
+  delayMicroseconds(500);
+}
+
 
         </code></pre>
       </section>
