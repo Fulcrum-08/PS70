@@ -2,24 +2,504 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>08: CNC milling. Toolpaths 2D and 3D. Molding & Casting.</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CNC- Assignments</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
-    }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
-    }
+body {
+  margin: 0;
+  background-color: white;
+  font-family: Arial, sans-serif;
+  color: #222;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.assignments {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.assignment {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.assignment h2 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin: 20px 0 10px;
+  font-size: 1.1rem;
+}
+
+/* Scroll section styles for horizontal scroll */
+.scroll-section {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  justify-content: flex-start;
+}
+
+/* Center content if 1 to 5 items */
+@supports(selector(:has(*))) {
+  .scroll-section:has(> *:only-child),
+  .scroll-section:has(> *:nth-child(2):last-child),
+  .scroll-section:has(> *:nth-child(3):last-child),
+  .scroll-section:has(> *:nth-child(4):last-child),
+  .scroll-section:has(> *:nth-child(5):last-child) {
+    justify-content: center;
+  }
+}
+
+/* Flashcards */
+.flashcard {
+  flex: 0 0 auto;
+  width: 200px;
+  height: 140px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
+  user-select: none;
+  overflow: hidden;
+}
+
+.flashcard-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcard-front img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  font-size: 1rem;
+  color: #222;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Model viewer styles */
+.model-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+model-viewer {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  cursor: pointer;
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+}
+
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
+
+.scroll-section img {
+  width: 200px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.text-section {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  cursor: pointer;
+  text-align: center;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img,
+.lightbox-content model-viewer,
+.lightbox-content .lightbox-text {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  color: #222;
+}
+
+.lightbox-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Scrollbar styling for horizontal scroll (optional) */
+.scroll-section::-webkit-scrollbar {
+  height: 8px;
+}
+.scroll-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.scroll-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.scroll-section img.main-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.main-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto; /* keeps container width from shrinking */
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  border-bottom: 2px solid #0056b3;
+}
+
+
   </style>
 </head>
 <body>
-  <h1>08: CNC milling. Toolpaths 2D and 3D. Molding & Casting.</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+  <h1>Assignments</h1>
+
+  <div class="assignments">
+
+    <!-- Assignment 1 -->
+    <!-- Assignment 1 -->
+<section class="assignment">
+ 
+
+  
+
+
+
+
+    <!-- Assignment 2 -->
+    <div class="section-title">CNC-Stool</div>
+<div class="scroll-section">
+  <div class="model-container">
+    <model-viewer src="Flag.glb" alt="Flag" camera-controls auto-rotate ar></model-viewer>
+    <a class="download-link" href="Stool.f3d" download>Stool Fusion File</a>
+  </div>
+  
+</div>
+
+
+      <!-- Flashcards -->
+  <div class="section-title">Design Process</div>
+  <div class="scroll-section" id="flashcard-section-3">
+    <!-- Cards will be injected by JavaScript -->
+  </div>
+
+    <div class="section-title">Text Explanation</div>
+      <div class="text-section">
+      This stool is inspired by the infinity bench on the first floor of the Science Center. At first, I was planning to make a small-scale chair, but due to time and logistical limitations, I decided to settle for a stool instead. The footstool is made from CNC-milled wooden parts held together by two metal dowels that provide structural support (see pictures).
+
+<p>One of the most challenging parts of the project was getting the holes for the dowels wide enough. They came out slightly too small, but with a bit of help from a drill and a file, I was able to fix them. Once everything fit together properly, I finished the wood with vegetable oil to protect it from moisture and bring out the grain. I also used wood glue to secure the stool in place and keep the individual parts from shifting side to side.</p>
+      </div>
+     
+    </section>
+
+
+  <section class="assignment">
+  <div class="section-title">Molding/casting</div>
+
+  <div class="section-title">Final</div>
+  <div class="scroll-section">
+    
+
+    <div class="model-container">
+      <img src="phonecase.png" alt="Phone Case Picture" class="main-image" />
+    </div>
+  </div>
+
+  <div class="section-title">Design Process</div>
+  <div class="scroll-section" id="flashcard-section-4">
+    <!-- Cards will be injected by JavaScript -->
+  </div>
+
+  <div class="section-title">Scanning Experience</div>
+  <div class="text-section">
+    TFor the modeling and casting project, I wanted to make a phone case. After thinking through how I could cast my phone without ruining it, I came up with a few ideas (see images). The first attempt was to create a negative mold using Plaster of Paris, then make a positive using silicone. That cast came out okay.
+
+While that was setting, I 3D printed a replica of my phone (iPhone 12 Mini) and vacuum sealed it. That kind of worked, but I had to squeeze my actual phone into it, and even then it didn’t really fit properly.
+
+Lastly, I tried making a burlap case. I used epoxy with burlap, but the vacuum sealing wasn’t working—looking back, that was probably user error. Instead, I just tried to get as much air out of the bag as I could and sealed it with tape. That version actually came out the best, though it still wasn’t quite at the level I had hoped for.
+  </div>
+</section>
+
+</section>
+
+
+<script>
+  window.onload = () => {
+   const flashcardsData3 = [
+  {
+    img: "IMG_0672.png",
+    alt: "Design Process Image",
+    text: "Final product"
+  },
+  {
+    img: "IMG_0673.png",
+    alt: "Design Process Image",
+    text: "Front view of the final product"
+  },
+  {
+    img: "IMG_0674.png",
+    alt: "Design Process Image",
+    text: "These are all the components that went into the stool. As you can see, this doesn't exactly match the 3D file because I duplicated some bodies in Inspire."
+  },
+  {
+    img: "IMG_0676.png",
+    alt: "Design Process Image",
+    text: "This picture shows how the stool fits together."
+  },
+  {
+    img: "IMG_0677.png",
+    alt: "Design Process Image",
+    text: "Me gluing the stool together."
+  }
+];
+
+
+
+
+
+const flashcardsData4 = [
+  {
+    img: "IMG_0671.png",
+    alt: "Design Process Image",
+    text: "This is my phone case in the Plaster of Paris after it cured."
+  },
+  {
+    img: "IMG_0675.png",
+    alt: "Design Process Image",
+    text: "I then removed my phone case, resulting in what you see here: a Plaster of Paris mold."
+  },
+  {
+    img: "IMG_0680.png",
+    alt: "Design Process Image",
+    text: "This was my attempt at vacuum sealing a case. The problem was that the 3D printed iPhone was slightly warped due to a printer malfunction, which led to a crooked phone and a poor vacuum seal."
+  },
+  {
+    img: "IMG_0682.png",
+    alt: "Design Process Image",
+    text: "I then cut the actual case out of the plastic. It kind of worked—it was thin but somewhat functional."
+  },
+  {
+    img: "IMG_0683.png",
+    alt: "Design Process Image",
+    text: "Another picture of the cut-out vacuum-sealed case."
+  },
+  {
+    img: "IMG_0681.png",
+    alt: "Design Process Image",
+    text: "Because the vacuum was broken (see explanation), I decided to just tape the epoxy/burlap combo in place and hope for the best. This is the result."
+  }
+];
+
+
+
+function renderFlashcards(data, containerId) {
+  const container = document.getElementById(containerId);
+  data.forEach(({ img, alt, text }) => {
+    const card = document.createElement("div");
+    card.className = "flashcard";
+    card.dataset.text = text;
+    card.innerHTML = `
+      <div class="flashcard-inner">
+        <div class="flashcard-front"><img src="${img}" alt="${alt}" /></div>
+        <div class="flashcard-back">${text}</div>
+      </div>`;
+    container.appendChild(card);
+
+    // 🔽 Add event listeners here for this card only
+    let clickTimer = null;
+    card.addEventListener("click", (e) => {
+      if (e.target.closest('.lightbox')) return;
+
+      if (clickTimer == null) {
+        clickTimer = setTimeout(() => {
+          card.classList.toggle("flipped");
+          clickTimer = null;
+        }, 250);
+      }
+    });
+
+    card.addEventListener("dblclick", (e) => {
+      e.stopPropagation();
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+        clickTimer = null;
+      }
+      const frontImg = card.querySelector(".flashcard-front img");
+      if (frontImg) {
+        lightboxContent.innerHTML = `<img src="${frontImg.src}" alt="${frontImg.alt}" />`;
+        lightbox.style.display = "flex";
+      }
+    });
+  });
+}
+
+
+    renderFlashcards(flashcardsData3, "flashcard-section-3");
+    renderFlashcards(flashcardsData4, "flashcard-section-4");
+
+    // Your lightbox code continues here...
+    const lightbox = document.getElementById("lightbox");
+    const lightboxContent = document.getElementById("lightbox-content");
+
+    document.querySelectorAll(".scroll-section img").forEach((img) => {
+      if (!img.closest(".flashcard")) {
+        img.addEventListener("click", () => {
+          lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+          lightbox.style.display = "flex";
+        });
+      }
+    });
+
+    document.querySelectorAll("model-viewer").forEach((viewer) => {
+      viewer.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        lightboxContent.innerHTML = `
+          <model-viewer src="${viewer.getAttribute("src")}" camera-controls auto-rotate ar style="width: 90vw; height: 90vh;"></model-viewer>
+        `;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    document.querySelectorAll(".text-section").forEach((block) => {
+      block.addEventListener("click", () => {
+        lightboxContent.innerHTML = `<div class="lightbox-text">${block.innerText}</div>`;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
+      }
+    });
+  };
+</script>
+<!-- Lightbox for expanded view -->
+<div id="lightbox" class="lightbox">
+  <div id="lightbox-content" class="lightbox-content"></div>
+</div>
+
 </body>
 </html>
