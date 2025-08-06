@@ -1,25 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>14: Final project presentation</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>3D Sphere from Firebase</title>
   <style>
-    body {
-      text-align: center;
-      padding: 10vh;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
-    }
-    .coming {
-      font-size: 2em;
-      margin-top: 20px;
-      color: #555;
-    }
+    body { margin: 0; overflow: hidden; background: black; }
+    #loading { color: white; font-family: sans-serif; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
 </head>
 <body>
-  <h1>14: Final project presentation</h1>
-  <p class="coming">🚧 This page is coming soon. Stay tuned! 🚧</p>
+  <div id="loading">Loading points...</div>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZiSGPSF4S1COV--bX9R0CenD1q1lZFik",
+      authDomain: "finalprojectps70.firebaseapp.com",
+      databaseURL: "https://finalprojectps70-default-rtdb.firebaseio.com",
+      projectId: "finalprojectps70",
+      storageBucket: "finalprojectps70.firebasestorage.app",
+      messagingSenderId: "537615396887",
+      appId: "1:537615396887:web:3798d2f6d90b1897a4ac52",
+      measurementId: "G-D3GNRH0FKD"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    camera.position.z = 100;
+
+    let points;
+
+    db.ref("points").once("value").then(snapshot => {
+      const data = snapshot.val();
+      if (!data) {
+        document.getElementById("loading").innerText = "No data found.";
+        return;
+      }
+
+      const geometry = new THREE.BufferGeometry().setFromPoints(
+        data.map(p => new THREE.Vector3(p.x, p.y, p.z))
+      );
+      const material = new THREE.PointsMaterial({ color: 0x00ff00, size: 1 });
+      points = new THREE.Points(geometry, material);
+      scene.add(points);
+      document.getElementById("loading").remove();
+      animate();
+    }).catch(error => {
+      document.getElementById("loading").innerText = "Failed to load data.";
+      console.error(error);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (points) {
+        points.rotation.y += 0.005;
+        points.rotation.x += 0.003;
+      }
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
 </body>
 </html>
