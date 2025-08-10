@@ -81,7 +81,7 @@
       </svg>
 
       <div class="videoWrap" id="videoWrap">
-        <video id="mainVideo" preload="metadata" playsinline poster="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=960"></video>
+        <video id="mainVideo" preload="metadata" playsinline poster="stall.jpg"></video>
         <div id="lock" class="lock" role="status" aria-label="Video locked until all sections are explored">
           <div class="lockPanel">
             <svg class="lockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -132,7 +132,6 @@
   const progressText = document.getElementById('progressText');
   const modal = document.getElementById('modal');
   const modalBody = document.getElementById('modalBody');
-  // Use a relative path with forward slashes
   const VIDEO_SRC = "FinalVideo.mp4";
 
   function getCSS(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
@@ -152,7 +151,10 @@
       pathEl.setAttribute('fill', s.color);
       pathEl.setAttribute('class','slice stroke');
       pathEl.dataset.key=s.key;
-      pathEl.addEventListener('click',()=>{ openSection(s.key); try{ if(navigator.vibrate) navigator.vibrate(15);}catch(e){} });
+      pathEl.addEventListener('click',()=>{
+        openSection(s.key);
+        try{ if(navigator.vibrate) navigator.vibrate(15);}catch(e){}
+      });
       slicesG.appendChild(pathEl);
 
       const mid = (start+end)/2;
@@ -179,26 +181,43 @@
     modalBody.appendChild(iframe);
   }
   function markExplored(key){
-    if(!explored[key]){ explored[key]=true; updateProgress(); }
+    if(!explored[key]){
+      explored[key] = true;
+      updateProgress();
+    }
   }
   function updateProgress(){
-    const c=Object.values(explored).filter(Boolean).length; const total=SECTIONS.length;
-    progressFill.style.width=(c/total*100)+'%';
-    progressText.textContent=`${c}/${total}`;
-    if(c===total) unlockVideo();
+    const c = Object.values(explored).filter(Boolean).length;
+    const total = SECTIONS.length;
+    progressFill.style.width = (c/total*100) + '%';
+    progressText.textContent = `${c}/${total}`;
+    if(c === total){
+      unlockVideo();
+    }
   }
   function unlockVideo(){
     if(!video.src) video.src = VIDEO_SRC;
     video.setAttribute('controls','controls');
     videoWrap.classList.add('unlocked');
     lock.classList.add('hidden');
-    video.play().catch(() => {}); // optional autoplay
   }
-  // Close modal handlers
-  modal.addEventListener('click', (e)=>{ if(e.target.hasAttribute('data-close')) modal.classList.remove('open'); });
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')) modal.classList.remove('open'); });
 
-  (function init(){ renderSlices(); updateProgress(); })();
+  // Close modal handlers
+  modal.addEventListener('click', (e)=>{
+    if(e.target.hasAttribute('data-close')){
+      modal.classList.remove('open');
+    }
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && modal.classList.contains('open')){
+      modal.classList.remove('open');
+    }
+  });
+
+  (function init(){
+    renderSlices();
+    updateProgress();
+  })();
 </script>
 </body>
 </html>
