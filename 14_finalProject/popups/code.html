@@ -1,0 +1,393 @@
+\<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+  <style>
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:14px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color:#222;
+      background:#fff;
+      display:flex;align-items:stretch;justify-content:stretch;
+    }
+    .container{flex:1;display:flex;flex-direction:column;min-height:0}
+    header{padding:12px 14px;border-bottom:1px solid #e5e7eb;font-weight:600}
+    main{padding:14px;overflow:auto;flex:1;min-height:0}
+    .section{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin-bottom:12px;background:#f9fafb}
+    summary{cursor:pointer;font-weight:600}
+    pre{margin:0;padding:12px;overflow:auto;font-size:12px;background:#fff;border:1px solid #e5e7eb;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>Code</header>
+    <main>
+
+<div class="section">
+  <details open>
+    <summary>Top Rotation, and Website Controll Code</summary>
+    <div style="max-height:220px;overflow:auto;margin-top:8px">
+      <pre><code class="language-cpp">#include &lt;WiFi.h&gt
+#include &lt;HTTPClient.h&gt
+
+const char* ssid = "BlueberryHouse";
+const char* password = "SwimmingAK47";
+
+const char* firebaseBaseURL = "https://finalprojectps70-default-rtdb.firebaseio.com/points.json";
+#define stepPin D9
+#define dirPin D8
+const uint8_t slaveAddress = 0x08;
+volatile byte receivedData = 0;
+volatile bool dataReceived = false;
+volatile bool dataReady = false;
+float phi = 0;
+float theta = 0;
+float r = -1;
+void setup() {
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected");
+  Wire.begin(slaveAddress);  // Join I2C bus as slave
+  Wire.onReceive(receiveEvent);
+  Wire.onRequest(requestEvent);
+  
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+
+  Serial.begin(115200);
+  delay(1000);
+
+  Serial1.begin(115200, SERIAL_8N1, D7, D6);
+  Serial.println("TFLuna Serial Test Starting...");
+}
+
+void loop() {
+  if (dataReceived) {
+    dataReceived = false;
+    
+    for (int i = 0; i <= 100; i++) 
+    {
+    moveStepper(1);
+    r = readTFLunaDistance();
+    theta = theta+1.8;
+    Serial.println(r);
+    Serial.print(",");
+    Serial.print(theta);
+    Serial.print(",");
+    Serial.print(phi);
+        Serial.println();
+
+
+     sendSphericalToFirebase(r/10,phi,theta);
+    
+    }
+   moveStepper(-100);
+  phi = phi +1.8;
+  theta = 0;
+
+    dataReady = true;  // We're done — master can request now
+  } 
+  }
+
+void receiveEvent(int howMany) {
+  while (Wire.available()) {
+    receivedData = Wire.read();
+    dataReceived = true;
+    dataReady = false;
+  }
+}
+
+void requestEvent() {
+  if (dataReady) {
+    Wire.write(0xAC);  // Send confirmation only when done
+  } else {
+    Wire.write(0x00);  // Not ready
+  }
+}
+
+void moveStepper(int steps) {
+  delay(50);
+  if (steps == 0) return;
+
+  digitalWrite(dirPin, steps > 0 ? HIGH : LOW);
+  int totalSteps = abs(steps);
+  for (int i = 0; i < totalSteps; i++) {
+    digitalWrite(stepPin, HIGH);
+    delay(5);
+    digitalWrite(stepPin, LOW);
+    delay(5);
+  }
+}
+
+int readTFLunaDistance() {
+  int distance = -1;
+  int count = 0;
+
+  while (count < 50) {
+    if (Serial1.available() >= 9) {
+      if (Serial1.read() == 0x59 && Serial1.read() == 0x59) {
+        uint8_t buffer[7];
+        for (int i = 0; i < 7; i++) {
+          buffer[i] = Serial1.read();
+        }
+        distance = buffer[0] + (buffer[1] << 8);
+        count++;
+      }
+    }
+  }
+  return distance;
+}
+void sendSphericalToFirebase(float radius, int phiDeg, int thetaDeg) {
+  // Convert degrees to radians
+  float phi = phiDeg * PI / 180.0;
+  float theta = thetaDeg * PI / 180.0;
+
+  // Convert spherical to Cartesian
+  float x = radius * sin(phi) * cos(theta);
+  float y = radius * sin(phi) * sin(theta);
+  float z = radius * cos(phi);
+
+  // Create JSON with Cartesian coordinates
+  String json = "{";
+  json += "\"x\":" + String(x, 4) + ",";
+  json += "\"y\":" + String(y, 4) + ",";
+  json += "\"z\":" + String(z, 4);
+  json += "}";
+
+  Serial.print("Sending point: ");
+  Serial.println(json);
+
+  // Send to Firebase
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(firebaseBaseURL);
+    http.addHeader("Content-Type", "application/json");
+
+    int httpResponseCode = http.POST(json);
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.println("Response: " + response);
+    } else {
+      Serial.println("Error sending POST");
+    }
+
+    http.end();
+  } else {
+    Serial.println("WiFi not connected");
+  }
+}</code></pre>
+    </div>
+  </details>
+</div>
+
+<div class="section">
+  <details>
+    <summary>Bottom Rotaion Code</summary>
+    <div style="max-height:220px;overflow:auto;margin-top:8px">
+      <pre><code class="language-cpp">#include &lt;WiFi.h&gt
+
+const uint8_t slaveAddress = 0x08;
+#define stepPin 13
+#define dirPin 12
+
+void setup() {
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  Serial.begin(115200);
+  Wire.begin();  // Master
+}
+
+void loop() {
+  // 1. Move local stepper
+  moveStepper(2);
+  Serial.println("Master: Stepper moved");
+
+  // 2. Send command to slave
+  Wire.beginTransmission(slaveAddress);
+  Wire.write(1);
+  byte error = Wire.endTransmission();
+
+  if (error == 0) {
+    Serial.println("Master: Command sent to slave");
+
+    // 3. Wait for confirmation
+    byte confirmation = 0x00;
+    while (confirmation != 0xAC) {
+      Wire.requestFrom(slaveAddress, (uint8_t)1);
+      if (Wire.available()) {
+        confirmation = Wire.read();
+        if (confirmation == 0xAC) {
+          Serial.println("Master: Got confirmation from slave");
+        } else {
+          Serial.println("Master: Waiting...");
+          delay(100);  // Wait and try again
+        }
+      }
+    }
+  } else {
+    Serial.println("Master: Error sending data");
+  }
+
+  delay(1000);  // Optional pause between cycles
+}
+
+void moveStepper(int steps) {
+  delay(50);
+  if (steps == 0) return;
+
+  digitalWrite(dirPin, steps > 0 ? HIGH : LOW);
+  int totalSteps = abs(steps);
+  for (int i = 0; i < totalSteps; i++) {
+    digitalWrite(stepPin, HIGH);
+    delay(5);
+    digitalWrite(stepPin, LOW);
+    delay(5);
+  }
+}
+</code></pre>
+    </div>
+  </details>
+</div>
+
+<div class="section">
+  <details>
+    <summary>HTML Point Map Renderer</summary>
+    <div style="max-height:220px;overflow:auto;margin-top:8px">
+      <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Live 3D Sphere from Firebase&lt;/title&gt;
+  &lt;style&gt;
+    body { margin: 0; overflow: hidden; background: black; }
+    #loading {
+      color: white;
+      font-family: sans-serif;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  &lt;/style&gt;
+
+  &lt;script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"&gt;&lt;/script&gt;
+
+  &lt;script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"&gt;&lt;/script&gt;
+  &lt;script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="loading"&gt;Initializing...&lt;/div&gt;
+
+  &lt;script&gt;
+    const loadingDiv = document.getElementById("loading");
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZiSGPSF4S1COV--bX9R0CenD1q1lZFik",
+      authDomain: "finalprojectps70.firebaseapp.com",
+      databaseURL: "https://finalprojectps70-default-rtdb.firebaseio.com",
+      projectId: "finalprojectps70",
+      storageBucket: "finalprojectps70.appspot.com",
+      messagingSenderId: "537615396887",
+      appId: "1:537615396887:web:3798d2f6d90b1897a4ac52",
+      measurementId: "G-D3GNRH0FKD"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let scene, camera, renderer, geometry, pointCloud;
+
+    function initScene() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      geometry = new THREE.BufferGeometry();
+      const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+      pointCloud = new THREE.Points(geometry, material);
+      scene.add(pointCloud);
+
+      camera.position.z = 5;
+      animate();
+      console.log("3D scene initialized");
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      pointCloud.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    function fetchPointsFromFirebase() {
+      const pointsRef = db.ref("points");
+      pointsRef.once("value", snapshot =&gt; {
+        const data = snapshot.val();
+        const vertices = [];
+
+        if (data) {
+          Object.values(data).forEach(point =&gt; {
+            if ('x' in point &amp;&amp; 'y' in point &amp;&amp; 'z' in point) {
+              vertices.push(point.x, point.y, point.z);
+            }
+          });
+
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+          geometry.attributes.position.needsUpdate = true;
+        }
+      });
+    }
+
+    function startPolling(intervalMs = 1000) {
+      setInterval(fetchPointsFromFirebase, intervalMs);
+    }
+
+    window.addEventListener("load", () =&gt; {
+      loadingDiv.innerText = "Starting 3D scene...";
+      initScene();
+      loadingDiv.remove();
+      startPolling();
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </details>
+</div>
+
+<div class="section" style="background:linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#2da44e,#6e59cf,#0ea5b5) border-box; border:1px solid transparent;">
+  <p style="margin:0 0 6px 0; font-weight:600;">Explination</p>
+  <p style="margin:0; color:#444; line-height:1.6;">
+    
+The process begins with the bottom microcontroller, an ESP32 Dev Module, which controls a Nema 17 stepper motor. The bottom microcontroller starts by stepping the motor once. After this step, it sends a signal, specifically, a 1, to the top microcontroller, an ESP32 Xiao, via I2C communication.
+When the top microcontroller receives this signal, it steps its motor 100 times, which corresponds to a total rotation of 180 degrees, before resetting. During each of these steps, the Xiao records both the theta and phi angles.
+At the same time, it takes distance measurements using a TF-Luna LiDAR sensor connected through serial. Each measurement gives a distance r, creating a point in polar coordinates (r,theta,phi) This point is then converted into Cartesian coordinates and sent to an external server (Firebase) for storage.
+Finally, the stored data is rendered live on a website I created, allowing visualization of the scanned points.
+
+  </p>
+</div>
+
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/html.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>

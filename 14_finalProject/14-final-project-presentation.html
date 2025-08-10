@@ -1,75 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>3D Sphere from Firebase</title>
-  <style>
-    body { margin: 0; overflow: hidden; background: black; }
-    #loading { color: white; font-family: sans-serif; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pinwheel Project — Iframe Popups (Full Control)</title>
+<style>
+  :root{
+    --bg:#ffffff; --text:#24292f; --muted:#57606a;
+    --panel:#f6f8fa; --border:#d0d7de;
+    --accent:#0969da;
+    --c-design:#6e59cf; --c-process:#0ea5b5; --c-code:#2da44e; --c-inspiration:#e3a008; --c-models:#d1345b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial;color:var(--text);background:var(--bg)}
+  .wrap{width:min(1200px,94vw);padding:28px 20px;margin:auto}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:.6rem}
+  .brand__dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  h1{font-size:18px;margin:0}
+  .progress{display:flex;align-items:center;gap:.6rem;color:var(--muted);font-size:12px}
+  .bar{width:180px;height:8px;background:var(--panel);border:1px solid var(--border);border-radius:999px;overflow:hidden}
+  .bar>span{display:block;height:100%;width:0;background:var(--accent);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+  /* Stage */
+  .stage{position:relative;width:min(94vw,820px);height:min(94vw,820px);margin:12px auto}
+  .videoWrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:420px;height:420px;border-radius:50%;overflow:hidden;
+             box-shadow:0 10px 30px rgba(0,0,0,.15);outline:4px solid #0000001a;background:#000}
+  .videoWrap video{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter .3s ease}
+  .videoWrap.unlocked video{filter:none}
+  .lock{position:absolute;inset:0;background:rgba(255,255,255,.55);backdrop-filter:saturate(1.1) blur(2px);display:flex;align-items:center;justify-content:center}
+  .lock.hidden{opacity:0;pointer-events:none;transition:opacity .25s ease}
+  .lockPanel{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);padding:.5rem .7rem;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+  .lockIcon{width:18px;height:18px;color:#57606a}
+  .lockText{font-size:12px}
+  /* SVG ring */
+  svg{width:100%;height:100%}
+  .slice{cursor:pointer;opacity:.96;transition:opacity .18s ease, transform .18s ease}
+  .slice:hover{opacity:1; transform:scale(1.012)}
+  .slice.stroke{stroke:#00000022;stroke-width:1}
+  .innerShade{pointer-events:none}
+
+  /* Modal shell: NO padding/formatting inside; iframe fills everything */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50}
+  .modal.open{display:flex}
+  .modalBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+  .modalPanel{position:relative;max-width:96vw;width:96vw;height:90vh;background:#ffffff;border:1px solid var(--border);
+              border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.25);overflow:hidden}
+  .modalBody{position:absolute;inset:0;padding:0;margin:0}
+  .modalBody iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#fff}
+
+  .closeFloating{position:absolute;top:10px;right:10px;z-index:10;appearance:none;border:0;background:rgba(0,0,0,.6);
+                 color:#fff;border-radius:999px;width:36px;height:36px;cursor:pointer;display:grid;place-items:center}
+  .closeFloating:hover{background:rgba(0,0,0,.75)}
+  .closeFloating svg{width:18px;height:18px}
+  footer{color:var(--muted);text-align:center;font-size:12px;padding:18px 0}
+</style>
 </head>
 <body>
-  <div id="loading">Loading points...</div>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDZiSGPSF4S1COV--bX9R0CenD1q1lZFik",
-      authDomain: "finalprojectps70.firebaseapp.com",
-      databaseURL: "https://finalprojectps70-default-rtdb.firebaseio.com",
-      projectId: "finalprojectps70",
-      storageBucket: "finalprojectps70.firebasestorage.app",
-      messagingSenderId: "537615396887",
-      appId: "1:537615396887:web:3798d2f6d90b1897a4ac52",
-      measurementId: "G-D3GNRH0FKD"
-    };
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="brand__dot"></span><h1>Pinwheel Project</h1></div>
+      <div class="progress" aria-live="polite">
+        <span>Unlock</span>
+        <div class="bar" aria-hidden="true"><span id="progressFill"></span></div>
+        <strong id="progressText">0/5</strong>
+      </div>
+    </header>
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    <div class="stage">
+      <svg id="pinwheel" viewBox="0 0 820 820" aria-label="Pinwheel navigation ring">
+        <defs>
+          <radialGradient id="innerFade" r="60%">
+            <stop offset="75%" stop-color="#000" stop-opacity=".25"/>
+            <stop offset="95%" stop-color="#000" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g id="slices"></g>
+        <g id="labels"></g>
+        <circle class="innerShade" cx="410" cy="410" r="259" fill="url(#innerFade)"/>
+      </svg>
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-    camera.position.z = 100;
+      <div class="videoWrap" id="videoWrap">
+        <video id="mainVideo" preload="metadata" playsinline poster="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=960"></video>
+        <div id="lock" class="lock" role="status" aria-label="Video locked until all sections are explored">
+          <div class="lockPanel">
+            <svg class="lockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="10" rx="2"/>
+              <path d="M7 11V8a5 5 0 0 1 10 0v3"/>
+            </svg>
+            <span class="lockText">Open each slice to unlock the video</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    let points;
+    <!-- Modal shell with an iframe inside; no external formatting leaks in -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true">
+      <div class="modalBackdrop" data-close></div>
+      <div class="modalPanel">
+        <button class="closeFloating" title="Close" aria-label="Close" data-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div id="modalBody" class="modalBody"></div>
+      </div>
+    </div>
 
-    db.ref("points").once("value").then(snapshot => {
-      const data = snapshot.val();
-      if (!data) {
-        document.getElementById("loading").innerText = "No data found.";
-        return;
-      }
+    <footer>Iframe popups: each file fully controls content and styles.</footer>
+  </div>
 
-      const geometry = new THREE.BufferGeometry().setFromPoints(
-        data.map(p => new THREE.Vector3(p.x, p.y, p.z))
-      );
-      const material = new THREE.PointsMaterial({ color: 0x00ff00, size: 1 });
-      points = new THREE.Points(geometry, material);
-      scene.add(points);
-      document.getElementById("loading").remove();
-      animate();
-    }).catch(error => {
-      document.getElementById("loading").innerText = "Failed to load data.";
-      console.error(error);
+<script>
+  const SECTIONS = [
+    { key: 'reflection', label: 'Reflection', color: getCSS('--c-design'), file: 'popups/design.html' },
+    { key: 'process', label: 'Process', color: getCSS('--c-process'), file: 'popups/process.html' },
+    { key: 'code', label: 'Code', color: getCSS('--c-code'), file: 'popups/code.html' },
+    { key: 'inspiration', label: 'Inspiration', color: getCSS('--c-inspiration'), file: 'popups/inspiration.html' },
+    { key: 'models', label: '3D Models', color: getCSS('--c-models'), file: 'popups/models.html' }
+  ];
+  const R = { cx:410, cy:410, inner:260, outer:400 };
+  const explored = Object.fromEntries(SECTIONS.map(s=>[s.key,false]));
+  const GAP_DEG = 3;
+
+  const slicesG = document.getElementById('slices');
+  const labelsG = document.getElementById('labels');
+  const video = document.getElementById('mainVideo');
+  const lock = document.getElementById('lock');
+  const videoWrap = document.getElementById('videoWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const modal = document.getElementById('modal');
+  const modalBody = document.getElementById('modalBody');
+  // Use a relative path with forward slashes
+  const VIDEO_SRC = "FinalVideo.mp4";
+
+  function getCSS(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function polar(r, ang){ const a=(ang-90)*Math.PI/180; return {x:R.cx+r*Math.cos(a), y:R.cy+r*Math.sin(a)} }
+  function sectorPath(start,end){
+    const p1=polar(R.outer,end), p2=polar(R.outer,start), p3=polar(R.inner,start), p4=polar(R.inner,end);
+    const large=end-start<=180?0:1;
+    return `M ${p1.x} ${p1.y} A ${R.outer} ${R.outer} 0 ${large} 0 ${p2.x} ${p2.y} L ${p3.x} ${p3.y} A ${R.inner} ${R.inner} 0 ${large} 1 ${p4.x} ${p4.y} Z`;
+  }
+  function renderSlices(){
+    const span = 360/SECTIONS.length; slicesG.innerHTML=''; labelsG.innerHTML='';
+    SECTIONS.forEach((s,i)=>{
+      const start = i*span + GAP_DEG;
+      const end   = (i+1)*span - GAP_DEG;
+      const pathEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+      pathEl.setAttribute('d', sectorPath(start,end));
+      pathEl.setAttribute('fill', s.color);
+      pathEl.setAttribute('class','slice stroke');
+      pathEl.dataset.key=s.key;
+      pathEl.addEventListener('click',()=>{ openSection(s.key); try{ if(navigator.vibrate) navigator.vibrate(15);}catch(e){} });
+      slicesG.appendChild(pathEl);
+
+      const mid = (start+end)/2;
+      const pos = polar((R.inner+R.outer)/2, mid);
+      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', pos.x);
+      t.setAttribute('y', pos.y);
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('dominant-baseline','middle');
+      t.setAttribute('class','label');
+      t.textContent = s.label;
+      labelsG.appendChild(t);
     });
+  }
+  function openSection(key){
+    const s = SECTIONS.find(x=>x.key===key);
+    if(!s) return;
+    markExplored(key);
+    modal.classList.add('open');
+    modalBody.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', s.file);
+    iframe.setAttribute('title', s.label + ' popup');
+    modalBody.appendChild(iframe);
+  }
+  function markExplored(key){
+    if(!explored[key]){ explored[key]=true; updateProgress(); }
+  }
+  function updateProgress(){
+    const c=Object.values(explored).filter(Boolean).length; const total=SECTIONS.length;
+    progressFill.style.width=(c/total*100)+'%';
+    progressText.textContent=`${c}/${total}`;
+    if(c===total) unlockVideo();
+  }
+  function unlockVideo(){
+    if(!video.src) video.src = VIDEO_SRC;
+    video.setAttribute('controls','controls');
+    videoWrap.classList.add('unlocked');
+    lock.classList.add('hidden');
+    video.play().catch(() => {}); // optional autoplay
+  }
+  // Close modal handlers
+  modal.addEventListener('click', (e)=>{ if(e.target.hasAttribute('data-close')) modal.classList.remove('open'); });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')) modal.classList.remove('open'); });
 
-    function animate() {
-      requestAnimationFrame(animate);
-      if (points) {
-        points.rotation.y += 0.005;
-        points.rotation.x += 0.003;
-      }
-      renderer.render(scene, camera);
-    }
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+  (function init(){ renderSlices(); updateProgress(); })();
+</script>
 </body>
 </html>

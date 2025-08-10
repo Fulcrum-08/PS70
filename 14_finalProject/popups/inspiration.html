@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inspiration</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font: 16px/1.7 system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: #222;
+      background: #fff;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 700;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      user-select: none;
+      flex-shrink: 0; /* prevent shrinking */
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center; /* center horizontally */
+      align-items: center;     /* center vertically */
+      padding: 20px;
+    }
+    .text-box {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9fafb;
+      overflow-y: auto;
+      overflow-x: hidden;
+      resize: vertical;
+      white-space: pre-wrap;
+      font-size: 22px;
+      line-height: 1.6;
+      box-shadow: inset 0 0 5px #eee;
+      min-height: 250px;
+      max-height: 800px;
+      max-width: 900px;
+      width: fit-content;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      box-sizing: border-box;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <header>INSPIRATION</header>
+  <main>
+    <div class="text-box" contenteditable="false">
+In the days leading up to leaving for Harvard, I spent some time browsing through past final projects, trying to come up with an idea that would be both interesting and feasible. Through that I came up with the idea of a Lidar Scanner
+
+My inspiration was really twofold. First, I thought about how this kind of technology could eventually help my mom with scanning buildings and turning that data into useful information for designing highly insulated panels
+The second inspiration came from my fascination with space exploration. This technology farther down the line, could in theory act as a system to be used to scan an area for potential dangers before humans enter it, and most of space being a vacuum light and thus LiDAR comes in handy.
+
+At first, I even wanted to build my own sensor using a simple Time-of-Flight concept to generate points. But that quickly proved unfeasible with the microcontrollers I had, since doing that properly requires an internal clock on the order of picoseconds, which was beyond what I could achieve with the  hardware. So, I switched to using a ready-made LiDAR sensor to make the project practical, and the housing that would allow it to spin in 3D.
+
+    </div>
+  </main>
+</body>
+</html>

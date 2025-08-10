@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live 3D Sphere from Firebase</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; }
+    #loading {
+      color: white;
+      font-family: sans-serif;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+
+  <!-- ✅ Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+
+  <!-- ✅ Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div id="loading">Initializing...</div>
+
+  <script>
+    const loadingDiv = document.getElementById("loading");
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZiSGPSF4S1COV--bX9R0CenD1q1lZFik",
+      authDomain: "finalprojectps70.firebaseapp.com",
+      databaseURL: "https://finalprojectps70-default-rtdb.firebaseio.com",
+      projectId: "finalprojectps70",
+      storageBucket: "finalprojectps70.appspot.com",
+      messagingSenderId: "537615396887",
+      appId: "1:537615396887:web:3798d2f6d90b1897a4ac52",
+      measurementId: "G-D3GNRH0FKD"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let scene, camera, renderer, geometry, pointCloud;
+
+    function initScene() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      geometry = new THREE.BufferGeometry();
+      const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+      pointCloud = new THREE.Points(geometry, material);
+      scene.add(pointCloud);
+
+      camera.position.z = 5;
+      animate();
+      console.log("3D scene initialized");
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      pointCloud.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    function fetchPointsFromFirebase() {
+      const pointsRef = db.ref("points");
+      pointsRef.once("value", snapshot => {
+        const data = snapshot.val();
+        const vertices = [];
+
+        if (data) {
+          Object.values(data).forEach(point => {
+            if ('x' in point && 'y' in point && 'z' in point) {
+              vertices.push(point.x, point.y, point.z);
+            }
+          });
+
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+          geometry.attributes.position.needsUpdate = true;
+        }
+      });
+    }
+
+    function startPolling(intervalMs = 1000) {
+      setInterval(fetchPointsFromFirebase, intervalMs);
+    }
+
+    // Start everything
+    window.addEventListener("load", () => {
+      loadingDiv.innerText = "Starting 3D scene...";
+      initScene();
+      loadingDiv.remove();
+      startPolling(); // Starts polling every 1 second
+    });
+  </script>
+</body>
+</html>
