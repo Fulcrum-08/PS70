@@ -88,7 +88,7 @@
           alt="Futuristic Spaceship 3D Model"
           auto-rotate
           camera-controls
-          camera-orbit="0deg 75deg 5m"  <!-- zoom camera out more to compensate -->
+          camera-orbit="0deg 75deg 5m"
           field-of-view="20deg"
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
@@ -99,7 +99,6 @@
       <h2>Sensor Casing </h2>
       <p>
         This model is the majority of the design. The lower part is a shaft housing the slip ring that is incited inside the wooden box. The top half of the shaft provides support for the outer casing of the sensor. This outer casing additionally is the support that holds the second stepper motor. This motor is directly connected to the inside sensor casing allowing it to rotate. 
-
       </p>
       <a class="download-link" href="https://modelviewer.dev/shared-assets/models/FlightHelmet.glb" download>
         Download GLB
@@ -115,7 +114,7 @@
           alt="Ancient Artifact 3D Model"
           auto-rotate
           camera-controls
-          camera-orbit="0deg 75deg 5m"  <!-- zoom camera out more -->
+          camera-orbit="0deg 75deg 5m"
           field-of-view="20deg"
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
@@ -125,9 +124,7 @@
       </div>
       <h2>Central Consol</h2>
       <p>
-        
-This model is the central console, it is designed to skew into the base wooden box and  act as support for the entire structure. The model houses an offset Stepper motor allowing the shaft to occupy the central space combined by a slip ring to stop the wires from tangling. Additionally the central cavity allows for a ball bearing to be pressed into the model creating a smoother turn. The printed groves create a palace for the wires to go helping to limit the chaos of wires 
-
+        This model is the central console, it is designed to skew into the base wooden box and  act as support for the entire structure. The model houses an offset Stepper motor allowing the shaft to occupy the central space combined by a slip ring to stop the wires from tangling. Additionally the central cavity allows for a ball bearing to be pressed into the model creating a smoother turn. The printed groves create a palace for the wires to go helping to limit the chaos of wires 
       </p>
       <a class="download-link" href="https://modelviewer.dev/shared-assets/models/Astronaut.glb" download>
         Download GLB
@@ -160,11 +157,11 @@ This model is the central console, it is designed to skew into the base wooden b
   </main>
 
   <script>
-    // Scale down the models inside each viewer to 1/10th their original size
+    // Correct way to scale down the models uniformly on load
     ['model1', 'model2'].forEach(id => {
       const mv = document.getElementById(id);
       mv.addEventListener('load', () => {
-        mv.model.scene.scale.set(0.1, 0.1, 0.1);
+        mv.setAttribute('scale', '0.1 0.1 0.1');
       });
     });
   </script>
