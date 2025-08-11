@@ -1,212 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3D Models & Concept Art Showcase</title>
-<style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121417;
-    color: #e1e1e1;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  header {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    padding: 2.5rem 1rem;
-    text-align: center;
-    color: #f1f5f9;
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    user-select: none;
-    box-shadow: 0 4px 15px rgb(0 0 0 / 0.4);
-  }
-
-  main {
-    max-width: 1200px;
-    margin: 2rem auto 4rem;
-    padding: 0 1rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-  }
-
-  section.card {
-    background: #1f2937;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgb(0 0 0 / 0.4);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  section.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 14px 40px rgb(0 0 0 / 0.6);
-  }
-
-  .media {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: #111827;
-  }
-
-  model-viewer, img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    border-radius: 0;
-    background: #111827;
-    /* Scale down the 3D models for a neat look */
-    transform-origin: center center;
-  }
-
-  /* Scale down models to ~60% */
-  model-viewer {
-    transform: scale(0.6);
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    margin: 1.25rem 1.5rem 0.5rem;
-    color: #e0e7ff;
-  }
-
-  p {
-    margin: 0 1.5rem 1.5rem;
-    color: #cbd5e1;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  a.download-link {
-    align-self: flex-start;
-    margin: 0 1.5rem 1.5rem;
-    padding: 12px 28px;
-    background-color: #2563eb;
-    color: white;
-    border-radius: 9999px;
-    font-weight: 700;
-    text-decoration: none;
-    box-shadow: 0 4px 15px rgb(37 99 235 / 0.5);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-  }
-  a.download-link:hover,
-  a.download-link:focus {
-    background-color: #1e40af;
-    box-shadow: 0 8px 25px rgb(30 64 175 / 0.8);
-  }
-
-  footer {
-    text-align: center;
-    color: #475569;
-    font-size: 0.9rem;
-    padding: 1.5rem 1rem;
-    border-top: 1px solid #334155;
-    user-select: none;
-  }
-
-  @media (max-width: 400px) {
-    main {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Models & Media</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background-color: #f9fafb;
+      color: #1a1a1a;
+      line-height: 1.6;
     }
-  }
-</style>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+    header {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+    }
+
+    section {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem 1.5rem 2rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 1rem 0 0.5rem;
+      color: #111827;
+      text-align: center;
+    }
+
+    p {
+      color: #374151;
+      margin-bottom: 1rem;
+      text-align: justify;
+      font-size: 0.95rem;
+    }
+
+    .media {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 4 / 3;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgb(0 0 0 / 0.15);
+    }
+
+    model-viewer, img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+      background: white;
+    }
+
+    a.download-link {
+      display: inline-block;
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.25s ease;
+      text-align: center;
+      user-select: none;
+      margin-top: auto;
+    }
+
+    a.download-link:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
+  <header>3D Models & Media</header>
+  <main>
 
-<header>3D Models & Concept Art Showcase</header>
+    <!-- Model 1 -->
+    <section>
+      <div class="media">
+        <model-viewer
+          src="Final.glb"
+          alt="Futuristic Spaceship 3D Model"
+          auto-rotate
+          camera-controls
+          camera-orbit="0deg 75deg 1.5m"
+          field-of-view="20deg"
+          min-camera-orbit="auto auto 0.2m"
+          max-camera-orbit="auto auto 10m"
+          shadow-intensity="1"
+          exposure="1"
+          style="transform: scale(0.5); transform-origin: center center;">
+        </model-viewer>
+      </div>
+      <h2>Futuristic Spaceship</h2>
+      <p>
+        This spaceship is designed with sleek aerodynamic lines and high-detail texturing to mimic a realistic interstellar craft.
+        The model showcases precise paneling, intricate mechanical components, and dynamic lighting effects that adapt to
+        different environments. Its geometry is optimized for both high-resolution cinematic renders and real-time use in
+        gaming engines such as Unity or Unreal Engine. The cockpit features fully modeled instrumentation and seating,
+        allowing close-up examination in VR. Texture maps are 4K resolution, ensuring clarity even when zoomed in to the smallest detail.
+      </p>
+      <a class="download-link" href="https://modelviewer.dev/shared-assets/models/FlightHelmet.glb" download>
+        Download GLB
+      </a>
+    </section>
 
-<main>
+    <!-- Model 2 -->
+    <section>
+      <div class="media">
+        <model-viewer
+          src="inside.glb"
+          alt="Ancient Artifact 3D Model"
+          auto-rotate
+          camera-controls
+          camera-orbit="0deg 75deg 1.5m"
+          field-of-view="20deg"
+          min-camera-orbit="auto auto 0.2m"
+          max-camera-orbit="auto auto 10m"
+          shadow-intensity="1"
+          exposure="1"
+          style="transform: scale(0.5); transform-origin: center center;">
+        </model-viewer>
+      </div>
+      <h2>Ancient Artifact</h2>
+      <p>
+        This artifact is a meticulously reconstructed digital representation of a historically significant object, with
+        every surface detail captured using photogrammetry techniques. The high-resolution mesh preserves the artifact's
+        natural wear patterns, subtle material variations, and micro-abrasions — all crucial for archaeological analysis.
+        The PBR material workflow enables accurate reflections and light interactions, making it an ideal candidate for museum
+        virtual tours or academic research. Rotating the model reveals intricate engravings and marks that tell a story
+        of centuries-old craftsmanship.
+      </p>
+      <a class="download-link" href="https://modelviewer.dev/shared-assets/models/Astronaut.glb" download>
+        Download GLB
+      </a>
+    </section>
 
-  <section class="card" aria-label="Futuristic Spaceship 3D Model">
-    <div class="media">
-      <model-viewer
-        src="Final.glb"
-        alt="Futuristic Spaceship 3D Model"
-        auto-rotate
-        camera-controls
-        camera-orbit="0deg 75deg 1.5m"
-        field-of-view="20deg"
-        min-camera-orbit="auto auto 0.2m"
-        max-camera-orbit="auto auto 10m"
-        shadow-intensity="1"
-        exposure="1"
-        loading="lazy">
-      </model-viewer>
-    </div>
-    <h2>Futuristic Spaceship</h2>
-    <p>
-      Sleek aerodynamic design with intricate mechanical details optimized for cinematic rendering and real-time game engines.
-      Includes fully modeled cockpit instrumentation. Texture maps are 4K resolution for high detail.
-    </p>
-    <a class="download-link" href="./Final.glb" download="Futuristic_Spaceship.glb">
-      Download GLB
-    </a>
-  </section>
+    <!-- Image -->
+    <section>
+      <div class="media">
+        <img
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80"
+          alt="Concept Art"
+          loading="lazy"
+        />
+      </div>
+      <h2>Concept Art</h2>
+      <p>
+        This piece of concept art envisions a sprawling futuristic cityscape at dusk, blending architectural grandeur
+        with the warm glow of neon-lit streets. The composition draws the viewer's eye across multiple layers of depth — 
+        from the sharp silhouettes of towering skyscrapers to the misty outlines of distant mountains. Every building design
+        reflects a blend of functional engineering and artistic elegance, making this artwork an excellent reference for
+        game level design or cinematic storyboarding. The lighting captures a perfect balance between realism and fantasy,
+        evoking both wonder and plausibility.
+      </p>
+      <a class="download-link" href="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920" download="concept-art.jpg">
+        Download Image
+      </a>
+    </section>
 
-  <section class="card" aria-label="Ancient Artifact 3D Model">
-    <div class="media">
-      <model-viewer
-        src="inside.glb"
-        alt="Ancient Artifact 3D Model"
-        auto-rotate
-        camera-controls
-        camera-orbit="0deg 75deg 1.5m"
-        field-of-view="20deg"
-        min-camera-orbit="auto auto 0.2m"
-        max-camera-orbit="auto auto 10m"
-        shadow-intensity="1"
-        exposure="1"
-        loading="lazy">
-      </model-viewer>
-    </div>
-    <h2>Ancient Artifact</h2>
-    <p>
-      Digital reconstruction preserving wear patterns and material variations using photogrammetry, perfect for museum virtual tours and archaeological study.
-    </p>
-    <a class="download-link" href="./inside.glb" download="Ancient_Artifact.glb">
-      Download GLB
-    </a>
-  </section>
-
-  <section class="card" aria-label="Concept Art Image">
-    <div class="media">
-      <img
-        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80"
-        alt="Concept Art: futuristic cityscape at dusk"
-        loading="lazy" />
-    </div>
-    <h2>Concept Art</h2>
-    <p>
-      A sprawling futuristic cityscape blending architectural grandeur with neon-lit streets at dusk. Ideal for game design or cinematic storyboarding references.
-    </p>
-    <a class="download-link" href="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920" download="concept-art.jpg">
-      Download Image
-    </a>
-  </section>
-
-</main>
-
-<footer>
-  &copy; 2025 Your Name or Company. All rights reserved.
-</footer>
-
+  </main>
 </body>
 </html>
