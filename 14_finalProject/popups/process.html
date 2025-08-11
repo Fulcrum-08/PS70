@@ -3,96 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LiDAR Scanner Design Process</title>
+  <title>Date Sections with Text Display</title>
   <style>
     html, body {
       height: 100%;
-    }
-    body {
       margin: 0;
-      font: 14px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      font: 16px/1.7 system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
       color: #222;
       background: #fff;
-      display: flex;
-      align-items: stretch;
-      justify-content: stretch;
     }
-    .container {
-      flex: 1;
+    body {
       display: flex;
       flex-direction: column;
-      min-height: 0;
-    }
-    header {
-      padding: 12px 14px;
-      border-bottom: 1px solid #e5e7eb;
-      font-weight: 600;
-      font-size: 1.25rem;
-    }
-    main {
-      padding: 14px;
-      overflow: auto;
-      flex: 1;
-      min-height: 0;
+      min-height: 100vh;
+      padding: 20px;
+      gap: 40px;
+      max-width: 900px;
+      margin: auto;
     }
     h2 {
-      margin-top: 1.25em;
-      margin-bottom: 0.5em;
-      color: #0366d6;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      user-select: none;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 6px;
     }
-    ul {
-      margin-top: 0;
-      padding-left: 20px;
+    .text-box {
+      padding: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9fafb;
+      white-space: pre-wrap;
+      font-size: 18px;
       line-height: 1.5;
+      box-shadow: inset 0 0 5px #eee;
+      min-height: 150px;
+      max-height: 300px;
+      overflow-y: auto;
+      user-select: text;
+      margin-bottom: 12px;
     }
-    section {
-      margin-bottom: 2em;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      background: #fff;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
     }
-    strong {
-      color: #444;
+    button:hover {
+      background-color: #e0e0e0;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>LiDAR Scanner Design Process</header>
-    <main>
-      <section>
-        <h2>Workflow Overview</h2>
-        <ul>
-          <li>Research & Requirements Gathering</li>
-          <li>Component Selection & Procurement</li>
-          <li>Hardware Assembly & Integration</li>
-          <li>Firmware Development & Calibration</li>
-          <li>Data Acquisition & Processing</li>
-          <li>Testing & Iteration</li>
-          <li>Final Deployment & Documentation</li>
-        </ul>
-      </section>
 
-      <section>
-        <h2>Milestones</h2>
-        <ul>
-          <li><strong>Week 1-2:</strong> Define project goals and specifications, select sensor and microcontroller.</li>
-          <li><strong>Week 3-4:</strong> Build prototype hardware; initial laser and sensor integration.</li>
-          <li><strong>Week 5-6:</strong> Develop firmware for sensor communication and stepper motor control.</li>
-          <li><strong>Week 7-8:</strong> Implement scanning algorithm and data processing pipeline.</li>
-          <li><strong>Week 9-10:</strong> Test accuracy, optimize scanning speed and resolution.</li>
-          <li><strong>Week 11:</strong> Finalize design and prepare documentation for users and developers.</li>
-        </ul>
-      </section>
+  <section id="date1">
+    <h2>2025-07-24</h2>
+    <div class="text-box" id="text1">
+    We were asked to come up with three or more ideas for the final project. I had three ideas, but from the start, I knew I wanted to build the LiDAR scanner. At that point, I wasn’t really sure what I was doing— I even considered making my own sensor, but I was uncertain about how to proceed. I also knew much of the project would be digital, and I wasn’t sure if my idea was even feasible. However, after chatting with Nathen and Bobby, I finally decided to go ahead with it. The button below will give bring you to a website with a little bit more depth.
+    </div>
+    <button onclick="goToSite('https://fulcrum-08.github.io/PS70/proposal.html')">Visit Website</button>
+  </section>
 
-      <section>
-        <h2>Key Decisions</h2>
-        <ul>
-          <li>Choosing the laser distance sensor: VL53L0X for its time-of-flight accuracy.</li>
-          <li>Microcontroller selection: ESP32 for wireless capability and sufficient processing power.</li>
-          <li>Mechanical design: Use stepper motors for precise angular control of scanning.</li>
-          <li>Data handling: Perform basic processing on microcontroller, offload visualization to PC.</li>
-          <li>Power considerations: Optimize for low power consumption for potential battery operation.</li>
-        </ul>
-      </section>
-    </main>
-  </div>
+  <section id="date2">
+    <h2>2025-07-24</h2>
+    <div class="text-box" id="text2">
+  By this point, I had created my MVP. Although it wasn’t fully functional,it was  working in 2D and the design was mostly finalized. The biggest challenge was getting the scanner to power on. Initially, I had chosen a cheaper scanner that with a google search seemed to have   no documentation and had possibly been  discontinued.I then pivoted to a TF-Luna LiDAR scanner, which worked perfectly (highly recommend). Other issues included securing the LiDAR scanner inside its cylindrical casing and fitting the top stepper motor’s shaft into the shaft of the inner casing;I had made it a bit too small. There is a more detailed account, if you hit the button below.
+
+    </div>
+    <button onclick="goToSite('https://fulcrum-08.github.io/PS70/07_output/07-electronic-output-devices.html')">Visit Website</button>
+  </section>
+
+  <section id="date3">
+    <h2>2025-08-7</h2>
+    <div class="text-box" id="text3">
+    I haven’t finished my project yet, and moving from the MVP to the final design ended up being more challenging than I initially expected. The biggest issue with the MVP was mostly the wiring, it got messy and complicated pretty quickly. To solve this, I used a slip ring and 3D-printed a central console that not only holds the slip ring shaft but also has grooves to neatly route the wires, which helped keep everything organized. On top of that, I added a third dimension to the scanning process. I programmed the stepper motors so that the bottom one rotates by one step (1.8 degrees) while the top one rotates 100 steps (about 180 degrees) before resetting and starting again. Meanwhile, the LiDAR sensor takes measurements continuously. In the end, I was able to scan a five-gallon bucket fairly accurately—it was the only enclosed space I had available at the home. (See video.)
+
+    </div>
+  </section>
+
+  <script>
+    function goToSite(url) {
+      window.location.href = url;
+    }
+    function showText(textId) {
+      const text = document.getElementById(textId).textContent.trim();
+      alert(text);
+    }
+  </script>
+
 </body>
 </html>
