@@ -52,7 +52,7 @@
 
     model-viewer, img {
       width: 100%;
-      height: 300px; /* Half the original size */
+      height: 600px;
       background: white;
       border-radius: 8px;
       object-fit: contain;
@@ -162,5 +162,16 @@
     </section>
 
   </main>
+
+  <!-- Scale models down after they load -->
+  <script>
+    document.querySelectorAll('model-viewer').forEach(mv => {
+      mv.addEventListener('load', () => {
+        // Access the model scene graph
+        const scene = mv.model.scene;
+        scene.scale.set(0.1, 0.1, 0.1); // 10x smaller
+      });
+    });
+  </script>
 </body>
 </html>
