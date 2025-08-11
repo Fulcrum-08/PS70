@@ -52,7 +52,7 @@
 
     model-viewer, img {
       width: 100%;
-      height: 600px;
+      height: 800px; /* Make the viewer bigger */
       background: white;
       border-radius: 8px;
       object-fit: contain;
@@ -83,11 +83,12 @@
     <section>
       <div class="media">
         <model-viewer
+          id="model1"
           src="Final.glb"
           alt="Futuristic Spaceship 3D Model"
           auto-rotate
           camera-controls
-          camera-orbit="0deg 75deg 1.5m"
+          camera-orbit="0deg 75deg 5m"  <!-- zoom camera out more to compensate -->
           field-of-view="20deg"
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
@@ -112,11 +113,12 @@
     <section>
       <div class="media">
         <model-viewer
+          id="model2"
           src="inside.glb"
           alt="Ancient Artifact 3D Model"
           auto-rotate
           camera-controls
-          camera-orbit="0deg 75deg 1.5m"
+          camera-orbit="0deg 75deg 5m"  <!-- zoom camera out more -->
           field-of-view="20deg"
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
@@ -163,13 +165,12 @@
 
   </main>
 
-  <!-- Scale models down after they load -->
   <script>
-    document.querySelectorAll('model-viewer').forEach(mv => {
+    // Scale down the models inside each viewer to 1/10th their original size
+    ['model1', 'model2'].forEach(id => {
+      const mv = document.getElementById(id);
       mv.addEventListener('load', () => {
-        // Access the model scene graph
-        const scene = mv.model.scene;
-        scene.scale.set(0.1, 0.1, 0.1); // 10x smaller
+        mv.model.scene.scale.set(0.1, 0.1, 0.1);
       });
     });
   </script>
