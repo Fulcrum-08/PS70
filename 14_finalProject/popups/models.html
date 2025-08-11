@@ -27,53 +27,36 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2.5rem;
     }
 
     section {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem 1.5rem 2rem;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      margin-bottom: 4rem;
     }
 
     h2 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      margin: 1rem 0 0.5rem;
+      margin-bottom: 0.5rem;
       color: #111827;
-      text-align: center;
     }
 
     p {
       color: #374151;
       margin-bottom: 1rem;
       text-align: justify;
-      font-size: 0.95rem;
     }
 
     .media {
-      width: 100%;
-      max-width: 320px;
-      aspect-ratio: 4 / 3;
       margin-bottom: 1rem;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 6px rgb(0 0 0 / 0.15);
     }
 
     model-viewer, img {
       width: 100%;
-      height: 100%;
+      height: 600px;
+      background: white;
+      border-radius: 8px;
       object-fit: contain;
       display: block;
-      border-radius: 8px;
-      background: white;
     }
 
     a.download-link {
@@ -85,11 +68,7 @@
       text-decoration: none;
       font-weight: 600;
       transition: background-color 0.25s ease;
-      text-align: center;
-      user-select: none;
-      margin-top: auto;
     }
-
     a.download-link:hover {
       background-color: #1d4ed8;
     }
@@ -113,8 +92,7 @@
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
           shadow-intensity="1"
-          exposure="1"
-          style="transform: scale(0.5); transform-origin: center center;">
+          exposure="1">
         </model-viewer>
       </div>
       <h2>Futuristic Spaceship</h2>
@@ -143,8 +121,7 @@
           min-camera-orbit="auto auto 0.2m"
           max-camera-orbit="auto auto 10m"
           shadow-intensity="1"
-          exposure="1"
-          style="transform: scale(0.5); transform-origin: center center;">
+          exposure="1">
         </model-viewer>
       </div>
       <h2>Ancient Artifact</h2>
@@ -185,5 +162,16 @@
     </section>
 
   </main>
+
+  <!-- Scale models down after they load -->
+  <script>
+    document.querySelectorAll('model-viewer').forEach(mv => {
+      mv.addEventListener('load', () => {
+        // Access the model scene graph
+        const scene = mv.model.scene;
+        scene.scale.set(0.1, 0.1, 0.1); // 10x smaller
+      });
+    });
+  </script>
 </body>
 </html>
