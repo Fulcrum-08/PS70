@@ -46,19 +46,6 @@
       text-align: justify;
     }
 
-    .media {
-      margin-bottom: 1rem;
-    }
-
-    model-viewer, img {
-      width: 100%;
-      height: 800px; /* Make the viewer bigger */
-      background: white;
-      border-radius: 8px;
-      object-fit: contain;
-      display: block;
-    }
-
     a.download-link {
       display: inline-block;
       background-color: #2563eb;
@@ -81,22 +68,14 @@
 
     <!-- Model 1 -->
     <section>
-      <div class="media">
-        <model-viewer
-          id="model1"
-          src="Final.glb"
-          alt="Futuristic Spaceship 3D Model"
-          auto-rotate
-          camera-controls
-          camera-orbit="0deg 75deg 5m"
-          field-of-view="20deg"
-          min-camera-orbit="auto auto 0.2m"
-          max-camera-orbit="auto auto 10m"
-          shadow-intensity="1"
-          exposure="1">
-        </model-viewer>
-      </div>
-      <h2>Sensor Casing </h2>
+      <model-viewer
+        src="Final.glb"
+        alt="Futuristic Spaceship 3D Model"
+        auto-rotate
+        camera-controls
+        style="width: 100%; max-width: 800px; height: 600px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); background: white; display: block; margin-bottom: 1rem;"
+      ></model-viewer>
+      <h2>Sensor Casing</h2>
       <p>
         This model forms the central part of the design. The lower section is a shaft that contains the slip ring, enclosed within the wooden box. The upper section of the shaft supports the sensor’s outer casing, which also acts as the mounting point for the second stepper motor. This motor is directly attached to the sensor casing, allowing it to rotate.
       </p>
@@ -107,24 +86,16 @@
 
     <!-- Model 2 -->
     <section>
-      <div class="media">
-        <model-viewer
-          id="model2"
-          src="inside.glb"
-          alt="Ancient Artifact 3D Model"
-          auto-rotate
-          camera-controls
-          camera-orbit="0deg 75deg 5m"
-          field-of-view="20deg"
-          min-camera-orbit="auto auto 0.2m"
-          max-camera-orbit="auto auto 10m"
-          shadow-intensity="1"
-          exposure="1">
-        </model-viewer>
-      </div>
+      <model-viewer
+        src="inside.glb"
+        alt="Ancient Artifact 3D Model"
+        auto-rotate
+        camera-controls
+        style="width: 100%; max-width: 800px; height: 600px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); background: white; display: block; margin-bottom: 1rem;"
+      ></model-viewer>
       <h2>Central Consol</h2>
       <p>
-        This model is the central console, it is designed to skew into the base wooden box and  act as support for the entire structure. The model houses an offset Stepper motor allowing the shaft to occupy the central space combined by a slip ring to stop the wires from tangling. Additionally the central cavity allows for a ball bearing to be pressed into the model creating a smoother turn. The printed groves create a palace for the wires to go helping to limit the chaos of wires 
+        This model is the central console, it is designed to skew into the base wooden box and act as support for the entire structure. The model houses an offset Stepper motor allowing the shaft to occupy the central space combined by a slip ring to stop the wires from tangling. Additionally the central cavity allows for a ball bearing to be pressed into the model creating a smoother turn. The printed grooves create a place for the wires to go helping to limit the chaos of wires.
       </p>
       <a class="download-link" href="inside.f3d" download>
         Download GLB
@@ -133,32 +104,21 @@
 
     <!-- Image -->
     <section>
-      <div class="media">
-        <img
-          src="box.png"
-          alt="Concept Art"
-          loading="lazy"
-        />
-      </div>
+      <img
+        src="box.png"
+        alt="Concept Art"
+        loading="lazy"
+        style="width: 100%; max-width: 800px; height: auto; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); margin-bottom: 1rem;"
+      />
       <h2>Wooden Base Box</h2>
       <p>
-        This is the .DFX file for the base of the design,the wooden box. I used a laser cutter to cut 6mm wood, relying solely on friction to hold it together. The top of the box features a 21mm diameter hole for the shaft, and it spans 98.4mm from side to side, allowing the central console to fit snugly inside. The remaining space inside the box is used to store electronics for both the bottom and top microcontrollers. On one side, there’s a hole for the power cable, which connects directly to the custom PCB (thanks, Booby) that converts 12V down to 5V.
+        This is the .DFX file for the base of the design, the wooden box. I used a laser cutter to cut 6mm wood, relying solely on friction to hold it together. The top of the box features a 21mm diameter hole for the shaft, and it spans 98.4mm from side to side, allowing the central console to fit snugly inside. The remaining space inside the box is used to store electronics for both the bottom and top microcontrollers. On one side, there’s a hole for the power cable, which connects directly to the custom PCB (thanks, Booby) that converts 12V down to 5V.
       </p>
       <a class="download-link" href="wood_box.dxf" download="wood_box.dxf">
-  Download DXF
-</a>
+        Download DXF
+      </a>
     </section>
 
   </main>
-
-  <script>
-    // Correct way to scale down the models uniformly on load
-    ['model1', 'model2'].forEach(id => {
-      const mv = document.getElementById(id);
-      mv.addEventListener('load', () => {
-        mv.setAttribute('scale', '0.1 0.1 0.1');
-      });
-    });
-  </script>
 </body>
 </html>
